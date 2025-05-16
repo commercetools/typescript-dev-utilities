@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PersonalDataErasure ::buildReference should build reference 1`] = `"resource(id in ("id1", "id2", "id3"))"`;
+
+exports[`PersonalDataErasure ::constructor should throw error if no \`apiConfig\` in \`options\` parameter 1`] = `"The class must be instantiated with an \`apiConfig\` option"`;
+
+exports[`PersonalDataErasure ::deleteAll should throw error if no customerID is passed 1`] = `"missing \`customerId\` argument"`;
+
+exports[`PersonalDataErasure ::deleteAll with status code 500 should throw internal server error 1`] = `"Request returned status code 500"`;
+
+exports[`PersonalDataErasure ::getCustomerData with status code 200 should fetch data 1`] = `
+[
+  {
+    "id": "id1",
+    "version": 1,
+  },
+  {
+    "id": "id2",
+    "version": 1,
+  },
+  {
+    "id": "id1",
+    "version": 1,
+  },
+  {
+    "id": "id2",
+    "version": 1,
+  },
+  {
+    "id": "id1",
+    "version": 1,
+  },
+  {
+    "id": "id2",
+    "version": 1,
+  },
+  {
+    "id": "id1",
+    "version": 1,
+  },
+  {
+    "id": "id2",
+    "version": 1,
+  },
+  {
+    "id": "id1",
+    "version": 1,
+  },
+  {
+    "id": "id2",
+    "version": 1,
+  },
+  {
+    "id": "id1",
+    "version": 1,
+  },
+  {
+    "id": "id2",
+    "version": 1,
+  },
+  {
+    "id": "id1",
+    "version": 1,
+  },
+  {
+    "id": "id2",
+    "version": 1,
+  },
+]
+`;
+
+exports[`PersonalDataErasure ::getCustomerData with status code 500 should throw internal server error 1`] = `"Request returned status code 500"`;
