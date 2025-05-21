@@ -1,6 +1,6 @@
 /* eslint-disable */
 module.exports = {
-  extends: ["@commitlint/config-conventional"],
+  extends: ['@commitlint/config-conventional'],
   parserPreset: {
     parserOpts: {
       // Allow to write a "scope" with slashes
@@ -9,6 +9,6 @@ module.exports = {
     },
   },
   rules: {
-    "header-max-length": [0, "always", 100],
+    'header-max-length': [0, 'always', 100],
   },
 };

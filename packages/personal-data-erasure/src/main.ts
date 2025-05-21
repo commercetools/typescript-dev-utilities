@@ -1,17 +1,17 @@
-export * from "./utils/types";
+export * from './utils/types';
 import {
   ClientBuilder,
   type Client,
   type ClientRequest,
   type ClientResponse,
   type ClientResult,
-} from "@commercetools/ts-client";
+} from '@commercetools/ts-client';
 
 import {
   createApiBuilderFromCtpClient,
   type ApiRoot,
   type ByProjectKeyRequestBuilder,
-} from "@commercetools/platform-sdk";
+} from '@commercetools/platform-sdk';
 
 import {
   type ApiConfigOptions,
@@ -20,11 +20,11 @@ import {
   type AllData,
   type Messages,
   type ISuccessResponse,
-} from "./utils/types";
+} from './utils/types';
 
-import flatten from "lodash.flatten";
-import silentLogger from "./utils/logger";
-import { name, version } from "../package.json";
+import flatten from 'lodash.flatten';
+import silentLogger from './utils/logger';
+import { name, version } from '../package.json';
 
 export default class PersonalDataErasure {
   private client: Client;
@@ -35,7 +35,7 @@ export default class PersonalDataErasure {
   constructor(options: ErasureOptions) {
     if (!options.apiConfig) {
       throw new Error(
-        "The class must be instantiated with an `apiConfig` option"
+        'The class must be instantiated with an `apiConfig` option'
       );
     }
 
@@ -78,11 +78,11 @@ export default class PersonalDataErasure {
     ) => Promise<Array<ClientRequest>>,
     options: { merge: boolean } = { merge: false }
   ): Promise<Array<AllData>> {
-    if (!customerId) throw Error("missing `customerId` argument");
-    if (getResourceList && typeof getResourceList !== "function")
-      throw Error("the second argument must be a function");
+    if (!customerId) throw Error('missing `customerId` argument');
+    if (getResourceList && typeof getResourceList !== 'function')
+      throw Error('the second argument must be a function');
 
-    this.logger.info("Starting to fetch data");
+    this.logger.info('Starting to fetch data');
 
     const requestBuilder = this.apiRoot.withProjectKey({
       projectKey: this.apiConfig.projectKey,
@@ -191,7 +191,7 @@ export default class PersonalDataErasure {
           result = [...messages, ...result] as Array<AllData>;
         }
 
-        this.logger.info("Export operation completed successfully");
+        this.logger.info('Export operation completed successfully');
         return Promise.resolve(result);
       }
     );
@@ -203,9 +203,9 @@ export default class PersonalDataErasure {
       bulder: ByProjectKeyRequestBuilder
     ) => Promise<Array<ClientRequest>>
   ): Promise<void> {
-    if (!customerId) throw Error("missing `customerId` argument");
+    if (!customerId) throw Error('missing `customerId` argument');
 
-    this.logger.info("Starting deletion");
+    this.logger.info('Starting deletion');
 
     const requestBuilder = this.apiRoot.withProjectKey({
       projectKey: this.apiConfig.projectKey,

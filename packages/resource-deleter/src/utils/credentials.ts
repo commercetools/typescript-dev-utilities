@@ -1,6 +1,6 @@
-import path from "path";
-import dotenv from "dotenv";
-import { homepage } from "../../package.json";
+import path from 'path';
+import dotenv from 'dotenv';
+import { homepage } from '../../package.json';
 
 export type Credentials = {
   clientId: string;
@@ -10,11 +10,11 @@ export type Credentials = {
 
 export function setCredentialsFromEnvFile() {
   const currentDirectoryResult = dotenv.config({
-    path: path.resolve(".ct-credentials.env"),
+    path: path.resolve('.ct-credentials.env'),
   });
 
   const etcDirectoryResult = dotenv.config({
-    path: path.resolve(path.join("/etc", ".ct-credentials.env")),
+    path: path.resolve(path.join('/etc', '.ct-credentials.env')),
   });
 
   return {
@@ -25,9 +25,9 @@ export function setCredentialsFromEnvFile() {
 
 export function getCredentialsFromEnvironment(): Promise<Credentials> {
   return new Promise((resolve, reject) => {
-    const clientId = process.env["CTP_CLIENT_ID"];
-    const clientSecret = process.env["CTP_CLIENT_SECRET"];
-    const projectKey = process.env["CTP_PROJECT_KEY"];
+    const clientId = process.env['CTP_CLIENT_ID'];
+    const clientSecret = process.env['CTP_CLIENT_SECRET'];
+    const projectKey = process.env['CTP_PROJECT_KEY'];
 
     const credentials = { projectKey, clientId, clientSecret };
     const keys = Object.keys(credentials);

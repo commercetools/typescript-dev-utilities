@@ -1,12 +1,12 @@
 const CONSTANTS = {
   host: {
-    api: "https://api.europe-west1.gcp.commercetools.com",
-    auth: "https://auth.europe-west1.gcp.commercetools.com",
+    api: 'https://api.europe-west1.gcp.commercetools.com',
+    auth: 'https://auth.europe-west1.gcp.commercetools.com',
   },
 
   standardOption: {
-    confirm: "false",
-    defaultLogFile: "resources-deleted-report.log",
+    confirm: 'false',
+    defaultLogFile: 'resources-deleted-report.log',
   },
 };
 

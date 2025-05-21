@@ -1,17 +1,17 @@
-export * from "./utils/types";
+export * from './utils/types';
 import {
   type Client,
   type ClientResult,
   type ClientRequest,
   type ClientResponse,
   ClientBuilder,
-} from "@commercetools/ts-client";
+} from '@commercetools/ts-client';
 
 import {
   type ApiRoot,
   type ByProjectKeyRequestBuilder,
   createApiBuilderFromCtpClient,
-} from "@commercetools/platform-sdk";
+} from '@commercetools/platform-sdk';
 
 import {
   type ApiConfigOptions,
@@ -19,10 +19,10 @@ import {
   type DeleterOptions,
   type MethodNames,
   type CustomClientResult,
-} from "./utils/types";
+} from './utils/types';
 
-import silentLogger from "./utils/logger";
-import { name, version } from "../package.json";
+import silentLogger from './utils/logger';
+import { name, version } from '../package.json';
 
 export default class ResourceDeleter {
   private apiConfig: ApiConfigOptions;
@@ -35,10 +35,10 @@ export default class ResourceDeleter {
 
   constructor(options: DeleterOptions) {
     if (!options.apiConfig)
-      throw new Error("The constructor must passed an `apiConfig` object");
+      throw new Error('The constructor must passed an `apiConfig` object');
 
     if (!options.resource)
-      throw new Error("A `resource` string must be passed");
+      throw new Error('A `resource` string must be passed');
 
     this.apiConfig = options.apiConfig;
     let client: ClientBuilder = new ClientBuilder();
@@ -156,10 +156,10 @@ export default class ResourceDeleter {
     return this.client
       .execute({
         ...this.getServiceRequest(result),
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify({
           version: result.version,
-          actions: [{ action: "unpublish" }],
+          actions: [{ action: 'unpublish' }],
         }),
       })
       .then((res: ClientResult): object => res.body)
@@ -180,7 +180,7 @@ export default class ResourceDeleter {
   }
 
   private createService() {
-    if (typeof this.builder[this.resource] === "function") {
+    if (typeof this.builder[this.resource] === 'function') {
       return this.builder[this.resource]();
     }
 

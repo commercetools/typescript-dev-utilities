@@ -29,14 +29,13 @@
     "jest-junit": "^16.0.0",
     "jest-watch-typeahead": "^2.2.2",
     "lint-staged": "12.3.2",
+    "prettier": "^3.3.2",
     "ts-jest": "^29.3.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.32.1"
   },
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "author": {
     "name": "Chukwuemeka Ajima",
     "email": "chukwuemeka.ajima@commercetools.com"
@@ -53,6 +52,10 @@
   "scripts": {
     "build": "yarn workspaces foreach --all run build",
     "test": "jest --config jest.config.js",
+    "format": "prettier . --check",
+    "format:fix": "prettier . --write '**/*.{js,ts,json,md}'",
+    "lint:fix": "eslint . --fix",
+    "lint": "eslint .",
     "typecheck": "tsc"
   }
 }

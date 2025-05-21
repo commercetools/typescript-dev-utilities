@@ -7,4 +7,4 @@ export const opts = {
   outdir: '.',
   // minify: true,
   // sourcemap: true,
-}
+};

@@ -1,0 +1,8 @@
+.*
+node_modules
+*.d.ts
+*yarn*
+*.cjs
+*.http
+*.env
+LICENSE

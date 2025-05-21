@@ -1,3 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ResourceDeleter ::constructor should throw error if no \`apiConfig\` in \`options\` parameter 1`] = `"The constructor must passed an \`apiConfig\` object"`;
+exports[
+  `ResourceDeleter ::constructor should throw error if no \`apiConfig\` in \`options\` parameter 1`
+] = `"The constructor must passed an \`apiConfig\` object"`;

@@ -7,5 +7,5 @@
     "emitDeclarationOnly": true,
     "lib": ["es2015"],
     "outDir": "dist"
-  },
+  }
 }

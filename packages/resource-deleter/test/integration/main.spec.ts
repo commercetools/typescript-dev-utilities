@@ -1,4 +1,4 @@
-require("dotenv").config();
+require('dotenv').config();
 import {
   type Store,
   type Project,
@@ -6,32 +6,32 @@ import {
   type CustomerSignInResult,
   type ByProjectKeyRequestBuilder,
   type ApiRoot,
-} from "@commercetools/platform-sdk";
-import { MethodNames } from "../../src/utils/types";
+} from '@commercetools/platform-sdk';
+import { MethodNames } from '../../src/utils/types';
 
-import ResoureDeleter from "../../src/main";
-import silentLogger from "../../src/utils/logger";
-import { describe, expect, test } from "@jest/globals";
-import { ClientResponse } from "@commercetools/ts-client";
+import ResoureDeleter from '../../src/main';
+import silentLogger from '../../src/utils/logger';
+import { describe, expect, test } from '@jest/globals';
+import { ClientResponse } from '@commercetools/ts-client';
 
-describe("::", () => {
+describe('::', () => {
   const logger = {
     ...silentLogger,
   };
 
-  const projectKey = process.env.CTP_PROJECT_KEY || "";
+  const projectKey = process.env.CTP_PROJECT_KEY || '';
   const options = {
     logger,
     apiConfig: {
       projectKey,
-      host: process.env.CTP_AUTH_URL || "",
-      apiUrl: process.env.CTP_API_URL || "",
+      host: process.env.CTP_AUTH_URL || '',
+      apiUrl: process.env.CTP_API_URL || '',
       credentials: {
-        clientId: process.env.CTP_CLIENT_ID || "",
-        clientSecret: process.env.CTP_CLIENT_SECRET || "",
+        clientId: process.env.CTP_CLIENT_ID || '',
+        clientSecret: process.env.CTP_CLIENT_SECRET || '',
       },
     },
-    resource: "customers" as MethodNames,
+    resource: 'customers' as MethodNames,
     // predicate: `id=${ID}`,
   };
 
@@ -42,27 +42,27 @@ describe("::", () => {
     api = resourceDeleter.getApiRoot();
   });
 
-  describe("::constructor", () => {
-    test("should throw an error is instance is misconfigured", () => {
+  describe('::constructor', () => {
+    test('should throw an error is instance is misconfigured', () => {
       expect(() => new ResoureDeleter({} as any)).toThrow();
     });
 
-    test("should return a class instance with public methods and properties", () => {
+    test('should return a class instance with public methods and properties', () => {
       const instance = new ResoureDeleter(options);
 
-      expect(typeof instance).toBe("object");
-      expect(instance).toHaveProperty("client");
-      expect(instance).toHaveProperty("apiRoot");
-      expect(instance).toHaveProperty("builder");
-      expect(instance).toHaveProperty("predicate");
+      expect(typeof instance).toBe('object');
+      expect(instance).toHaveProperty('client');
+      expect(instance).toHaveProperty('apiRoot');
+      expect(instance).toHaveProperty('builder');
+      expect(instance).toHaveProperty('predicate');
     });
   });
 
-  describe("::run", () => {
+  describe('::run', () => {
     const carts = [
-      { currency: "EUR" },
-      { currency: "USD" },
-      { currency: "CAD" },
+      { currency: 'EUR' },
+      { currency: 'USD' },
+      { currency: 'CAD' },
     ];
     const getCarts = async () => {
       return api.withProjectKey({ projectKey }).carts().get().execute();
@@ -94,14 +94,14 @@ describe("::", () => {
       }
     });
 
-    test("should get all carts", async () => {
+    test('should get all carts', async () => {
       const res = await getCarts();
       const result = res.body.results;
       expect(result.length).toBeGreaterThan(0);
     });
 
-    test("should delete all carts", async () => {
-      resourceDeleter.setResource("carts");
+    test('should delete all carts', async () => {
+      resourceDeleter.setResource('carts');
       await resourceDeleter.run();
 
       const res = await getCarts();

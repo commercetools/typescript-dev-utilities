@@ -7,5 +7,5 @@ More info here: https://commercetools.github.io/nodejs/cli/resource-deleter
 ## Install
 
 ```bash
-npm install --global @commercetools/resource-deleter 
+npm install --global @commercetools/resource-deleter
 ```

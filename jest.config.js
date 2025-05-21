@@ -12,19 +12,16 @@ module.exports = {
   testRegex: '\\.(test|spec)\\.[t]s?$',
   moduleFileExtensions: ['ts', 'js', 'json'],
   coverageDirectory: 'coverage',
-  coveragePathIgnorePatterns: [
-    '/node_modules/',
-    '/dist/'
-  ],
+  coveragePathIgnorePatterns: ['/node_modules/', '/dist/'],
   watchPlugins: ['jest-watch-typeahead/filename'],
   reporters: [
     'default',
     process.env.CI === 'true'
       ? [
-        'jest-junit',
-        { outputName: 'results.xml', outputDirectory: 'test-results' },
-      ]
+          'jest-junit',
+          { outputName: 'results.xml', outputDirectory: 'test-results' },
+        ]
       : null,
   ].filter(Boolean),
-  setupFiles: ['<rootDir>/.jest/setEnvVars.js']
-}
+  setupFiles: ['<rootDir>/.jest/setEnvVars.js'],
+};

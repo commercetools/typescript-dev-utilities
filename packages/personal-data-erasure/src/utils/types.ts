@@ -1,9 +1,9 @@
 /* Logger */
 export type LoggerOptions = {
-  error: (...args: Array<any>) => void;
-  info: (...args: Array<any>) => void;
-  warn: (...args: Array<any>) => void;
-  debug: (...args: Array<any>) => void;
+  error: (...args: Array<unknown>) => void;
+  info: (...args: Array<unknown>) => void;
+  warn: (...args: Array<unknown>) => void;
+  debug: (...args: Array<unknown>) => void;
 };
 
 export type ApiConfigOptions = {
@@ -39,7 +39,7 @@ export type Customer = {
   dateOfBirth?: string;
   companyName?: string;
   vatId?: string;
-  addresses: Array<Object>;
+  addresses: Array<object>;
   defaultShippingAddressId?: string;
   shippingAddressIds?: Array<string>;
   billingAddressIds?: Array<string>;
@@ -49,8 +49,8 @@ export type Customer = {
   lastModifiedAt: string;
   lastMessageSequenceNumber?: number;
   externalId?: string;
-  customerGroup?: Object;
-  custom?: Object;
+  customerGroup?: object;
+  custom?: object;
   locale?: string;
 };
 
@@ -65,32 +65,32 @@ export type Order = {
   customerEmail?: string;
   anonymousId?: string;
   lineItemsId?: string;
-  totalPrice: Object;
-  taxedPrice?: Object;
-  shippingAddress?: Object;
-  billingAddress?: Object;
-  taxMode: Object;
-  taxRoundingMode: Object;
-  taxCalculationMode: Object;
-  customerGroup?: Object;
+  totalPrice: object;
+  taxedPrice?: object;
+  shippingAddress?: object;
+  billingAddress?: object;
+  taxMode: object;
+  taxRoundingMode: object;
+  taxCalculationMode: object;
+  customerGroup?: object;
   country?: string;
-  orderState: Object;
-  state?: Object;
-  shipmentState?: Object;
-  paymentState?: Object;
-  shippingInfo?: Object;
-  syncInfo: Set<Object>;
-  returnInfo: Set<Object>;
-  discountCodes: Array<Object>;
+  orderState: object;
+  state?: object;
+  shipmentState?: object;
+  paymentState?: object;
+  shippingInfo?: object;
+  syncInfo: Set<object>;
+  returnInfo: Set<object>;
+  discountCodes: Array<object>;
   lastMessageSequenceNumber: number;
-  cart?: Object;
-  custom?: Object;
-  paymentInfo?: Object;
+  cart?: object;
+  custom?: object;
+  paymentInfo?: object;
   locale?: string;
-  inventoryMode: Object;
-  shippingRateInput?: Object;
-  origin: Object;
-  itemShippingAddresses: Array<Object>;
+  inventoryMode: object;
+  shippingRateInput?: object;
+  origin: object;
+  itemShippingAddresses: Array<object>;
 };
 
 export type Cart = {
@@ -100,44 +100,44 @@ export type Cart = {
   customerEmail?: string;
   anonymousId?: string;
   lineItemsId?: string;
-  totalPrice: Object;
-  taxedPrice?: Object;
-  cartState: Object;
-  shippingAddress?: Object;
-  billingAddress?: Object;
-  inventoryMode: Object;
-  taxMode: Object;
-  taxRoundingMode: Object;
-  taxCalculationMode: Object;
-  customerGroup?: Object;
+  totalPrice: object;
+  taxedPrice?: object;
+  cartState: object;
+  shippingAddress?: object;
+  billingAddress?: object;
+  inventoryMode: object;
+  taxMode: object;
+  taxRoundingMode: object;
+  taxCalculationMode: object;
+  customerGroup?: object;
   country?: string;
-  shippingInfo?: Object;
-  discountCodes: Array<Object>;
-  refusedGifts: Array<Object>;
-  custom?: Object;
-  paymentInfo?: Object;
+  shippingInfo?: object;
+  discountCodes: Array<object>;
+  refusedGifts: Array<object>;
+  custom?: object;
+  paymentInfo?: object;
   locale?: string;
   deleteDaysAfterLastModification?: number;
-  shippingRateInput?: Object;
-  origin: Object;
+  shippingRateInput?: object;
+  origin: object;
   createdAt: string;
   lastModifiedAt: string;
-  itemShippingAddresses: Array<Object>;
+  itemShippingAddresses: Array<object>;
 };
 
 export type Payment = {
   id: string;
   version: number;
   key?: string;
-  customer?: Object;
+  customer?: object;
   anonymousId?: string;
   interfaceId?: string;
-  amountPlanned: Object;
-  paymentMethodInfo: Object;
-  paymentStatus: Object;
-  transactions: Array<Object>;
-  interfaceInteractions: Array<Object>;
-  custom?: Object;
+  amountPlanned: object;
+  paymentMethodInfo: object;
+  paymentStatus: object;
+  transactions: Array<object>;
+  interfaceInteractions: Array<object>;
+  custom?: object;
   createdAt: string;
   lastModifiedAt: string;
 };
@@ -151,11 +151,11 @@ export type ShoppingList = {
   slug?: string;
   name: string;
   description?: string;
-  customer?: Object;
+  customer?: object;
   anonymousId?: string;
-  lineItems: Array<Object>;
-  textLineItems: Array<Object>;
-  custom?: Object;
+  lineItems: Array<object>;
+  textLineItems: Array<object>;
+  custom?: object;
   deleteDaysAfterLastModification?: number;
 };
 
@@ -170,19 +170,19 @@ export type Review = {
   authorName?: string;
   title?: string;
   text?: string;
-  target?: Object;
+  target?: object;
   rating?: number;
-  state?: Object;
-  includedInStatistics: Boolean;
-  customer?: Object;
-  custom?: Object;
+  state?: object;
+  includedInStatistics: boolean;
+  customer?: object;
+  custom?: object;
 };
 
 export type Message = {
   id: string;
   version: number;
   sequenceNumber: number;
-  resource: Object;
+  resource: object;
   resourceVersion: number;
   type: string;
   customer?: Customer;
@@ -210,19 +210,19 @@ export type SuccessResult<T = object> = {
 
 // client
 export type MethodType =
-  | "GET"
-  | "POST"
-  | "DELETE"
-  | "HEAD"
-  | "OPTIONS"
-  | "PUT"
-  | "PATCH"
-  | "TRACE";
+  | 'GET'
+  | 'POST'
+  | 'DELETE'
+  | 'HEAD'
+  | 'OPTIONS'
+  | 'PUT'
+  | 'PATCH'
+  | 'TRACE';
 
 export type ClientRequest = {
   uri: string;
   method: MethodType;
-  body?: string | Object;
+  body?: string | object;
   headers?: HttpHeaders;
 };
 
@@ -233,16 +233,16 @@ export type HttpErrorType = {
   status: number;
   statusCode: number;
   originalRequest: ClientRequest;
-  body?: Object;
+  body?: object;
   headers?: HttpHeaders;
 };
 
 export type ClientResponse = {
-  body?: Object;
+  body?: object;
   error?: HttpErrorType;
   statusCode: number;
   headers?: HttpHeaders;
-  request?: Object;
+  request?: object;
 };
 
 export type ClientResult = SuccessResult | HttpErrorType;

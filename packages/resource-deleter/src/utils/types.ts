@@ -1,10 +1,10 @@
-import { ByProjectKeyRequestBuilder } from "@commercetools/platform-sdk";
+import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk';
 import {
   SuccessResult,
   ClientRequest,
   ClientResponse,
   ClientResult,
-} from "@commercetools/ts-client";
+} from '@commercetools/ts-client';
 
 /* Logger */
 export type LoggerOptions = {
@@ -20,14 +20,14 @@ export type HttpHeaders = {
 
 // client
 export type MethodType =
-  | "GET"
-  | "POST"
-  | "DELETE"
-  | "HEAD"
-  | "OPTIONS"
-  | "PUT"
-  | "PATCH"
-  | "TRACE";
+  | 'GET'
+  | 'POST'
+  | 'DELETE'
+  | 'HEAD'
+  | 'OPTIONS'
+  | 'PUT'
+  | 'PATCH'
+  | 'TRACE';
 
 // export type ClientRequest = {
 //   uri: string;
@@ -91,25 +91,25 @@ export type DeleterOptions = {
 };
 
 export type MethodNames =
-  | "carts"
-  | "categories"
-  | "channels"
-  | "customerGroups"
-  | "customers"
+  | 'carts'
+  | 'categories'
+  | 'channels'
+  | 'customerGroups'
+  | 'customers'
   // | "customObjects"
-  | "discountCodes"
-  | "inventory"
-  | "orders"
-  | "payments"
-  | "productDiscounts"
-  | "products"
-  | "productTypes"
-  | "reviews"
-  | "shippingMethods"
-  | "states"
-  | "taxCategories"
-  | "types"
-  | "zones";
+  | 'discountCodes'
+  | 'inventory'
+  | 'orders'
+  | 'payments'
+  | 'productDiscounts'
+  | 'products'
+  | 'productTypes'
+  | 'reviews'
+  | 'shippingMethods'
+  | 'states'
+  | 'taxCategories'
+  | 'types'
+  | 'zones';
 
 export type InstanceMethods<T> = {
   [K in keyof T]: T[K] extends (...args: any[]) => any ? K : never;

@@ -1,28 +1,28 @@
-require("dotenv").config();
+require('dotenv').config();
 import {
   type Store,
   type Project,
   type CustomerSignInResult,
   type ByProjectKeyRequestBuilder,
-} from "@commercetools/platform-sdk";
-import PersonalDataErasure from "../../src/main";
-import silentLogger from "../../src/utils/logger";
-import { describe, expect, test } from "@jest/globals";
-import { ClientResponse } from "@commercetools/ts-client";
+} from '@commercetools/platform-sdk';
+import PersonalDataErasure from '../../src/main';
+import silentLogger from '../../src/utils/logger';
+import { describe, expect, test } from '@jest/globals';
+import { ClientResponse } from '@commercetools/ts-client';
 
-describe("::", () => {
+describe('::', () => {
   const logger = {
     ...silentLogger,
   };
 
-  const projectKey = process.env.CTP_PROJECT_KEY || "";
+  const projectKey = process.env.CTP_PROJECT_KEY || '';
   const config = {
-    apiUrl: "https://api.europe-west1.gcp.commercetools.com",
-    host: "https://auth.europe-west1.gcp.commercetools.com",
+    apiUrl: 'https://api.europe-west1.gcp.commercetools.com',
+    host: 'https://auth.europe-west1.gcp.commercetools.com',
     projectKey,
     credentials: {
-      clientId: process.env.CTP_CLIENT_ID || "",
-      clientSecret: process.env.CTP_CLIENT_SECRET || "",
+      clientId: process.env.CTP_CLIENT_ID || '',
+      clientSecret: process.env.CTP_CLIENT_SECRET || '',
       projectKey,
     },
   };
@@ -37,12 +37,12 @@ describe("::", () => {
     });
   });
 
-  describe("::constructor", () => {
-    test("should throw an error is instance is misconfigured", () => {
+  describe('::constructor', () => {
+    test('should throw an error is instance is misconfigured', () => {
       expect(() => new PersonalDataErasure({} as any)).toThrow();
     });
 
-    test("should return a class instance with public methods and properties", () => {
+    test('should return a class instance with public methods and properties', () => {
       const instance = new PersonalDataErasure({
         logger,
         apiConfig: {
@@ -50,13 +50,13 @@ describe("::", () => {
         },
       });
 
-      expect(typeof instance).toBe("object");
-      expect(instance).toHaveProperty("client");
-      expect(instance).toHaveProperty("apiRoot");
+      expect(typeof instance).toBe('object');
+      expect(instance).toHaveProperty('client');
+      expect(instance).toHaveProperty('apiRoot');
     });
   });
 
-  describe("::getCustomerData", () => {
+  describe('::getCustomerData', () => {
     let customerId: string,
       customer: ClientResponse<CustomerSignInResult>,
       store: ClientResponse<Store>;
@@ -79,7 +79,7 @@ describe("::", () => {
         .customers()
         .post({
           body: {
-            email: "example.customer-mail@sample.com",
+            email: 'example.customer-mail@sample.com',
             password: Date.now().toString(),
           },
         })
@@ -109,16 +109,15 @@ describe("::", () => {
         .execute();
     });
 
-    test("should return customers default personal data", async () => {
-      const personalData = await personalDataErasure.getCustomerData(
-        customerId
-      );
+    test('should return customers default personal data', async () => {
+      const personalData =
+        await personalDataErasure.getCustomerData(customerId);
 
       expect(personalData).toBeDefined();
       expect(personalData.length).toBeGreaterThan(0);
     });
 
-    test("should include an arbitrary request to default personal data", async () => {
+    test('should include an arbitrary request to default personal data', async () => {
       const personalData = await personalDataErasure.getCustomerData(
         customerId,
         async (builder: ByProjectKeyRequestBuilder) => {
@@ -137,7 +136,7 @@ describe("::", () => {
       expect(personalData.length).toEqual(2);
     });
 
-    test("should create an arbitrary request and do not include it to default request list", async () => {
+    test('should create an arbitrary request and do not include it to default request list', async () => {
       const personalData = await personalDataErasure.getCustomerData(
         customerId,
         async (builder: ByProjectKeyRequestBuilder) => {
@@ -157,7 +156,7 @@ describe("::", () => {
     });
   });
 
-  test("should call the `execute` with a generic request", async () => {
+  test('should call the `execute` with a generic request', async () => {
     const apiRoot = personalDataErasure.getApiRoot();
     const projectDetailsRequest = apiRoot
       .withProjectKey({
@@ -170,7 +169,7 @@ describe("::", () => {
       projectDetailsRequest
     );
 
-    expect(typeof response).toEqual("object");
+    expect(typeof response).toEqual('object');
     expect(response.statusCode).toEqual(200);
     expect(response.body.key).toBeDefined();
   });

@@ -1,17 +1,17 @@
 #!/usr/bin/env node
-import fs, { WriteStream } from "fs";
-import getCredentials, { type Credentials } from "./utils/credentials";
-import pino from "pino";
-import PrettyError from "pretty-error";
-import { hideBin } from "yargs/helpers";
-import yargs from "yargs";
-import prompts from "prompts";
-import CONSTANTS from "./utils/constants";
-import ResourceDeleter from "./main";
-import { description } from "../package.json";
-import { MethodNames } from "./utils/types";
+import fs, { WriteStream } from 'fs';
+import getCredentials, { type Credentials } from './utils/credentials';
+import pino from 'pino';
+import PrettyError from 'pretty-error';
+import { hideBin } from 'yargs/helpers';
+import yargs from 'yargs';
+import prompts from 'prompts';
+import CONSTANTS from './utils/constants';
+import ResourceDeleter from './main';
+import { description } from '../package.json';
+import { MethodNames } from './utils/types';
 
-process.title = "resource-deleter";
+process.title = 'resource-deleter';
 
 const args = yargs()
   .usage(
@@ -19,61 +19,61 @@ const args = yargs()
 ${description.toString()}`
   )
   .showHelpOnFail(false)
-  .option("output", {
-    alias: "o",
-    default: "stdout",
-    describe: "Path to output file.",
+  .option('output', {
+    alias: 'o',
+    default: 'stdout',
+    describe: 'Path to output file.',
   })
-  .coerce("output", (arg) => {
-    if (arg !== "stdout") return fs.createWriteStream(String(arg));
+  .coerce('output', (arg) => {
+    if (arg !== 'stdout') return fs.createWriteStream(String(arg));
 
     return process.stdout;
   })
-  .option("apiUrl", {
+  .option('apiUrl', {
     default: CONSTANTS.host.api,
-    describe: "The host URL of the HTTP API service.",
+    describe: 'The host URL of the HTTP API service.',
   })
-  .option("authUrl", {
+  .option('authUrl', {
     default: CONSTANTS.host.auth,
-    describe: "The host URL of the OAuth API service.",
+    describe: 'The host URL of the OAuth API service.',
   })
-  .option("accessToken", {
+  .option('accessToken', {
     describe: `CTP client access token. Required scopes: ['manage_products', 'manage_customers', 'manage_types']`,
-    type: "string",
+    type: 'string',
   })
-  .option("projectKey", {
-    alias: "p",
-    describe: "API project key.",
+  .option('projectKey', {
+    alias: 'p',
+    describe: 'API project key.',
     demand: true,
-    type: "string",
+    type: 'string',
   })
-  .option("resource", {
-    alias: "r",
-    describe: "Resource that need to be deleted.",
+  .option('resource', {
+    alias: 'r',
+    describe: 'Resource that need to be deleted.',
     demand: true,
   })
-  .option("confirm", {
-    alias: "c",
-    describe: "Confirm the resource to delete.",
+  .option('confirm', {
+    alias: 'c',
+    describe: 'Confirm the resource to delete.',
     default: CONSTANTS.standardOption.confirm,
-    type: "boolean",
+    type: 'boolean',
   })
-  .option("where", {
-    alias: "w",
-    describe: "Specify where predicate.",
+  .option('where', {
+    alias: 'w',
+    describe: 'Specify where predicate.',
   })
-  .option("logLevel", {
-    default: "info",
-    describe: "Logging level: error, warn, info or debug.",
+  .option('logLevel', {
+    default: 'info',
+    describe: 'Logging level: error, warn, info or debug.',
   })
-  .option("prettyLogs ", {
-    describe: "Pretty print logs to the terminal",
-    type: "boolean",
+  .option('prettyLogs ', {
+    describe: 'Pretty print logs to the terminal',
+    type: 'boolean',
   })
-  .option("logFile", {
+  .option('logFile', {
     default: CONSTANTS.standardOption.defaultLogFile,
-    describe: "Path to where to save logs file.",
-    type: "string",
+    describe: 'Path to where to save logs file.',
+    type: 'string',
   })
   .parseSync(hideBin(process.argv));
 
@@ -96,7 +96,7 @@ const logger = pino(loggerConfig, logDestination);
 const logError = (error: Error) => {
   const errorFormatter = new PrettyError();
 
-  if (args.logLevel === "debug")
+  if (args.logLevel === 'debug')
     process.stderr.write(`ERR: ${errorFormatter.render(error)}`);
   else process.stderr.write(`ERR: ${error.message || error}`);
 };
@@ -117,7 +117,7 @@ const resolveCredentials = async (options: {
 };
 
 // Register error listener
-args.output.on("error", errorHandler);
+args.output.on('error', errorHandler);
 
 (async function () {
   try {
@@ -146,8 +146,8 @@ args.output.on("error", errorHandler);
       await resourceDeleter.run();
     } else {
       const response = await prompts({
-        type: "confirm",
-        name: "value",
+        type: 'confirm',
+        name: 'value',
         message: `You are about to delete all ${args.resource} from this project.
         WARNING: This operation is final and is not reversible. 
         Are you sure about this?`,

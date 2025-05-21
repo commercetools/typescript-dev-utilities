@@ -1,20 +1,20 @@
-require("dotenv").config();
-import PersonalDataErasure from "../../src/main";
-import silentLogger from "../../src/utils/logger";
-import { describe, expect, test } from "@jest/globals";
+require('dotenv').config();
+import PersonalDataErasure from '../../src/main';
+import silentLogger from '../../src/utils/logger';
+import { describe, expect, test } from '@jest/globals';
 
-describe("PersonalDataErasure", () => {
+describe('PersonalDataErasure', () => {
   const logger = {
     ...silentLogger,
   };
 
   const config = {
-    host: "https://sample-host.com",
-    apiUrl: "https://sample-api-url.com",
-    projectKey: "sample-project-key",
+    host: 'https://sample-host.com',
+    apiUrl: 'https://sample-api-url.com',
+    projectKey: 'sample-project-key',
     credentials: {
-      clientId: "sample-clientId",
-      clientSecret: "sample-clientSecret",
+      clientId: 'sample-clientId',
+      clientSecret: 'sample-clientSecret',
     },
   };
 
@@ -28,48 +28,48 @@ describe("PersonalDataErasure", () => {
     });
   });
 
-  describe("::constructor", () => {
-    test("should be a function", () => {
-      expect(typeof personalDataErasure).toBe("object");
-      expect(typeof PersonalDataErasure).toBe("function");
+  describe('::constructor', () => {
+    test('should be a function', () => {
+      expect(typeof personalDataErasure).toBe('object');
+      expect(typeof PersonalDataErasure).toBe('function');
     });
 
-    test("should set default properties", () => {
+    test('should set default properties', () => {
       expect(personalDataErasure.logger).toEqual(logger);
       expect(personalDataErasure.apiConfig).toEqual(config);
     });
 
-    test("should configure with instance with an existing token", () => {
+    test('should configure with instance with an existing token', () => {
       const _personalDataErasure = new PersonalDataErasure({
         logger,
-        accessToken: "access-token",
+        accessToken: 'access-token',
         apiConfig: {
           ...config,
         },
       });
 
-      expect(_personalDataErasure).toHaveProperty("logger");
-      expect(_personalDataErasure).toHaveProperty("client");
-      expect(_personalDataErasure).toHaveProperty("apiRoot");
+      expect(_personalDataErasure).toHaveProperty('logger');
+      expect(_personalDataErasure).toHaveProperty('client');
+      expect(_personalDataErasure).toHaveProperty('apiRoot');
     });
 
-    test("should throw error if no `apiConfig` in `options` parameter", () => {
+    test('should throw error if no `apiConfig` in `options` parameter', () => {
       expect(
-        () => new PersonalDataErasure({ foo: "bar" } as any)
+        () => new PersonalDataErasure({ foo: 'bar' } as any)
       ).toThrowErrorMatchingSnapshot();
     });
   });
 
-  describe("::getCustomerData", () => {
+  describe('::getCustomerData', () => {
     let payload;
-    describe("with status code 200", () => {
+    describe('with status code 200', () => {
       beforeEach(() => {
         payload = {
           statusCode: 200,
           body: {
             results: [
-              { version: 1, id: "id1" },
-              { version: 1, id: "id2" },
+              { version: 1, id: 'id1' },
+              { version: 1, id: 'id2' },
             ],
           },
         };
@@ -80,13 +80,13 @@ describe("PersonalDataErasure", () => {
         };
       });
 
-      test("should fetch data", async () => {
-        const data = await personalDataErasure.getCustomerData("customerId");
+      test('should fetch data', async () => {
+        const data = await personalDataErasure.getCustomerData('customerId');
         expect(data).toMatchSnapshot();
       });
     });
 
-    describe("with status code 500", () => {
+    describe('with status code 500', () => {
       beforeEach(() => {
         payload = {
           statusCode: 500,
@@ -102,13 +102,13 @@ describe("PersonalDataErasure", () => {
         );
       });
 
-      test("should throw internal server error", () =>
+      test('should throw internal server error', () =>
         expect(
-          personalDataErasure.getCustomerData("customerId")
+          personalDataErasure.getCustomerData('customerId')
         ).rejects.toThrowErrorMatchingSnapshot());
     });
 
-    describe("with status code 404", () => {
+    describe('with status code 404', () => {
       beforeEach(() => {
         payload = {
           statusCode: 404,
@@ -123,19 +123,19 @@ describe("PersonalDataErasure", () => {
         };
       });
 
-      test("should fetch empty data", async () => {
-        const data = await personalDataErasure.getCustomerData("customerId");
+      test('should fetch empty data', async () => {
+        const data = await personalDataErasure.getCustomerData('customerId');
         expect(data).toHaveLength(0);
       });
     });
 
-    test("should retrieve the configured client", () => {
+    test('should retrieve the configured client', () => {
       const client = personalDataErasure.getClient();
-      expect(client).toHaveProperty("execute");
-      expect(client).toHaveProperty("process");
+      expect(client).toHaveProperty('execute');
+      expect(client).toHaveProperty('process');
     });
 
-    test("should reject on error when `execute` is called", async () => {
+    test('should reject on error when `execute` is called', async () => {
       personalDataErasure.client = {
         execute: jest.fn(() => {
           throw new Error();
@@ -144,46 +144,46 @@ describe("PersonalDataErasure", () => {
 
       expect(async () => {
         await personalDataErasure.execute({
-          method: "GET",
-          uri: "get-resource.com",
+          method: 'GET',
+          uri: 'get-resource.com',
         });
       }).rejects.toThrowError();
     });
 
-    test("should retrieve the configured apiRoot", () => {
+    test('should retrieve the configured apiRoot', () => {
       const apiRoot = personalDataErasure.getApiRoot();
-      expect(apiRoot).toHaveProperty("baseUri");
-      expect(apiRoot).toHaveProperty("executeRequest");
+      expect(apiRoot).toHaveProperty('baseUri');
+      expect(apiRoot).toHaveProperty('executeRequest');
     });
 
-    test("should throw error if no customerID is passed", () => {
+    test('should throw error if no customerID is passed', () => {
       expect(
         async () => await personalDataErasure.getCustomerData()
       ).rejects.toThrow();
     });
 
-    test("should throw if `getResourceList` is not a function", () => {
-      const getResourceList = "not-a-function";
+    test('should throw if `getResourceList` is not a function', () => {
+      const getResourceList = 'not-a-function';
       expect(
         async () =>
           await personalDataErasure.getCustomerData(
-            "customerId",
+            'customerId',
             getResourceList
           )
-      ).rejects.toThrowError("the second argument must be a function");
+      ).rejects.toThrowError('the second argument must be a function');
     });
   });
 
-  describe("::deleteAll", () => {
-    describe("with status code 200", () => {
+  describe('::deleteAll', () => {
+    describe('with status code 200', () => {
       let payload;
       beforeEach(() => {
         payload = {
           statusCode: 200,
           body: {
             results: [
-              { version: 1, id: "id1" },
-              { version: 1, id: "id2" },
+              { version: 1, id: 'id1' },
+              { version: 1, id: 'id2' },
             ],
           },
         };
@@ -193,12 +193,12 @@ describe("PersonalDataErasure", () => {
           execute: jest.fn(() => Promise.resolve(payload)),
         };
       });
-      test("should delete data", async () => {
-        await personalDataErasure.deleteAll("customerId");
+      test('should delete data', async () => {
+        await personalDataErasure.deleteAll('customerId');
       });
     });
 
-    describe("with status code 404", () => {
+    describe('with status code 404', () => {
       let payload;
       beforeEach(() => {
         payload = {
@@ -214,12 +214,12 @@ describe("PersonalDataErasure", () => {
         };
       });
 
-      test("should delete data", async () => {
-        await personalDataErasure.deleteAll("customerId");
+      test('should delete data', async () => {
+        await personalDataErasure.deleteAll('customerId');
       });
     });
 
-    describe("with status code 500", () => {
+    describe('with status code 500', () => {
       beforeEach(() => {
         const payload = {
           statusCode: 500,
@@ -232,23 +232,23 @@ describe("PersonalDataErasure", () => {
         );
       });
 
-      test("should throw internal server error", () =>
+      test('should throw internal server error', () =>
         expect(
-          personalDataErasure.deleteAll("customerId")
+          personalDataErasure.deleteAll('customerId')
         ).rejects.toThrowErrorMatchingSnapshot());
     });
 
-    test("should throw error if no customerID is passed", () => {
+    test('should throw error if no customerID is passed', () => {
       return expect(
         personalDataErasure.deleteAll()
       ).rejects.toThrowErrorMatchingSnapshot();
     });
   });
 
-  describe("::buildReference", () => {
-    test("should build reference", () => {
+  describe('::buildReference', () => {
+    test('should build reference', () => {
       expect(
-        PersonalDataErasure.buildReference(["id1", "id2", "id3"])
+        PersonalDataErasure.buildReference(['id1', 'id2', 'id3'])
       ).toMatchSnapshot();
     });
   });
