@@ -16,3 +16,4 @@ console.log('🛠️ Setting executable permissions for CLI...');
 fs.chmodSync(`bin/cli.js`, '755');
 
 console.log('✅ Build complete!');
+

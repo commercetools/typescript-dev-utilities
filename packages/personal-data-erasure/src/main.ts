@@ -1,3 +1,4 @@
+export * from "./utils/types";
 import {
   ClientBuilder,
   type Client,
@@ -89,32 +90,32 @@ export default class PersonalDataErasure {
 
     const customersRequest = requestBuilder
       .customers()
-      .get({ queryArgs: { where: `id = "${customerId}"` } })
+      .get({ queryArgs: { where: `id="${customerId}"` } })
       .clientRequest();
 
     const ordersRequest = requestBuilder
       .orders()
-      .get({ queryArgs: { where: `id = "${customerId}"` } })
+      .get({ queryArgs: { where: `id="${customerId}"` } })
       .clientRequest();
 
     const cartsRequest = requestBuilder
       .carts()
-      .get({ queryArgs: { where: `id = "${customerId}"` } })
+      .get({ queryArgs: { where: `id="${customerId}"` } })
       .clientRequest();
 
     const paymentsRequest = requestBuilder
       .payments()
-      .get({ queryArgs: { where: `id = "${customerId}"` } })
+      .get({ queryArgs: { where: `id="${customerId}"` } })
       .clientRequest();
 
     const shoppingListRequest = requestBuilder
       .shoppingLists()
-      .get({ queryArgs: { where: `id = "${customerId}"` } })
+      .get({ queryArgs: { where: `id="${customerId}"` } })
       .clientRequest();
 
     const reviewsRequest = requestBuilder
       .reviews()
-      .get({ queryArgs: { where: `id = "${customerId}"` } })
+      .get({ queryArgs: { where: `id="${customerId}"` } })
       .clientRequest();
 
     let urisOfResources: Array<ClientRequest>;
@@ -143,7 +144,9 @@ export default class PersonalDataErasure {
       urisOfResources.map(
         (
           request: ClientRequest
-        ): Promise<Array<ClientResponse<ISuccessResponse<AllData>>>> => {
+        ): Promise<
+          Array<ClientResponse<ISuccessResponse<AllData>>> | Array<void>
+        > => {
           return this.client.process(
             request,
             (response: ClientResult): Promise<ClientResult> => {
@@ -183,7 +186,7 @@ export default class PersonalDataErasure {
             .get({ queryArgs: { where: reference } })
             .clientRequest();
 
-          let messages = await this.getAllMessages(request);
+          const messages = await this.getAllMessages(request);
 
           result = [...messages, ...result] as Array<AllData>;
         }

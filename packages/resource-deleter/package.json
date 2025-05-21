@@ -1,13 +1,13 @@
 {
-  "name": "personal-data-erasure",
+  "name": "resource-deleter",
   "version": "0.0.1",
-  "description": "Export and delete all data related to a single customer",
+  "description": "Delete resources from the commercetools platform",
   "main": "dist/main.js",
   "types": "dist/src/main.d.ts",
   "bin": "bin/cli.js",
   "publishConfig": {
     "bin": {
-      "personal-data-erasure": "bin/cli.js",
+      "resource-deleter": "bin/cli.js",
       "types": "dist/src/main.d.ts",
       "main": "dist/main.js"
     }
@@ -30,13 +30,17 @@
     "pino": "^9.6.0",
     "pretty-error": "^4.0.0",
     "prompt-confirm": "^2.0.4",
+    "prompts": "^2.4.2",
     "yargs": "^17.7.2"
   },
-  "homepage": "https://commercetools.github.io/nodejs/sdk/api/getCredentials",
+  "homepage": "https://commercetools.github.io/nodejs/cli/resource-deleter",
   "scripts": {
     "clean": "rm -rf dist/* bin/*",
     "build": "yarn clean;tsc && node esbuild.mjs",
     "prepublishOnly": "yarn build",
     "test": "jest --runInBand"
+  },
+  "devDependencies": {
+    "@types/prompts": "^2"
   }
 }

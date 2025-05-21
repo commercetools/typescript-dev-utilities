@@ -137,7 +137,7 @@ describe("::", () => {
       expect(personalData.length).toEqual(2);
     });
 
-    test("should create a arbitrary request and not include it tod default request list", async () => {
+    test("should create an arbitrary request and do not include it to default request list", async () => {
       const personalData = await personalDataErasure.getCustomerData(
         customerId,
         async (builder: ByProjectKeyRequestBuilder) => {
