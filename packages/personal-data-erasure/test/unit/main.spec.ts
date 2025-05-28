@@ -1,5 +1,5 @@
-require('dotenv').config();
-import PersonalDataErasure from '../../src/main';
+import 'dotenv/config';
+import PersonalDataErasure, { ErasureOptions } from '../../src/main';
 import silentLogger from '../../src/utils/logger';
 import { describe, expect, test } from '@jest/globals';
 
@@ -55,7 +55,8 @@ describe('PersonalDataErasure', () => {
 
     test('should throw error if no `apiConfig` in `options` parameter', () => {
       expect(
-        () => new PersonalDataErasure({ foo: 'bar' } as any)
+        () =>
+          new PersonalDataErasure({ foo: 'bar' } as unknown as ErasureOptions)
       ).toThrowErrorMatchingSnapshot();
     });
   });

@@ -62,6 +62,7 @@ export default class PersonalDataErasure {
         libraryName: name,
         libraryVersion: version,
       })
+      .withConcurrentModificationMiddleware()
       .build();
 
     this.apiRoot = createApiBuilderFromCtpClient(this.client);
@@ -95,27 +96,27 @@ export default class PersonalDataErasure {
 
     const ordersRequest = requestBuilder
       .orders()
-      .get({ queryArgs: { where: `id="${customerId}"` } })
+      .get({ queryArgs: { where: `customerId="${customerId}"` } })
       .clientRequest();
 
     const cartsRequest = requestBuilder
       .carts()
-      .get({ queryArgs: { where: `id="${customerId}"` } })
+      .get({ queryArgs: { where: `customerId="${customerId}"` } })
       .clientRequest();
 
     const paymentsRequest = requestBuilder
       .payments()
-      .get({ queryArgs: { where: `id="${customerId}"` } })
+      .get({ queryArgs: { where: `customer(id="${customerId}")` } })
       .clientRequest();
 
     const shoppingListRequest = requestBuilder
       .shoppingLists()
-      .get({ queryArgs: { where: `id="${customerId}"` } })
+      .get({ queryArgs: { where: `customer(id="${customerId}")` } })
       .clientRequest();
 
     const reviewsRequest = requestBuilder
       .reviews()
-      .get({ queryArgs: { where: `id="${customerId}"` } })
+      .get({ queryArgs: { where: `customer(id="${customerId}")` } })
       .clientRequest();
 
     let urisOfResources: Array<ClientRequest>;
@@ -223,7 +224,7 @@ export default class PersonalDataErasure {
       builder: requestBuilder.orders(),
       request: requestBuilder
         .orders()
-        .get({ queryArgs: { where: `id = "${customerId}"` } })
+        .get({ queryArgs: { where: `customerId="${customerId}"` } })
         .clientRequest(),
     };
 
@@ -231,7 +232,7 @@ export default class PersonalDataErasure {
       builder: requestBuilder.payments(),
       request: requestBuilder
         .payments()
-        .get({ queryArgs: { where: `id = "${customerId}"` } })
+        .get({ queryArgs: { where: `customer(id="${customerId}")` } })
         .clientRequest(),
     };
 
@@ -239,7 +240,7 @@ export default class PersonalDataErasure {
       builder: requestBuilder.shoppingLists(),
       request: requestBuilder
         .shoppingLists()
-        .get({ queryArgs: { where: `id = "${customerId}"` } })
+        .get({ queryArgs: { where: `customer(id="${customerId}")` } })
         .clientRequest(),
     };
 
@@ -247,7 +248,7 @@ export default class PersonalDataErasure {
       builder: requestBuilder.reviews(),
       request: requestBuilder
         .reviews()
-        .get({ queryArgs: { where: `id = "${customerId}"` } })
+        .get({ queryArgs: { where: `customer(id="${customerId}")` } })
         .clientRequest(),
     };
 
@@ -255,7 +256,7 @@ export default class PersonalDataErasure {
       builder: requestBuilder.carts(),
       request: requestBuilder
         .carts()
-        .get({ queryArgs: { where: `id = "${customerId}"` } })
+        .get({ queryArgs: { where: `customerId="${customerId}"` } })
         .clientRequest(),
     };
 
@@ -274,8 +275,11 @@ export default class PersonalDataErasure {
       let continueProcessing = true;
 
       while (continueProcessing) {
-        const response = await this.client.execute(resource.request);
-        if (response.statusCode !== 200 && response.statusCode !== 404)
+        const response = await this.client
+          .execute(resource.request)
+          .catch((err) => err);
+
+        if (![200, 404].includes(response.statusCode))
           return Promise.reject(
             Error(`Request returned status code ${response.statusCode}`)
           );
@@ -332,7 +336,7 @@ export default class PersonalDataErasure {
   private static buildDeleteRequest(result: AllData, builder): ClientRequest {
     return builder
       .withId({ ID: result.id })
-      .delete({ queryArgs: { version: 1, dataErasure: true } })
+      .delete({ queryArgs: { version: result.version, dataErasure: true } })
       .clientRequest();
   }
 

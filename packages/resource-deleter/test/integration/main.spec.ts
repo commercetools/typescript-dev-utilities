@@ -1,18 +1,10 @@
-require('dotenv').config();
-import {
-  type Store,
-  type Project,
-  type Customer,
-  type CustomerSignInResult,
-  type ByProjectKeyRequestBuilder,
-  type ApiRoot,
-} from '@commercetools/platform-sdk';
-import { MethodNames } from '../../src/utils/types';
+import 'dotenv/config';
+import { type ApiRoot } from '@commercetools/platform-sdk';
+import { MethodNames, DeleterOptions } from '../../src/utils/types';
 
 import ResoureDeleter from '../../src/main';
 import silentLogger from '../../src/utils/logger';
 import { describe, expect, test } from '@jest/globals';
-import { ClientResponse } from '@commercetools/ts-client';
 
 describe('::', () => {
   const logger = {
@@ -44,7 +36,9 @@ describe('::', () => {
 
   describe('::constructor', () => {
     test('should throw an error is instance is misconfigured', () => {
-      expect(() => new ResoureDeleter({} as any)).toThrow();
+      expect(
+        () => new ResoureDeleter({} as unknown as DeleterOptions)
+      ).toThrow();
     });
 
     test('should return a class instance with public methods and properties', () => {
@@ -82,7 +76,7 @@ describe('::', () => {
 
     beforeAll(async () => {
       for await (const { currency } of carts) {
-        const res = await api
+        await api
           .withProjectKey({ projectKey })
           .carts()
           .post({

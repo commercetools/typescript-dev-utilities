@@ -3,17 +3,21 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 import json from '@eslint/json';
 import markdown from '@eslint/markdown';
-import { defineConfig } from 'eslint/config';
+import { defineConfig, globalIgnores } from 'eslint/config';
 
 export default defineConfig([
+  globalIgnores(
+    ['node_modules/', '**/bin/', '**/dist/', '**/coverage/', '**/.jest/'],
+    'Ignored directory'
+  ),
   {
-    files: ['**/*.{js,mjs,cjs,ts,mts,cts}'],
+    files: ['packages/**/*.{js,mjs,cjs,ts,mts,cts}'],
     plugins: { js },
     extends: ['js/recommended'],
     rules: { 'no-unsafe-optional-chaining': 'off' },
   },
   {
-    files: ['**/*.{js,mjs,cjs,ts,mts,cts}'],
+    files: ['packages/**/*.{js,mjs,cjs,ts,mts,cts}'],
     languageOptions: { globals: globals.node },
   },
   tseslint.configs.recommended,

@@ -1,17 +1,7 @@
 {
   "exclude": ["node_modules", "**/*/dist", "**/*.test.ts"],
   "compilerOptions": {
-    // "noEmit": true,
-    // "baseUrl": ".",
-    // "module": "CommonJS",
-    // "resolveJsonModule": true,
-    // "esModuleInterop": true,
-    // "paths": {
-    //   // "@commercetools/*": ["packages/*"]
-    // }
-
     "esModuleInterop": true,
-    // See https://devblogs.microsoft.com/typescript/typescript-and-babel-7/
     "noEmit": true,
     "declaration": true,
     "isolatedModules": true,

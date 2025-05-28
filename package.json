@@ -23,13 +23,17 @@
     "@types/node": "^22.15.17",
     "@types/yargs": "^17.0.33",
     "babel-jest": "^29.7.0",
+    "bluebird": "^3.7.2",
     "eslint": "^9.27.0",
     "globals": "^16.1.0",
     "jest": "^29.7.0",
     "jest-junit": "^16.0.0",
     "jest-watch-typeahead": "^2.2.2",
     "lint-staged": "12.3.2",
+    "mz": "^2.7.0",
+    "pkg-up": "^5.0.0",
     "prettier": "^3.3.2",
+    "tmp": "^0.2.3",
     "ts-jest": "^29.3.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
@@ -50,12 +54,20 @@
     "*.ts": "npx tslint"
   },
   "scripts": {
+    "preinstall": "npx only-allow yarn",
     "build": "yarn workspaces foreach --all run build",
-    "test": "jest --config jest.config.js",
+    "test": "yarn workspaces foreach --all run test",
+    "test:pkg": "jest --config jest.config.js",
     "format": "prettier . --check",
     "format:fix": "prettier . --write '**/*.{js,ts,json,md}'",
+    "changeset:version-and-format": "changeset version && prettier --write --parser json '**/package.json'",
     "lint:fix": "eslint . --fix",
     "lint": "eslint .",
     "typecheck": "tsc"
+  },
+  "devDependencies": {
+    "@types/bluebird": "^3",
+    "@types/mz": "^2",
+    "@types/tmp": "^0"
   }
 }

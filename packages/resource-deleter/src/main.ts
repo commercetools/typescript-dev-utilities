@@ -88,7 +88,7 @@ export default class ResourceDeleter {
     return this.client
       .process(
         request,
-        async (response: ClientResponse): Promise<any> => {
+        async (response: ClientResponse): Promise<unknown> => {
           if (response.statusCode !== 200 && response.statusCode !== 404) {
             return Promise.reject(
               new Error(`Request returned status code ${response.statusCode}`)
@@ -108,6 +108,7 @@ export default class ResourceDeleter {
           this.logger.info(`Deleting ${results.length} resources`);
 
           return Promise.all(
+            // eslint-disable-next-line
             results.map(async (result: any): Promise<ClientResult> => {
               let newVersion: number;
 
@@ -169,12 +170,12 @@ export default class ResourceDeleter {
   private async deleteResource(resource: {
     id: string;
     version?: number;
-  }): Promise<ClientRequest> {
+  }): Promise<ClientResult> {
     const request = this.getServiceRequest(resource, true);
     return this.client
       .execute(request)
-      .catch((e: ClientResponse): Promise<any> => {
-        if (e.statusCode === 404) return Promise.resolve();
+      .catch((e: ClientResponse): Promise<ClientResult> => {
+        if (e.statusCode === 404) return Promise.resolve() as undefined;
         return Promise.reject(e);
       });
   }

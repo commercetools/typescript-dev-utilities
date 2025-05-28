@@ -1,17 +1,12 @@
-import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk';
-import {
-  SuccessResult,
-  ClientRequest,
-  ClientResponse,
-  ClientResult,
-} from '@commercetools/ts-client';
+/* eslint-disable */
+import { ClientRequest, ClientResult } from '@commercetools/ts-client';
 
 /* Logger */
 export type LoggerOptions = {
-  error: (...args: Array<any>) => void;
-  info: (...args: Array<any>) => void;
-  warn: (...args: Array<any>) => void;
-  debug: (...args: Array<any>) => void;
+  error: (...args: Array<unknown>) => void;
+  info: (...args: Array<unknown>) => void;
+  warn: (...args: Array<unknown>) => void;
+  debug: (...args: Array<unknown>) => void;
 };
 
 export type HttpHeaders = {
@@ -43,7 +38,7 @@ export type HttpErrorType = {
   status: number;
   statusCode: number;
   originalRequest: ClientRequest;
-  body?: Object;
+  body?: object;
   headers?: HttpHeaders;
 };
 

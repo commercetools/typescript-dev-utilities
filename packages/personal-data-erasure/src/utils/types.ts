@@ -266,3 +266,25 @@ export type DeleterOptions = {
   resource: string;
   fetchedResource: CustomClientResult;
 };
+
+export type MethodNames =
+  | 'carts'
+  | 'categories'
+  | 'channels'
+  | 'customerGroups'
+  | 'customers'
+  // | 'customObjects'
+  | 'discountCodes'
+  | 'inventory'
+  | 'orders'
+  | 'payments'
+  | 'productDiscounts'
+  | 'shoppingLists'
+  | 'products'
+  | 'productTypes'
+  | 'reviews'
+  | 'shippingMethods'
+  | 'states'
+  | 'taxCategories'
+  | 'types'
+  | 'zones';

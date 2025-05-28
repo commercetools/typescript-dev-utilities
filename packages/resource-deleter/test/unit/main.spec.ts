@@ -1,8 +1,8 @@
-require('dotenv').config();
+import 'dotenv/config';
 import ResourceDeleter from '../../src/main';
 import silentLogger from '../../src/utils/logger';
 import { describe, expect, test } from '@jest/globals';
-import { MethodNames } from '../../src/utils/types';
+import { DeleterOptions, MethodNames } from '../../src/utils/types';
 
 describe('ResourceDeleter', () => {
   const logger = {
@@ -61,7 +61,7 @@ describe('ResourceDeleter', () => {
 
     test('should throw error if no `apiConfig` in `options` parameter', () => {
       expect(
-        () => new ResourceDeleter({ foo: 'bar' } as any)
+        () => new ResourceDeleter({ foo: 'bar' } as unknown as DeleterOptions)
       ).toThrowErrorMatchingSnapshot();
     });
   });
@@ -84,7 +84,7 @@ describe('ResourceDeleter', () => {
         resourceDeleter.logger.info = jest.fn();
         resourceDeleter.client = {
           execute: jest.fn(() => Promise.resolve(payload)),
-          process: jest.fn((_, callback, {}) => {
+          process: jest.fn((_, callback) => {
             callback(payload);
             return Promise.resolve([payload]);
           }),
@@ -121,7 +121,7 @@ describe('ResourceDeleter', () => {
 
         resourceDeleter.client = {
           execute: jest.fn(() => Promise.resolve(payload)),
-          process: jest.fn((_, callback, {}) => {
+          process: jest.fn((_, callback) => {
             callback(payload);
             return Promise.resolve([payload]);
           }),
@@ -156,7 +156,7 @@ describe('ResourceDeleter', () => {
         resourceDeleter.unPublishResource = jest.fn();
         resourceDeleter.client = {
           execute: jest.fn(() => Promise.resolve(payload)),
-          process: jest.fn((_, callback, {}) => {
+          process: jest.fn((_, callback) => {
             callback(payload);
             return Promise.resolve([payload]);
           }),
@@ -199,7 +199,7 @@ describe('ResourceDeleter', () => {
           },
         };
 
-        resourceDeleter.client.process = jest.fn((_, callback, {}) => {
+        resourceDeleter.client.process = jest.fn((_, callback) => {
           callback(payload);
           return Promise.resolve([payload]);
         });
@@ -251,7 +251,7 @@ describe('ResourceDeleter', () => {
 
         resourceDeleter.client = {
           execute: jest.fn(() => Promise.resolve(payload)),
-          process: jest.fn((_, callback, {}) => {
+          process: jest.fn((_, callback) => {
             callback(payload);
             return Promise.resolve([payload]);
           }),
@@ -371,7 +371,7 @@ describe('ResourceDeleter', () => {
           },
         };
 
-        resourceDeleter.client.process = jest.fn((_, callback, {}) => {
+        resourceDeleter.client.process = jest.fn((_, callback) => {
           callback(payload);
           return Promise.resolve([payload]);
         });
@@ -426,7 +426,7 @@ describe('ResourceDeleter', () => {
           },
         };
 
-        resourceDeleter.client.process = jest.fn((_, callback, {}) => {
+        resourceDeleter.client.process = jest.fn((_, callback) => {
           callback(payload);
           return Promise.resolve([payload]);
         });
@@ -602,18 +602,6 @@ describe('ResourceDeleter', () => {
   // private methods
   describe('::buildRequest', () => {
     test('should build default request', () => {
-      // expect(ResourceDeleter.buildRequest("example.com", "GET")).toEqual({
-      //   uri: "example.com",
-      //   method: "GET",
-      // });
-      // expect(ResourceDeleter.buildRequest("example.com", "DELETE")).toEqual({
-      //   uri: "example.com",
-      //   method: "DELETE",
-      // });
-
-      // const resourceDeleter = new ResourceDeleter({...options, resource: 'carts'})
-
-      // console.log(resourceDeleter., "<<<");
       const response = { id: 'sample-id', version: 1 };
       expect(resourceDeleter.getServiceRequest(response)).toEqual(
         expect.objectContaining({
