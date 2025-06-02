@@ -63,17 +63,6 @@ describe('::', () => {
       store: ClientResponse<Store>;
 
     beforeAll(async () => {
-      // store = await personalDataErasure
-      //   .getApiRoot()
-      //   .withProjectKey({ projectKey })
-      //   .stores()
-      //   .post({
-      //     body: {
-      //       key: Date.now().toString(36),
-      //     },
-      //   })
-      //   .execute();
-
       customer = await personalDataErasure
         .getApiRoot()
         .withProjectKey({ projectKey })

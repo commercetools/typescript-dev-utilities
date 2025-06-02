@@ -190,6 +190,14 @@ export type Message = {
   lastModifiedAt: string;
 };
 
+export type CustomObjects = {
+  id: string;
+  version: number;
+
+  key?: string;
+  container?: string;
+};
+
 export type Messages = Array<Message>;
 
 export type AllData = Customer | Order | Cart | Payment | ShoppingList | Review;
@@ -273,7 +281,7 @@ export type MethodNames =
   | 'channels'
   | 'customerGroups'
   | 'customers'
-  // | 'customObjects'
+  | 'customObjects'
   | 'discountCodes'
   | 'inventory'
   | 'orders'

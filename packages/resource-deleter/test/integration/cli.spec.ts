@@ -20,7 +20,6 @@ describe('Resource Deleter', () => {
   let apiConfig: ApiConfigOptions;
   let resourceDeleter: ResourceDeleter;
 
-  // const bin = `./packages/resource-deleter/node_modules/.bin/resource-deleter`;
   const bin = `./node_modules/.bin/resource-deleter`;
 
   const logger = {

@@ -57,7 +57,7 @@
     "preinstall": "npx only-allow yarn",
     "build": "yarn workspaces foreach --all run build",
     "test": "yarn workspaces foreach --all run test",
-    "test:pkg": "jest --config jest.config.js",
+    "test:pkg": "jest --config jest.config.js --runInBand",
     "format": "prettier . --check",
     "format:fix": "prettier . --write '**/*.{js,ts,json,md}'",
     "changeset:version-and-format": "changeset version && prettier --write --parser json '**/package.json'",

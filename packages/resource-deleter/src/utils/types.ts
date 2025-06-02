@@ -24,13 +24,6 @@ export type MethodType =
   | 'PATCH'
   | 'TRACE';
 
-// export type ClientRequest = {
-//   uri: string;
-//   method: MethodType;
-//   body?: string | Object;
-//   headers?: HttpHeaders;
-// };
-
 export type HttpErrorType = {
   name: string;
   message: string;
@@ -42,16 +35,6 @@ export type HttpErrorType = {
   headers?: HttpHeaders;
 };
 
-// export type SuccessResult<T = object> = {
-//   body: {
-//     count: number;
-//     results: Array<T>;
-//   };
-//   statusCode: number;
-//   headers?: HttpHeaders;
-// };
-
-// export type ClientResult = SuccessResult | HttpErrorType;
 export type ISuccessResponse<T> = {
   limit: number;
   offset: number;
@@ -74,6 +57,9 @@ export type ApiConfigOptions = {
 export type CustomClientResult = ClientResult & {
   id: string;
   version?: number;
+
+  key?: string;
+  container?: string;
 };
 
 export type DeleterOptions = {
@@ -91,7 +77,7 @@ export type MethodNames =
   | 'channels'
   | 'customerGroups'
   | 'customers'
-  // | "customObjects"
+  | 'customObjects'
   | 'discountCodes'
   | 'inventory'
   | 'orders'

@@ -10,6 +10,7 @@ import {
 import {
   type ApiRoot,
   type ByProjectKeyRequestBuilder,
+  ByProjectKeyCustomObjectsRequestBuilder,
   createApiBuilderFromCtpClient,
 } from '@commercetools/platform-sdk';
 
@@ -199,6 +200,23 @@ export default class ResourceDeleter {
     dataErasure?: boolean
   ): ClientRequest {
     const service = this.createService();
+
+    // check for custom objects
+    if (service instanceof ByProjectKeyCustomObjectsRequestBuilder) {
+      return service
+        .withContainerAndKey({
+          key: resource.key,
+          container: resource.container,
+        })
+        .delete({
+          queryArgs: {
+            version: resource.version,
+            ...(dataErasure && { dataErasure: true }),
+          },
+        })
+        .clientRequest();
+    }
+
     const serviceBuilder = service.withId({ ID: resource.id });
 
     if (dataErasure) {

@@ -1,6 +1,6 @@
 {
-  "name": "resource-deleter",
-  "version": "0.0.1",
+  "name": "@commercetools/resource-deleter",
+  "version": "4.0.1",
   "description": "Delete resources from the commercetools platform",
   "main": "dist/main.js",
   "types": "dist/src/main.d.ts",

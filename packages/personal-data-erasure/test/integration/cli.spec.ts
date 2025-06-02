@@ -21,7 +21,7 @@ const projectKey = process.env.CTP_PROJECT_KEY;
 
 describe('personal data erasure', () => {
   jest.setTimeout(15000); // 15 second timeout
-  // const bin = `./packages/personal-data-erasure/node_modules/.bin/personal-data-erasure`;
+
   const bin = `./node_modules/.bin/personal-data-erasure`;
 
   describe('CLI basic functionality', () => {

@@ -1568,6 +1568,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@commercetools/personal-data-erasure@workspace:packages/personal-data-erasure":
+  version: 0.0.0-use.local
+  resolution: "@commercetools/personal-data-erasure@workspace:packages/personal-data-erasure"
+  dependencies:
+    "@commercetools/platform-sdk": "npm:^8.9.0"
+    "@commercetools/ts-client": "npm:^3.3.0"
+    ansi-bold: "npm:^0.1.1"
+    ansi-cyan: "npm:^0.1.1"
+    ansi-dim: "npm:^0.1.1"
+    ansi-red: "npm:^0.1.1"
+    dotenv: "npm:^16.5.0"
+    esbuild: "npm:^0.25.4"
+    jest: "npm:^29.7.0"
+    lodash.flatten: "npm:^4.4.0"
+    pino: "npm:^9.6.0"
+    pretty-error: "npm:^4.0.0"
+    prompt-confirm: "npm:^2.0.4"
+    yargs: "npm:^17.7.2"
+  bin:
+    personal-data-erasure: bin/cli.js
+  languageName: unknown
+  linkType: soft
+
 "@commercetools/platform-sdk@npm:^8.9.0":
   version: 8.9.0
   resolution: "@commercetools/platform-sdk@npm:8.9.0"
@@ -1576,6 +1599,31 @@ __metadata:
   checksum: 10c0/8b4b5e0cece97a0b6efefe71f1651289e1fbac2c5a9f9e2e16e94a641e9d2bd6651e507165e5a3af56d3124405d1acf8be9ec4cae2c3ae6f2769fb247a9213ef
   languageName: node
   linkType: hard
+
+"@commercetools/resource-deleter@workspace:packages/resource-deleter":
+  version: 0.0.0-use.local
+  resolution: "@commercetools/resource-deleter@workspace:packages/resource-deleter"
+  dependencies:
+    "@commercetools/platform-sdk": "npm:^8.9.0"
+    "@commercetools/ts-client": "npm:^3.3.0"
+    "@types/prompts": "npm:^2"
+    ansi-bold: "npm:^0.1.1"
+    ansi-cyan: "npm:^0.1.1"
+    ansi-dim: "npm:^0.1.1"
+    ansi-red: "npm:^0.1.1"
+    dotenv: "npm:^16.5.0"
+    esbuild: "npm:^0.25.4"
+    jest: "npm:^29.7.0"
+    lodash.flatten: "npm:^4.4.0"
+    pino: "npm:^9.6.0"
+    pretty-error: "npm:^4.0.0"
+    prompt-confirm: "npm:^2.0.4"
+    prompts: "npm:^2.4.2"
+    yargs: "npm:^17.7.2"
+  bin:
+    resource-deleter: bin/cli.js
+  languageName: unknown
+  linkType: soft
 
 "@commercetools/ts-client@npm:^3.2.1, @commercetools/ts-client@npm:^3.3.0":
   version: 3.3.1
@@ -7707,29 +7755,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"personal-data-erasure@workspace:packages/personal-data-erasure":
-  version: 0.0.0-use.local
-  resolution: "personal-data-erasure@workspace:packages/personal-data-erasure"
-  dependencies:
-    "@commercetools/platform-sdk": "npm:^8.9.0"
-    "@commercetools/ts-client": "npm:^3.3.0"
-    ansi-bold: "npm:^0.1.1"
-    ansi-cyan: "npm:^0.1.1"
-    ansi-dim: "npm:^0.1.1"
-    ansi-red: "npm:^0.1.1"
-    dotenv: "npm:^16.5.0"
-    esbuild: "npm:^0.25.4"
-    jest: "npm:^29.7.0"
-    lodash.flatten: "npm:^4.4.0"
-    pino: "npm:^9.6.0"
-    pretty-error: "npm:^4.0.0"
-    prompt-confirm: "npm:^2.0.4"
-    yargs: "npm:^17.7.2"
-  bin:
-    personal-data-erasure: bin/cli.js
-  languageName: unknown
-  linkType: soft
-
 "picocolors@npm:^1.1.0, picocolors@npm:^1.1.1":
   version: 1.1.1
   resolution: "picocolors@npm:1.1.1"
@@ -8213,31 +8238,6 @@ __metadata:
   checksum: 10c0/52a4e505bbfc7925ac8f4cd91fd8c4e096b6a89728b9f46861d3b405ac9a1ccf4dcbf8befb4e89a2e11370dacd0160918163885cbc669369590f2f31f4c58939
   languageName: node
   linkType: hard
-
-"resource-deleter@workspace:packages/resource-deleter":
-  version: 0.0.0-use.local
-  resolution: "resource-deleter@workspace:packages/resource-deleter"
-  dependencies:
-    "@commercetools/platform-sdk": "npm:^8.9.0"
-    "@commercetools/ts-client": "npm:^3.3.0"
-    "@types/prompts": "npm:^2"
-    ansi-bold: "npm:^0.1.1"
-    ansi-cyan: "npm:^0.1.1"
-    ansi-dim: "npm:^0.1.1"
-    ansi-red: "npm:^0.1.1"
-    dotenv: "npm:^16.5.0"
-    esbuild: "npm:^0.25.4"
-    jest: "npm:^29.7.0"
-    lodash.flatten: "npm:^4.4.0"
-    pino: "npm:^9.6.0"
-    pretty-error: "npm:^4.0.0"
-    prompt-confirm: "npm:^2.0.4"
-    prompts: "npm:^2.4.2"
-    yargs: "npm:^17.7.2"
-  bin:
-    resource-deleter: bin/cli.js
-  languageName: unknown
-  linkType: soft
 
 "restore-cursor@npm:^3.1.0":
   version: 3.1.0

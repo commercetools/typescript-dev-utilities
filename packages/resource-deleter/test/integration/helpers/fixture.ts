@@ -100,50 +100,50 @@ export const customers = [
   },
 ];
 
-// export const customObjects = [
-//   {
-//     container: 'my.custom.namespace',
-//     key: 'myKey',
-//     value: {
-//       text: {
-//         de: 'Das ist ein Text',
-//         en: 'This is a Text',
-//       },
-//       name: {
-//         de: 'Das ist ein Name',
-//         en: 'This is a Name',
-//       },
-//     },
-//   },
-//   {
-//     container: 'foo.custom.namespace',
-//     key: 'fooCOKey',
-//     value: {
-//       text: {
-//         de: 'Das ist ein Text',
-//         en: 'This is a Text',
-//       },
-//       name: {
-//         de: 'Das ist ein fooName',
-//         en: 'This is a fooName',
-//       },
-//     },
-//   },
-//   {
-//     container: 'bar.custom.namespace',
-//     key: 'barCOKey',
-//     value: {
-//       text: {
-//         de: 'Das ist ein Text',
-//         en: 'This is a Text',
-//       },
-//       name: {
-//         de: 'Das ist ein barName',
-//         en: 'This is a barName',
-//       },
-//     },
-//   },
-// ]
+export const customObjects = [
+  {
+    container: 'my.custom.namespace',
+    key: 'myKey',
+    value: {
+      text: {
+        de: 'Das ist ein Text',
+        en: 'This is a Text',
+      },
+      name: {
+        de: 'Das ist ein Name',
+        en: 'This is a Name',
+      },
+    },
+  },
+  {
+    container: 'foo.custom.namespace',
+    key: 'fooCOKey',
+    value: {
+      text: {
+        de: 'Das ist ein Text',
+        en: 'This is a Text',
+      },
+      name: {
+        de: 'Das ist ein fooName',
+        en: 'This is a fooName',
+      },
+    },
+  },
+  {
+    container: 'bar.custom.namespace',
+    key: 'barCOKey',
+    value: {
+      text: {
+        de: 'Das ist ein Text',
+        en: 'This is a Text',
+      },
+      name: {
+        de: 'Das ist ein barName',
+        en: 'This is a barName',
+      },
+    },
+  },
+];
 
 export const inventory = [
   {

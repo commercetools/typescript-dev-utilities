@@ -11,6 +11,7 @@ import {
   createApiBuilderFromCtpClient,
   type ApiRoot,
   type ByProjectKeyRequestBuilder,
+  ByProjectKeyCustomObjectsRequestBuilder,
 } from '@commercetools/platform-sdk';
 
 import {
@@ -20,6 +21,7 @@ import {
   type AllData,
   type Messages,
   type ISuccessResponse,
+  type CustomObjects,
 } from './utils/types';
 
 import flatten from 'lodash.flatten';
@@ -119,26 +121,24 @@ export default class PersonalDataErasure {
       .get({ queryArgs: { where: `customer(id="${customerId}")` } })
       .clientRequest();
 
+    const requestList = [
+      customersRequest,
+      ordersRequest,
+      cartsRequest,
+      paymentsRequest,
+      shoppingListRequest,
+      reviewsRequest,
+    ];
+
     let urisOfResources: Array<ClientRequest>;
     if (options.merge) {
       urisOfResources = [
-        customersRequest,
-        ordersRequest,
-        cartsRequest,
-        paymentsRequest,
-        shoppingListRequest,
-        reviewsRequest,
+        ...requestList,
         ...(await getResourceList?.(requestBuilder)),
       ];
     } else {
-      urisOfResources = (await getResourceList?.(requestBuilder)) ?? [
-        customersRequest,
-        ordersRequest,
-        cartsRequest,
-        paymentsRequest,
-        shoppingListRequest,
-        reviewsRequest,
-      ];
+      urisOfResources =
+        (await getResourceList?.(requestBuilder)) ?? requestList;
     }
 
     return Promise.all(
@@ -327,13 +327,26 @@ export default class PersonalDataErasure {
             builder
           );
 
-          return this.client.execute(deleteRequest);
+          return this.client.execute(deleteRequest).catch((e) => e);
         })
       );
     }
   }
 
-  private static buildDeleteRequest(result: AllData, builder): ClientRequest {
+  private static buildDeleteRequest(
+    result: AllData & CustomObjects,
+    builder
+  ): ClientRequest {
+    if (builder instanceof ByProjectKeyCustomObjectsRequestBuilder) {
+      return builder
+        .withContainerAndKey({
+          container: result.container,
+          key: result.key,
+        })
+        .delete({ queryArgs: { version: result.version, dataErasure: true } })
+        .clientRequest();
+    }
+
     return builder
       .withId({ ID: result.id })
       .delete({ queryArgs: { version: result.version, dataErasure: true } })
