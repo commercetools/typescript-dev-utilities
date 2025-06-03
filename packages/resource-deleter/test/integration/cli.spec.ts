@@ -1,3 +1,4 @@
+import path from 'node:path';
 import Promise from 'bluebird';
 import { exec } from 'mz/child_process';
 import {
@@ -20,7 +21,9 @@ describe('Resource Deleter', () => {
   let apiConfig: ApiConfigOptions;
   let resourceDeleter: ResourceDeleter;
 
-  const bin = `./node_modules/.bin/resource-deleter`;
+  // const bin = `./node_modules/.bin/resource-deleter`;
+  const binDir = path.resolve(__dirname, '../../node_modules/.bin');
+  const bin = `${binDir}/resource-deleter`;
 
   const logger = {
     error: () => {},

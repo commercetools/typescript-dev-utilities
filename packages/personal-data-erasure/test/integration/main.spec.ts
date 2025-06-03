@@ -39,7 +39,7 @@ describe('::', () => {
   });
 
   describe('::constructor', () => {
-    test('should throw an error is instance is misconfigured', () => {
+    test('should throw an error if instance is misconfigured', () => {
       expect(() => new PersonalDataErasure({} as ErasureOptions)).toThrow();
     });
 

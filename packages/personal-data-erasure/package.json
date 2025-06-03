@@ -34,6 +34,7 @@
     "clean": "rm -rf dist/* bin/*",
     "build": "yarn clean;tsc && node esbuild.mjs",
     "prepublishOnly": "yarn build",
+    "link:pkg": "npm i -g .",
     "test": "jest --runInBand"
   }
 }

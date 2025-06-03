@@ -31,13 +31,14 @@
     "yargs": "^17.7.2"
   },
   "homepage": "https://commercetools.github.io/nodejs/cli/resource-deleter",
+  "devDependencies": {
+    "@types/prompts": "^2"
+  },
   "scripts": {
     "clean": "rm -rf dist/* bin/*",
     "build": "yarn clean;tsc && node esbuild.mjs",
     "prepublishOnly": "yarn build",
+    "link:pkg": "npm i -g .",
     "test": "jest --runInBand"
-  },
-  "devDependencies": {
-    "@types/prompts": "^2"
   }
 }
