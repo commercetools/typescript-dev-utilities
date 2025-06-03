@@ -1,6 +1,6 @@
 {
   "name": "@commercetools/personal-data-erasure",
-  "version": "5.0.1",
+  "version": "6.0.0",
   "description": "Export and delete all data related to a single customer",
   "main": "dist/main.js",
   "types": "dist/src/main.d.ts",

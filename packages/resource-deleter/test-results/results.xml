@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="50" failures="0" errors="0" time="23.603">
+  <testsuite name="ResourceDeleter" errors="0" failures="0" skipped="0" timestamp="2025-06-03T20:50:43" time="0.43" tests="24">
+    <testcase classname="ResourceDeleter ::constructor should be a function" name="ResourceDeleter ::constructor should be a function" time="0.003">
+    </testcase>
+    <testcase classname="ResourceDeleter ::constructor should set default properties" name="ResourceDeleter ::constructor should set default properties" time="0.001">
+    </testcase>
+    <testcase classname="ResourceDeleter ::constructor should if resource property is undefined" name="ResourceDeleter ::constructor should if resource property is undefined" time="0.017">
+    </testcase>
+    <testcase classname="ResourceDeleter ::constructor should configure with instance with an existing token" name="ResourceDeleter ::constructor should configure with instance with an existing token" time="0.001">
+    </testcase>
+    <testcase classname="ResourceDeleter ::constructor should throw error if no `apiConfig` in `options` parameter" name="ResourceDeleter ::constructor should throw error if no `apiConfig` in `options` parameter" time="0.001">
+    </testcase>
+    <testcase classname="ResourceDeleter ::run with status code 200 should delete fetched resource" name="ResourceDeleter ::run with status code 200 should delete fetched resource" time="0.003">
+    </testcase>
+    <testcase classname="ResourceDeleter ::run should show message that no resource is found when resource is empty with status code 200 should resolve for an empty resource" name="ResourceDeleter ::run should show message that no resource is found when resource is empty with status code 200 should resolve for an empty resource" time="0">
+    </testcase>
+    <testcase classname="ResourceDeleter ::run should delete product that is published should delete published resource" name="ResourceDeleter ::run should delete product that is published should delete published resource" time="0.001">
+    </testcase>
+    <testcase classname="ResourceDeleter ::run should delete categories without children should delete children categories before deleting the parent" name="ResourceDeleter ::run should delete categories without children should delete children categories before deleting the parent" time="0.001">
+    </testcase>
+    <testcase classname="ResourceDeleter ::run should delete categories with children should delete children categories before deleting the parent" name="ResourceDeleter ::run should delete categories with children should delete children categories before deleting the parent" time="0.004">
+    </testcase>
+    <testcase classname="ResourceDeleter ::run should delete categories with &amp; without children should delete categories without children first before deleting others" name="ResourceDeleter ::run should delete categories with &amp; without children should delete categories without children first before deleting others" time="0.001">
+    </testcase>
+    <testcase classname="ResourceDeleter ::run should throw error during categories deletion when problem occur should throw error when there is a problem during categories deletion " name="ResourceDeleter ::run should throw error during categories deletion when problem occur should throw error when there is a problem during categories deletion " time="0.002">
+    </testcase>
+    <testcase classname="ResourceDeleter ::run should throw error when requires parameters are not passed with status code 200 should throw error if required parameter are missing with the resource during deletion" name="ResourceDeleter ::run should throw error when requires parameters are not passed with status code 200 should throw error if required parameter are missing with the resource during deletion" time="0.001">
+    </testcase>
+    <testcase classname="ResourceDeleter ::run with status code 500 should throw internal server error" name="ResourceDeleter ::run with status code 500 should throw internal server error" time="0.002">
+    </testcase>
+    <testcase classname="ResourceDeleter ::deleteResource non 404 error should reject with error if deletion process completed with errors" name="ResourceDeleter ::deleteResource non 404 error should reject with error if deletion process completed with errors" time="0.001">
+    </testcase>
+    <testcase classname="ResourceDeleter ::deleteResource 404 error should resolve with undefine if deletion completed with 404 error" name="ResourceDeleter ::deleteResource 404 error should resolve with undefine if deletion completed with 404 error" time="0.001">
+    </testcase>
+    <testcase classname="ResourceDeleter ::createService should throw error if typeof resource builder is not a function" name="ResourceDeleter ::createService should throw error if typeof resource builder is not a function" time="0.001">
+    </testcase>
+    <testcase classname="ResourceDeleter ::unPublishResource should unpublish a resource" name="ResourceDeleter ::unPublishResource should unpublish a resource" time="0.001">
+    </testcase>
+    <testcase classname="ResourceDeleter ::buildRequest should build default request" name="ResourceDeleter ::buildRequest should build default request" time="0">
+    </testcase>
+    <testcase classname="ResourceDeleter ::buildRequest should build DELETE request" name="ResourceDeleter ::buildRequest should build DELETE request" time="0">
+    </testcase>
+    <testcase classname="ResourceDeleter ::buildRequestWithPredicate should build request with predicate" name="ResourceDeleter ::buildRequestWithPredicate should build request with predicate" time="0.001">
+    </testcase>
+    <testcase classname="ResourceDeleter ::buildRequestWithPredicate should build request without predicate" name="ResourceDeleter ::buildRequestWithPredicate should build request without predicate" time="0">
+    </testcase>
+    <testcase classname="ResourceDeleter ::setPredicate should set predicate using the `setPredicate` method" name="ResourceDeleter ::setPredicate should set predicate using the `setPredicate` method" time="0.001">
+    </testcase>
+    <testcase classname="ResourceDeleter ::setResource should set resource using the `setResource` method" name="ResourceDeleter ::setResource should set resource using the `setResource` method" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Resource Deleter" errors="0" failures="0" skipped="0" timestamp="2025-06-03T20:50:43" time="21.714" tests="22">
+    <testcase classname="Resource Deleter CLI basic functionality should print usage information given the help flag" name="Resource Deleter CLI basic functionality should print usage information given the help flag" time="0.108">
+    </testcase>
+    <testcase classname="Resource Deleter CLI basic functionality should print the module version given the version flag" name="Resource Deleter CLI basic functionality should print the module version given the version flag" time="0.103">
+    </testcase>
+    <testcase classname="Resource Deleter should delete resource shippingMethods deleted" name="Resource Deleter should delete resource shippingMethods deleted" time="0.709">
+    </testcase>
+    <testcase classname="Resource Deleter should delete resource products deleted" name="Resource Deleter should delete resource products deleted" time="0.727">
+    </testcase>
+    <testcase classname="Resource Deleter should delete resource carts deleted" name="Resource Deleter should delete resource carts deleted" time="0.709">
+    </testcase>
+    <testcase classname="Resource Deleter should delete resource zones deleted" name="Resource Deleter should delete resource zones deleted" time="0.709">
+    </testcase>
+    <testcase classname="Resource Deleter should delete resource types deleted" name="Resource Deleter should delete resource types deleted" time="0.751">
+    </testcase>
+    <testcase classname="Resource Deleter should delete resource taxCategories deleted" name="Resource Deleter should delete resource taxCategories deleted" time="0.7">
+    </testcase>
+    <testcase classname="Resource Deleter should delete resource reviews deleted" name="Resource Deleter should delete resource reviews deleted" time="0.702">
+    </testcase>
+    <testcase classname="Resource Deleter should delete resource productTypes deleted" name="Resource Deleter should delete resource productTypes deleted" time="0.715">
+    </testcase>
+    <testcase classname="Resource Deleter should delete resource productDiscounts deleted" name="Resource Deleter should delete resource productDiscounts deleted" time="0.713">
+    </testcase>
+    <testcase classname="Resource Deleter should delete resource payments deleted" name="Resource Deleter should delete resource payments deleted" time="0.707">
+    </testcase>
+    <testcase classname="Resource Deleter should delete resource inventory deleted" name="Resource Deleter should delete resource inventory deleted" time="0.837">
+    </testcase>
+    <testcase classname="Resource Deleter should delete resource customObjects deleted" name="Resource Deleter should delete resource customObjects deleted" time="0.705">
+    </testcase>
+    <testcase classname="Resource Deleter should delete resource customers deleted" name="Resource Deleter should delete resource customers deleted" time="0.709">
+    </testcase>
+    <testcase classname="Resource Deleter should delete resource customerGroups deleted" name="Resource Deleter should delete resource customerGroups deleted" time="0.736">
+    </testcase>
+    <testcase classname="Resource Deleter should delete resource channels deleted" name="Resource Deleter should delete resource channels deleted" time="0.706">
+    </testcase>
+    <testcase classname="Resource Deleter should delete resource categories deleted" name="Resource Deleter should delete resource categories deleted" time="0.712">
+    </testcase>
+    <testcase classname="Resource Deleter should delete a specific resource The specified channels deleted" name="Resource Deleter should delete a specific resource The specified channels deleted" time="0.952">
+    </testcase>
+    <testcase classname="Resource Deleter should delete a specific resource with predicate The specified customerGroups with predicate deleted" name="Resource Deleter should delete a specific resource with predicate The specified customerGroups with predicate deleted" time="0.943">
+    </testcase>
+    <testcase classname="Resource Deleter should delete categories with its grandchildren The categories grandchildren deleted first before their ancestors deletion" name="Resource Deleter should delete categories with its grandchildren The categories grandchildren deleted first before their ancestors deletion" time="1.067">
+    </testcase>
+    <testcase classname="Resource Deleter should delete a published product The published products deleted" name="Resource Deleter should delete a published product The published products deleted" time="0.839">
+    </testcase>
+  </testsuite>
+  <testsuite name="::" errors="0" failures="0" skipped="0" timestamp="2025-06-03T20:51:05" time="1.253" tests="4">
+    <testcase classname=":: ::constructor should throw an error is instance is misconfigured" name=":: ::constructor should throw an error is instance is misconfigured" time="0.012">
+    </testcase>
+    <testcase classname=":: ::constructor should return a class instance with public methods and properties" name=":: ::constructor should return a class instance with public methods and properties" time="0.001">
+    </testcase>
+    <testcase classname=":: ::run should get all carts" name=":: ::run should get all carts" time="0.101">
+    </testcase>
+    <testcase classname=":: ::run should delete all carts" name=":: ::run should delete all carts" time="0.41">
+    </testcase>
+  </testsuite>
+</testsuites>

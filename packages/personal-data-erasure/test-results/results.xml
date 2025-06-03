@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="29" failures="0" errors="0" time="14.482">
+  <testsuite name="personal data erasure" errors="0" failures="0" skipped="0" timestamp="2025-06-03T20:50:28" time="12.603" tests="6">
+    <testcase classname="personal data erasure CLI basic functionality should print usage information given the help flag" name="personal data erasure CLI basic functionality should print usage information given the help flag" time="0.122">
+    </testcase>
+    <testcase classname="personal data erasure CLI basic functionality should print the module version given the version flag" name="personal data erasure CLI basic functionality should print the module version given the version flag" time="0.108">
+    </testcase>
+    <testcase classname="personal data erasure normal usage functional usage ::getCustomerData should get data on the CTP" name="personal data erasure normal usage functional usage ::getCustomerData should get data on the CTP" time="0.34">
+    </testcase>
+    <testcase classname="personal data erasure normal usage functional usage ::deleteAll should delete data on the CTP" name="personal data erasure normal usage functional usage ::deleteAll should delete data on the CTP" time="4.87">
+    </testcase>
+    <testcase classname="personal data erasure normal usage child process usage get data should log success messages" name="personal data erasure normal usage child process usage get data should log success messages" time="0.608">
+    </testcase>
+    <testcase classname="personal data erasure normal usage child process usage delete data should log success messages" name="personal data erasure normal usage child process usage delete data should log success messages" time="1.662">
+    </testcase>
+  </testsuite>
+  <testsuite name="PersonalDataErasure" errors="0" failures="0" skipped="0" timestamp="2025-06-03T20:50:40" time="0.104" tests="17">
+    <testcase classname="PersonalDataErasure ::constructor should be a function" name="PersonalDataErasure ::constructor should be a function" time="0.001">
+    </testcase>
+    <testcase classname="PersonalDataErasure ::constructor should set default properties" name="PersonalDataErasure ::constructor should set default properties" time="0">
+    </testcase>
+    <testcase classname="PersonalDataErasure ::constructor should configure with instance with an existing token" name="PersonalDataErasure ::constructor should configure with instance with an existing token" time="0.001">
+    </testcase>
+    <testcase classname="PersonalDataErasure ::constructor should throw error if no `apiConfig` in `options` parameter" name="PersonalDataErasure ::constructor should throw error if no `apiConfig` in `options` parameter" time="0.001">
+    </testcase>
+    <testcase classname="PersonalDataErasure ::getCustomerData with status code 200 should fetch data" name="PersonalDataErasure ::getCustomerData with status code 200 should fetch data" time="0.002">
+    </testcase>
+    <testcase classname="PersonalDataErasure ::getCustomerData with status code 500 should throw internal server error" name="PersonalDataErasure ::getCustomerData with status code 500 should throw internal server error" time="0.001">
+    </testcase>
+    <testcase classname="PersonalDataErasure ::getCustomerData with status code 404 should fetch empty data" name="PersonalDataErasure ::getCustomerData with status code 404 should fetch empty data" time="0.001">
+    </testcase>
+    <testcase classname="PersonalDataErasure ::getCustomerData should retrieve the configured client" name="PersonalDataErasure ::getCustomerData should retrieve the configured client" time="0">
+    </testcase>
+    <testcase classname="PersonalDataErasure ::getCustomerData should reject on error when `execute` is called" name="PersonalDataErasure ::getCustomerData should reject on error when `execute` is called" time="0.014">
+    </testcase>
+    <testcase classname="PersonalDataErasure ::getCustomerData should retrieve the configured apiRoot" name="PersonalDataErasure ::getCustomerData should retrieve the configured apiRoot" time="0">
+    </testcase>
+    <testcase classname="PersonalDataErasure ::getCustomerData should throw error if no customerID is passed" name="PersonalDataErasure ::getCustomerData should throw error if no customerID is passed" time="0.001">
+    </testcase>
+    <testcase classname="PersonalDataErasure ::getCustomerData should throw if `getResourceList` is not a function" name="PersonalDataErasure ::getCustomerData should throw if `getResourceList` is not a function" time="0">
+    </testcase>
+    <testcase classname="PersonalDataErasure ::deleteAll with status code 200 should delete data" name="PersonalDataErasure ::deleteAll with status code 200 should delete data" time="0.001">
+    </testcase>
+    <testcase classname="PersonalDataErasure ::deleteAll with status code 404 should delete data" name="PersonalDataErasure ::deleteAll with status code 404 should delete data" time="0.001">
+    </testcase>
+    <testcase classname="PersonalDataErasure ::deleteAll with status code 500 should throw internal server error" name="PersonalDataErasure ::deleteAll with status code 500 should throw internal server error" time="0">
+    </testcase>
+    <testcase classname="PersonalDataErasure ::deleteAll should throw error if no customerID is passed" name="PersonalDataErasure ::deleteAll should throw error if no customerID is passed" time="0.001">
+    </testcase>
+    <testcase classname="PersonalDataErasure ::buildReference should build reference" name="PersonalDataErasure ::buildReference should build reference" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="::" errors="0" failures="0" skipped="2" timestamp="2025-06-03T20:50:40" time="1.575" tests="6">
+    <testcase classname=":: ::constructor should throw an error if instance is misconfigured" name=":: ::constructor should throw an error if instance is misconfigured" time="0.008">
+    </testcase>
+    <testcase classname=":: ::constructor should return a class instance with public methods and properties" name=":: ::constructor should return a class instance with public methods and properties" time="0">
+    </testcase>
+    <testcase classname=":: ::getCustomerData should return customers default personal data" name=":: ::getCustomerData should return customers default personal data" time="1.165">
+    </testcase>
+    <testcase classname=":: ::getCustomerData should include an arbitrary request to default personal data" name=":: ::getCustomerData should include an arbitrary request to default personal data" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname=":: ::getCustomerData should create an arbitrary request and do not include it to default request list" name=":: ::getCustomerData should create an arbitrary request and do not include it to default request list" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname=":: should call the `execute` with a generic request" name=":: should call the `execute` with a generic request" time="0.094">
+    </testcase>
+  </testsuite>
+</testsuites>
