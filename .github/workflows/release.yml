@@ -52,6 +52,10 @@ jobs:
               
       - name: Enable corepack
         run: corepack enable
+        
+      - uses: oNaiPs/secrets-to-env-action@v1
+        with:
+          secrets: ${{ toJSON(secrets) }}
 
       - name: Install
         run: yarn install --immutable
