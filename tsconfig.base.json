@@ -1,0 +1,15 @@
+{
+  "exclude": ["node_modules", "**/*/dist", "**/*.test.ts"],
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "noEmit": true,
+    "declaration": true,
+    "isolatedModules": true,
+    "lib": ["ESNext", "DOM"],
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "removeComments": false,
+    "resolveJsonModule": true,
+    "downlevelIteration": true
+  }
+}
