@@ -3,7 +3,10 @@ import {
   type ClientResponse,
   type ClientRequest,
 } from '@commercetools/ts-client';
-import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
+import {
+  createApiBuilderFromCtpClient,
+  ByProjectKeyCustomObjectsRequestBuilder,
+} from '@commercetools/platform-sdk';
 import { MethodNames } from '../../../src/utils/types';
 import { type ApiConfigOptions } from '../../../src/utils/types';
 
@@ -22,9 +25,15 @@ export function clearData(
     projectKey: apiConfig.projectKey,
   });
 
+  let request: ClientRequest;
   const service = builder[entityName as MethodNames]();
 
-  const request: ClientRequest = service
+  // check for custom objects
+  if (service instanceof ByProjectKeyCustomObjectsRequestBuilder) {
+    request = service.get({ queryArgs: { where: predicate } }).clientRequest();
+  }
+
+  request = service
     .get(predicate ? { queryArgs: { where: predicate } } : {})
     .clientRequest();
 
@@ -39,12 +48,23 @@ export function clearData(
 
       return Promise.all(
         results.map((result): Promise<ClientResponse<unknown[]>> => {
-          return client.execute({
-            ...service
+          let request;
+          if (service instanceof ByProjectKeyCustomObjectsRequestBuilder) {
+            request = service
+              .withContainerAndKey({
+                container: result.container,
+                key: result.key,
+              })
+              .delete({ queryArgs: { version: result.version } })
+              .clientRequest();
+          } else {
+            request = service
               .withId({ ID: result.id })
               .delete({ queryArgs: { version: result.version } })
-              .clientRequest(),
-          });
+              .clientRequest();
+          }
+
+          return client.execute(request);
         })
       );
     }
@@ -70,15 +90,21 @@ export async function createData(
   const service = builder[entityName as MethodNames]();
 
   const _data = await Promise.all(
-    data.map((_data) => {
+    data.map((datum) => {
       let request: ClientRequest;
       if (id) {
-        request = service
-          .withId({ ID: id })
-          .post({ body: _data })
-          .clientRequest();
+        if (service instanceof ByProjectKeyCustomObjectsRequestBuilder) {
+          request = service
+            .post({ body: datum, queryArgs: { where: `ID="${id}"` } })
+            .clientRequest();
+        } else {
+          request = service
+            .withId({ ID: id })
+            .post({ body: datum })
+            .clientRequest();
+        }
       } else {
-        request = service.post({ body: _data }).clientRequest();
+        request = service.post({ body: datum }).clientRequest();
       }
 
       return client.execute(request);
