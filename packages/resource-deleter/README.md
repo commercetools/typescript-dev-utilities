@@ -1,6 +1,6 @@
 # resource-deleter
 
-Deletes commercetools resources from the commercetools platform.
+Deletes resources from the commercetools Composable Commerce.
 
 More info here: https://commercetools.github.io/nodejs/cli/resource-deleter
 
