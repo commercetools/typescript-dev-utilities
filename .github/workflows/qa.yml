@@ -1,0 +1,111 @@
+name: Qa
+
+on:
+  push:
+    branches:
+      - 'main'
+      - '!changeset-release/**'
+  pull_request:
+      
+jobs:
+  immutable-install:
+    if: ${{ !startsWith(github.ref, 'refs/heads/changeset-release/') }}
+    name: Immutable Install
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./.github/actions/ci
+
+      # The shared install action does not respect the
+      # `--immutable` flag, so we need to run it here.
+      - name: Install with lockfile
+        run: yarn install --immutable
+
+  linting:
+    if: ${{ !startsWith(github.ref, 'refs/heads/changeset-release/') }}
+    name: Linting
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./.github/actions/ci
+
+      - name: Lint
+        run: yarn lint
+
+  type-checking:
+    if: ${{ !startsWith(github.ref, 'refs/heads/changeset-release/') }}
+    name: Type checking
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./.github/actions/ci
+
+      - name: TypeScript
+        run:  yarn typecheck
+
+  testing:
+    if: ${{ !startsWith(github.ref, 'refs/heads/changeset-release/') }}
+    name: Testing
+    needs: [immutable-install, linting, type-checking]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./.github/actions/ci
+
+      - name: Build
+        run: yarn build
+
+      - uses: oNaiPs/secrets-to-env-action@v1
+        with:
+          secrets: ${{ toJSON(secrets) }}
+
+      - name: Test (with coverage)
+        run: yarn test:pkg --coverage
+
+  regression-testing:
+    if: ${{ !startsWith(github.ref, 'refs/heads/changeset-release/') }}
+    name: Regression Testing
+    needs: [testing]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [18, 20]
+      fail-fast: true
+      max-parallel: 1
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./.github/actions/ci
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.version }}
+
+      - name: Build
+        run: yarn build
+
+      - uses: oNaiPs/secrets-to-env-action@v1
+        with:
+          secrets: ${{ toJSON(secrets) }}
+
+      - name: Integration tests
+        run: yarn test:pkg --coverage

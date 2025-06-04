@@ -1,10 +1,6 @@
 name: Release
 
 on:
-  pull_request:
-    branches:
-      - main
-
   push:
     branches:
       - main
@@ -30,45 +26,8 @@ jobs:
           # https://github.community/t/action-does-not-trigger-another-on-push-tag-action/17148/8
           token: ${{ steps.generate_github_token.outputs.token }}
 
-      - name: Read .nvmrc
-        run: echo "NVMRC=$(cat .nvmrc)" >> $GITHUB_OUTPUT
-        id: nvm
-
-      - name: Setup Node (uses version in .nvmrc)
-        uses: actions/setup-node@v4
-        with:
-          node-version: '${{ steps.nvm.outputs.NVMRC }}'
-
-      - name: Get yarn cache
-        id: yarn-cache
-        run: mkdir -p .cache;echo "dir=$PWD/.cache" >> $GITHUB_OUTPUT
-        
-      - uses: actions/cache@v4
-        with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-              
-      - name: Enable corepack
-        run: corepack enable
-        
-      - uses: oNaiPs/secrets-to-env-action@v1
-        with:
-          secrets: ${{ toJSON(secrets) }}
-
-      - name: Install
-        run: yarn install --immutable
-        shell: bash
-
-      - name: Building packages
-        run: yarn build
-
-      - name: Link cli binaries
-        run: yarn link
-
-      - name: Test
-        run: yarn test
+      - name: Setup
+        uses: ./.github/actions/ci
 
       - name: Creating .npmrc
         run: |
@@ -79,12 +38,15 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Building packages
+        run: yarn build
+
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@master
         with:
-          publish: yarn changeset publish
-          version: yarn changeset:version-and-format
+          publish: pnpm changeset publish
+          version: pnpm changeset:version-and-format
           commit: 'ci(changesets): version packages'
         env:
           GITHUB_TOKEN: ${{ steps.generate_github_token.outputs.token }}
