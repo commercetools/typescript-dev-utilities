@@ -11,15 +11,15 @@ runs:
       run: echo "NVMRC=$(cat .nvmrc)" >> $GITHUB_OUTPUT
       shell: bash
 
+    - name: Enable corepack 
+      run: corepack enable
+      shell: bash
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version-file: ".nvmrc"
         cache: "yarn"
-
-    - name: Enable corepack 
-      run: corepack enable
-      shell: bash
 
     # Whenever on a changeset versioning PR
     # Then installing con not fail with lockfile changes
