@@ -71,6 +71,9 @@ jobs:
       - name: Build
         run: yarn build
 
+      - name: Link cli binaries
+        run: yarn link
+
       - uses: oNaiPs/secrets-to-env-action@v1
         with:
           secrets: ${{ toJSON(secrets) }}
