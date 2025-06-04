@@ -41,6 +41,9 @@ jobs:
       - name: Building packages
         run: yarn build
 
+      - name: Link CLI binaries
+        run: yarn link
+
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@master
