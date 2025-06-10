@@ -14,7 +14,10 @@ export default defineConfig([
     files: ['packages/**/*.{js,mjs,cjs,ts,mts,cts}'],
     plugins: { js },
     extends: ['js/recommended'],
-    rules: { 'no-unsafe-optional-chaining': 'off' },
+    rules: {
+      'no-unsafe-optional-chaining': 'off',
+      'eol-last': ['error'],
+    },
   },
   {
     files: ['packages/**/*.{js,mjs,cjs,ts,mts,cts}'],
