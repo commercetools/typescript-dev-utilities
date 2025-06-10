@@ -1,7 +1,6 @@
 // eslint-disable-next-line
 require('dotenv').config();
 import {
-  type Store,
   type Project,
   type CustomerSignInResult,
   type ByProjectKeyRequestBuilder,
@@ -58,9 +57,7 @@ describe('::', () => {
   });
 
   describe('::getCustomerData', () => {
-    let customerId: string,
-      customer: ClientResponse<CustomerSignInResult>,
-      store: ClientResponse<Store>;
+    let customerId: string, customer: ClientResponse<CustomerSignInResult>;
 
     beforeAll(async () => {
       customer = await personalDataErasure
@@ -78,24 +75,6 @@ describe('::', () => {
       customerId = customer.body.customer.id;
     });
 
-    afterAll(async () => {
-      // delete customer in store
-      // const api = personalDataErasure
-      //   .getApiRoot()
-      //   .withProjectKey({ projectKey });
-      // await api
-      //   .customers()
-      //   .withId({ ID: customerId })
-      //   .delete({ queryArgs: { version: customer.body.customer.version } })
-      //   .execute();
-      // // delete store
-      // await api
-      //   .stores()
-      //   .withId({ ID: store.body.id })
-      //   .delete({ queryArgs: { version: store.body.version } })
-      //   .execute();
-    });
-
     test('should return customers default personal data', async () => {
       const personalData =
         await personalDataErasure.getCustomerData(customerId);
@@ -104,15 +83,11 @@ describe('::', () => {
       expect(personalData.length).toBeGreaterThan(0);
     });
 
-    test.skip('should include an arbitrary request to default personal data', async () => {
+    test('should include an arbitrary request to default personal data', async () => {
       const personalData = await personalDataErasure.getCustomerData(
         customerId,
         async (builder: ByProjectKeyRequestBuilder) => {
-          const request = builder
-            .inStoreKeyWithStoreKeyValue({ storeKey: store.body.key })
-            .customers()
-            .get({ queryArgs: { where: `id="${customerId}"` } })
-            .clientRequest();
+          const request = builder.customers().get().clientRequest();
 
           return [request];
         },
@@ -123,12 +98,11 @@ describe('::', () => {
       expect(personalData.length).toEqual(2);
     });
 
-    test.skip('should create an arbitrary request and do not include it to default request list', async () => {
+    test('should create an arbitrary request and do not include it to default request list', async () => {
       const personalData = await personalDataErasure.getCustomerData(
         customerId,
         async (builder: ByProjectKeyRequestBuilder) => {
           const request = builder
-            .inStoreKeyWithStoreKeyValue({ storeKey: store.body.key })
             .customers()
             .get({ queryArgs: { where: `id="${customerId}"` } })
             .clientRequest();

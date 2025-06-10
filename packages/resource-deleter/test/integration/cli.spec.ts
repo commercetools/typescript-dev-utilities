@@ -101,26 +101,6 @@ describe('Resource Deleter', () => {
       });
 
       it(`${resource} deleted`, async () => {
-        // if (resource == 'customObjects') {
-        //   for (let i = 0; i < resources['customObjects'].length; i++) {
-        //     const key = resources['customObjects'][i].key;
-        //     const container = resources['customObjects'][i].container;
-
-        //     const customObjectsBuilder = resourceDeleter['builder']
-        //       .customObjects()
-        //       .withContainerAndKey({ container, key });
-
-        //     const payload = await customObjectsBuilder.get().execute();
-        //     expect(payload.body.results.length).toBeGreaterThanOrEqual(1);
-
-        //     const res = await customObjectsBuilder
-        //       .delete({
-        //         queryArgs: { version: payload.body.version, dataErasure: true },
-        //       })
-        //       .execute();
-        //   }
-        // }
-
         // Check that resource exists
         const payload = await getResource(resource);
         expect(payload.body.results.length).toBeGreaterThanOrEqual(1);

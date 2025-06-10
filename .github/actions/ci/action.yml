@@ -22,7 +22,7 @@ runs:
         cache: "yarn"
 
     # Whenever on a changeset versioning PR
-    # Then installing con not fail with lockfile changes
+    # Then installing can not fail with lockfile changes
     # Because the package.json for integration test changes.
 
     - name: Install

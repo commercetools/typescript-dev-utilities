@@ -90,7 +90,7 @@ export async function createData(
       if (id) {
         if (service instanceof ByProjectKeyCustomObjectsRequestBuilder) {
           request = service
-            .post({ body: datum, queryArgs: { where: `ID="${id}"` } })
+            .post({ body: datum, queryArgs: { where: `id="${id}"` } })
             .clientRequest();
         } else {
           request = service
