@@ -1,0 +1,44 @@
+{
+  "name": "@commercetools/resource-deleter",
+  "version": "4.0.1",
+  "description": "Delete resources from the commercetools platform",
+  "main": "dist/main.js",
+  "types": "dist/src/main.d.ts",
+  "bin": "bin/cli.js",
+  "publishConfig": {
+    "bin": {
+      "resource-deleter": "bin/cli.js",
+      "types": "dist/src/main.d.ts",
+      "main": "dist/main.js"
+    }
+  },
+  "files": ["dist", "bin"],
+  "dependencies": {
+    "@commercetools/platform-sdk": "^8.9.0",
+    "@commercetools/ts-client": "^3.3.0",
+    "ansi-bold": "^0.1.1",
+    "ansi-cyan": "^0.1.1",
+    "ansi-dim": "^0.1.1",
+    "ansi-red": "^0.1.1",
+    "dotenv": "^16.5.0",
+    "esbuild": "^0.25.4",
+    "jest": "^29.7.0",
+    "lodash.flatten": "^4.4.0",
+    "pino": "^9.6.0",
+    "pretty-error": "^4.0.0",
+    "prompt-confirm": "^2.0.4",
+    "prompts": "^2.4.2",
+    "yargs": "^17.7.2"
+  },
+  "homepage": "https://commercetools.github.io/nodejs/cli/resource-deleter",
+  "devDependencies": {
+    "@types/prompts": "^2"
+  },
+  "scripts": {
+    "clean": "rm -rf dist/* bin/*",
+    "build": "yarn clean;tsc && node esbuild.mjs",
+    "prepublishOnly": "yarn build",
+    "link:pkg": "npm i -g .",
+    "test": "jest --runInBand"
+  }
+}
