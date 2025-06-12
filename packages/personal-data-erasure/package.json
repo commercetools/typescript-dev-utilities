@@ -1,6 +1,6 @@
 {
   "name": "@commercetools/personal-data-erasure",
-  "version": "6.0.0",
+  "version": "5.0.1",
   "description": "Export and delete all data related to a single customer",
   "main": "dist/main.js",
   "types": "dist/src/main.d.ts",
@@ -8,12 +8,14 @@
     "personal-data-erasure": "bin/cli.js"
   },
   "publishConfig": {
+    "access": "public",
     "bin": {
       "personal-data-erasure": "bin/cli.js",
       "types": "dist/src/main.d.ts",
       "main": "dist/main.js"
     }
   },
+  "license": "MIT",
   "files": ["dist", "bin"],
   "dependencies": {
     "@commercetools/platform-sdk": "^8.9.0",
