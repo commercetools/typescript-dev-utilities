@@ -1,6 +1,6 @@
 {
   "name": "@commercetools/resource-deleter",
-  "version": "5.0.0",
+  "version": "4.0.1",
   "description": "Delete resources from the commercetools platform",
   "main": "dist/main.js",
   "types": "dist/src/main.d.ts",
@@ -8,12 +8,14 @@
     "resource-deleter": "bin/cli.js"
   },
   "publishConfig": {
+    "access": "public",
     "bin": {
       "resource-deleter": "bin/cli.js",
       "types": "dist/src/main.d.ts",
       "main": "dist/main.js"
     }
   },
+  "license": "MIT",
   "files": ["dist", "bin"],
   "dependencies": {
     "@commercetools/platform-sdk": "^8.9.0",
