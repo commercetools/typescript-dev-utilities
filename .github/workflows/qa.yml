@@ -83,7 +83,8 @@ jobs:
         run: yarn test:pkg --coverage
 
   regression-testing:
-    if: ${{ !startsWith(github.ref, 'refs/heads/changeset-release/') }}
+    # Only run on PRs except `changeset` related PRs
+    if: ${{ !(github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/changeset-release/')) }}
     name: Regression Testing
     needs: [testing]
     runs-on: ubuntu-latest
