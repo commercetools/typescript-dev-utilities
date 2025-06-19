@@ -84,7 +84,7 @@ jobs:
 
   regression-testing:
     # Only run on PRs except `changeset` related PRs
-    if: ${{ !startsWith(github.ref, 'refs/heads/changeset-release/') && github.base_ref != 'main' }}
+    if: ${{ !(github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/changeset-release/')) }}
     name: Regression Testing
     needs: [testing]
     runs-on: ubuntu-latest
