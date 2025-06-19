@@ -18,6 +18,15 @@ jobs:
           app_id: ${{ secrets.CT_CHANGESETS_APP_ID }}
           private_key: ${{ secrets.CT_CHANGESETS_APP_PEM }}
 
+      # Get an app user (ct-release-bot)
+      - name: Get App user
+        id: get_app_user
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_github_token.outputs.token }}
+        run: |
+          export GH_APP_USER=`gh api /users/ct-changesets%5Bbot%5D | jq .id`
+          echo "email=${GH_APP_USER}+ct-changesets[bot]@users.noreply.github.com" >> "$GITHUB_OUTPUT"
+
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
