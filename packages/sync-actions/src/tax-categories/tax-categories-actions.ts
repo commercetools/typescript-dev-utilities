@@ -1,0 +1,83 @@
+import { deepEqual } from 'fast-equals';
+import { buildBaseAttributesActions } from '../utils-ts/common-actions';
+import createBuildArrayActions, {
+  ADD_ACTIONS,
+  REMOVE_ACTIONS,
+  CHANGE_ACTIONS,
+} from '../utils-ts/create-build-array-actions';
+import removeTypename from '../utils-ts/remove-typename';
+import {
+  Delta,
+  SyncActionConfig,
+  TaxCategory,
+  TaxRate,
+  UpdateAction,
+} from '../utils-ts/types';
+
+export const baseActionsList: Array<UpdateAction> = [
+  { action: 'changeName', key: 'name' },
+  { action: 'setKey', key: 'key' },
+  { action: 'setDescription', key: 'description' },
+];
+
+export function actionsMapBase(
+  diff: Delta,
+  oldObj: TaxCategory,
+  newObj: TaxCategory,
+  config: SyncActionConfig = {}
+) {
+  return buildBaseAttributesActions({
+    actions: baseActionsList,
+    diff,
+    oldObj,
+    newObj,
+    shouldOmitEmptyString: config.shouldOmitEmptyString,
+    shouldUnsetOmittedProperties: config.shouldUnsetOmittedProperties,
+    shouldPreventUnsettingRequiredFields:
+      config.shouldPreventUnsettingRequiredFields,
+  });
+}
+
+export function actionsMapRates(
+  diff: Delta,
+  oldObj: Partial<TaxCategory>,
+  newObj: Partial<TaxCategory>
+) {
+  const handler = createBuildArrayActions('rates', {
+    [ADD_ACTIONS]: (newObject: Partial<TaxCategory>) => ({
+      action: 'addTaxRate',
+      taxRate: newObject,
+    }),
+    [REMOVE_ACTIONS]: (objectToRemove: Partial<TaxCategory>) => ({
+      action: 'removeTaxRate',
+      taxRateId: objectToRemove.id,
+    }),
+    [CHANGE_ACTIONS]: (
+      oldObject: Partial<TaxRate>,
+      updatedObject: TaxCategory
+    ) => {
+      // filter out taxRates that were not changed
+      // so the API doesn't return it with a different id
+      // we need to remove __typename from the object to compare them
+      const taxCategoryWithoutTypeName = removeTypename(oldObject);
+      const oldObjectSubRatesWithoutTypename =
+        oldObject.subRates?.map(removeTypename);
+
+      const oldObjectWithoutTypename = {
+        ...taxCategoryWithoutTypeName,
+        subRates: oldObjectSubRatesWithoutTypename,
+      };
+
+      if (deepEqual(oldObjectWithoutTypename, updatedObject)) return null;
+
+      return {
+        action: 'replaceTaxRate',
+        taxRateId:
+          oldObject.id === updatedObject.id ? oldObject.id : updatedObject.id,
+        taxRate: updatedObject,
+      };
+    },
+  });
+
+  return handler(diff, oldObj, newObj);
+}

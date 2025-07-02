@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "include": ["src"],
+  "compilerOptions": {
+    "strict": false,
+    "allowJs": false,
+    "noEmit": false,
+    "declaration": true,
+    "declarationDir": "dist/declarations",
+    "emitDeclarationOnly": true,
+    "lib": ["es2015", "DOM"],
+    "outDir": "dist"
+  }
+}
