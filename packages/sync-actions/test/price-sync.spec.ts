@@ -5,7 +5,6 @@ const dateNow = new Date();
 const twoWeeksFromNow = new Date(Date.now() + 12096e5);
 
 describe('price actions', () => {
-  // let pricesSync: SyncAction<StandalonePrice, StandalonePriceUpdateAction>;
   let pricesSync;
   beforeAll(() => {
     pricesSync = pricesSyncFn();
