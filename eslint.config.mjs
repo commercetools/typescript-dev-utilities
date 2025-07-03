@@ -7,7 +7,14 @@ import { defineConfig, globalIgnores } from 'eslint/config';
 
 export default defineConfig([
   globalIgnores(
-    ['node_modules/', '**/bin/', '**/dist/', '**/coverage/', '**/.jest/'],
+    [
+      'node_modules/',
+      '**/node_modules',
+      '**/bin/',
+      '**/dist/',
+      '**/coverage/',
+      '**/.jest/',
+    ],
     'Ignored directory'
   ),
   {
