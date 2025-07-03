@@ -63,8 +63,8 @@
     "format:fix": "prettier . --write '**/*.{js,ts,json,md}'",
     "changeset:version-and-format": "changeset version && prettier --write --parser json '**/package.json'",
     "link": "yarn workspaces foreach --all run link:pkg",
-    "lint:fix": "eslint . --fix",
-    "lint": "eslint .",
+    "lint:fix": "eslint **/*.ts --fix",
+    "lint": "eslint \"**/*.ts\"",
     "typecheck": "tsc"
   },
   "devDependencies": {

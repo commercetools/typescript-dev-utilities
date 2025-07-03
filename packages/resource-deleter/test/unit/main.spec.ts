@@ -486,7 +486,7 @@ describe('ResourceDeleter', () => {
             results: [],
           },
         };
-        resourceDeleter.client.process = jest.fn(async (request, callback) => {
+        resourceDeleter.client.process = jest.fn(async (_request, callback) => {
           await callback(payload);
         });
       });
