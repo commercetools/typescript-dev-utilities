@@ -2,7 +2,7 @@ import createStagedQuotesSync, {
   actionGroups,
 } from '../src/staged-quotes/staged-quotes';
 import { baseActionsList } from '../src/staged-quotes/staged-quotes-actions';
-import { Quote, QuoteUpdateAction, SyncAction } from '../src/utils-ts/types';
+import { Quote, QuoteUpdateAction, SyncAction } from '../src/utils/types';
 
 describe('Exports', () => {
   test('action group list', () => {

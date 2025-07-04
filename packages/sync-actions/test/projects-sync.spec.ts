@@ -5,11 +5,7 @@ import {
   customerSearchActionsList,
   businessUnitSearchActionsList,
 } from '../src/projects/projects-actions';
-import {
-  Project,
-  ProjectUpdateAction,
-  SyncAction,
-} from '../src/utils-ts/types';
+import { Project, ProjectUpdateAction, SyncAction } from '../src/utils/types';
 
 describe('Exports', () => {
   test('action group list', () => {

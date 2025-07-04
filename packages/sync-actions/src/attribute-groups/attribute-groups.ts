@@ -6,14 +6,14 @@ import type {
   Delta,
   AttributeGroupUpdateAction,
   AttributeGroup,
-} from '../utils-ts/types';
+} from '../utils/types';
 import {
   actionsMapBase,
   actionsMapAttributes,
 } from './attribute-groups-actions';
-import createBuildActions from '../utils-ts/create-build-actions';
-import createMapActionGroup from '../utils-ts/create-map-action-group';
-import * as diffpatcher from '../utils-ts/diffpatcher';
+import createBuildActions from '../utils/create-build-actions';
+import createMapActionGroup from '../utils/create-map-action-group';
+import * as diffpatcher from '../utils/diffpatcher';
 
 function createAttributeGroupsMapActions(
   mapActionGroup: (

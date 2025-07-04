@@ -2,14 +2,14 @@ import createBuildArrayActions, {
   ADD_ACTIONS,
   CHANGE_ACTIONS,
   REMOVE_ACTIONS,
-} from '../utils-ts/create-build-array-actions';
-import { buildBaseAttributesActions } from '../utils-ts/common-actions';
+} from '../utils/create-build-array-actions';
+import { buildBaseAttributesActions } from '../utils/common-actions';
 import {
   Associate,
   Delta,
   SyncActionConfig,
   UpdateAction,
-} from '../utils-ts/types';
+} from '../utils/types';
 
 export const baseActionsList = [
   {

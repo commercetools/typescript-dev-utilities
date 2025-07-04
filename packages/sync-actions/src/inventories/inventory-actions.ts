@@ -1,13 +1,13 @@
 import {
   buildBaseAttributesActions,
   buildReferenceActions,
-} from '../utils-ts/common-actions';
+} from '../utils/common-actions';
 import {
   Delta,
   InventoryEntry,
   SyncActionConfig,
   UpdateAction,
-} from '../utils-ts/types';
+} from '../utils/types';
 
 export const baseActionsList: Array<UpdateAction> = [
   { action: 'changeQuantity', key: 'quantityOnStock', actionKey: 'quantity' },

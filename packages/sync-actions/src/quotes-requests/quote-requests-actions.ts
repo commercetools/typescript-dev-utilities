@@ -1,10 +1,5 @@
-import {
-  Delta,
-  Quote,
-  SyncActionConfig,
-  UpdateAction,
-} from '../utils-ts/types';
-import { buildBaseAttributesActions } from '../utils-ts/common-actions';
+import { Delta, Quote, SyncActionConfig, UpdateAction } from '../utils/types';
+import { buildBaseAttributesActions } from '../utils/common-actions';
 
 export const baseActionsList: Array<UpdateAction> = [
   { action: 'changeQuoteRequestState', key: 'quoteRequestState' },

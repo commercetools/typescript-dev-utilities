@@ -7,13 +7,13 @@ import type {
   Delta,
   UpdateAction,
   Customer,
-} from '../utils-ts/types';
-import createMapActionGroup from '../utils-ts/create-map-action-group';
-import createBuildActions from '../utils-ts/create-build-actions';
+} from '../utils/types';
+import createMapActionGroup from '../utils/create-map-action-group';
+import createBuildActions from '../utils/create-build-actions';
 import * as customerActions from '../customers/customer-actions';
-import actionsMapCustom from '../utils-ts/action-map-custom';
+import actionsMapCustom from '../utils/action-map-custom';
 import * as businessUnitActions from './business-units-actions';
-import * as diffpatcher from '../utils-ts/diffpatcher';
+import * as diffpatcher from '../utils/diffpatcher';
 
 const createCustomerMapActions = (
   mapActionGroup: (

@@ -1,5 +1,5 @@
 import pricesSyncFn, { actionGroups } from '../src/prices/prices';
-import { Price } from '../src/utils-ts/types';
+import { Price } from '../src/utils/types';
 
 const dateNow = new Date();
 const twoWeeksFromNow = new Date(Date.now() + 12096e5);

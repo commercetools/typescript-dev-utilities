@@ -1,4 +1,4 @@
-import extractMatchingPairs from '../../src/utils-ts/extract-matching-pairs';
+import extractMatchingPairs from '../../src/utils/extract-matching-pairs';
 
 describe('extractMatchingPairs', () => {
   let key;

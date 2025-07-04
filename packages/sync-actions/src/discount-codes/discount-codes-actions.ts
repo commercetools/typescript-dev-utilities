@@ -1,10 +1,10 @@
-import { buildBaseAttributesActions } from '../utils-ts/common-actions';
+import { buildBaseAttributesActions } from '../utils/common-actions';
 import {
   Delta,
   DiscountCode,
   SyncActionConfig,
   UpdateAction,
-} from '../utils-ts/types';
+} from '../utils/types';
 
 export const baseActionsList: Array<UpdateAction> = [
   { action: 'changeIsActive', key: 'isActive' },

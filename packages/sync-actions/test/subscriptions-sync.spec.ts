@@ -6,7 +6,7 @@ import {
   Subscription,
   SubscriptionUpdateAction,
   SyncAction,
-} from '../src/utils-ts/types';
+} from '../src/utils/types';
 
 describe('Exports', () => {
   test('action group list', () => {

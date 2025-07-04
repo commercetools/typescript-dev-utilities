@@ -2,7 +2,7 @@ import createRecurringOrdersSync, {
   actionGroups,
 } from '../src/recurring-orders/recurring-orders';
 import { baseActionsList } from '../src/recurring-orders/recurring-orders-actions';
-import { Order, OrderUpdateAction, SyncAction } from '../src/utils-ts/types';
+import { Order, OrderUpdateAction, SyncAction } from '../src/utils/types';
 
 describe('Exports', () => {
   test('action group list', () => {

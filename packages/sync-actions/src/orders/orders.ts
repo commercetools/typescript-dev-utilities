@@ -7,13 +7,13 @@ import type {
   Delta,
   Delivery,
   OrderUpdateAction,
-} from '../utils-ts/types';
-import createBuildActions from '../utils-ts/create-build-actions';
-import createMapActionGroup from '../utils-ts/create-map-action-group';
-import actionsMapCustom from '../utils-ts/action-map-custom';
+} from '../utils/types';
+import createBuildActions from '../utils/create-build-actions';
+import createMapActionGroup from '../utils/create-map-action-group';
+import actionsMapCustom from '../utils/action-map-custom';
 import * as orderActions from './order-actions';
-import * as diffpatcher from '../utils-ts/diffpatcher';
-import findMatchingPairs from '../utils-ts/find-matching-pairs';
+import * as diffpatcher from '../utils/diffpatcher';
+import findMatchingPairs from '../utils/find-matching-pairs';
 
 export const actionGroups = ['base', 'deliveries'];
 

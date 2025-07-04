@@ -1,6 +1,6 @@
 import storesSyncFn, { actionGroups } from '../src/stores/stores';
 import { baseActionsList } from '../src/stores/stores-actions';
-import { Store, StoreUpdateAction, SyncAction } from '../src/utils-ts/types';
+import { Store, StoreUpdateAction, SyncAction } from '../src/utils/types';
 
 describe('Exports', () => {
   test('action group list', () => {
