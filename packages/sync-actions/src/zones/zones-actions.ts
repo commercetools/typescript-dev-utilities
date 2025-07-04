@@ -2,15 +2,15 @@ import createBuildArrayActions, {
   ADD_ACTIONS,
   REMOVE_ACTIONS,
   CHANGE_ACTIONS,
-} from '../utils-ts/create-build-array-actions';
-import { buildBaseAttributesActions } from '../utils-ts/common-actions';
+} from '../utils/create-build-array-actions';
+import { buildBaseAttributesActions } from '../utils/common-actions';
 import {
   Delta,
   Location,
   SyncActionConfig,
   UpdateAction,
   Zone,
-} from '../utils-ts/types';
+} from '../utils/types';
 
 export const baseActionsList: Array<UpdateAction> = [
   { action: 'changeName', key: 'name' },

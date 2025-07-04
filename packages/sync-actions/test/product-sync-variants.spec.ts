@@ -1,5 +1,5 @@
 import productsSyncFn from '../src/products/products';
-import { Product } from '../src/utils-ts/types';
+import { Product } from '../src/utils/types';
 
 describe('Actions', () => {
   let productsSync;

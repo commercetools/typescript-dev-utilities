@@ -9,13 +9,13 @@ import type {
   ProductUpdateAction,
   Product,
   Category,
-} from '../utils-ts/types';
-import createBuildActions from '../utils-ts/create-build-actions';
-import createMapActionGroup from '../utils-ts/create-map-action-group';
+} from '../utils/types';
+import createBuildActions from '../utils/create-build-actions';
+import createMapActionGroup from '../utils/create-map-action-group';
 import * as productActions from './product-actions';
-import * as diffpatcher from '../utils-ts/diffpatcher';
-import findMatchingPairs from '../utils-ts/find-matching-pairs';
-import copyEmptyArrayProps from '../utils-ts/copy-empty-array-props';
+import * as diffpatcher from '../utils/diffpatcher';
+import findMatchingPairs from '../utils/find-matching-pairs';
+import copyEmptyArrayProps from '../utils/copy-empty-array-props';
 
 export const actionGroups: Array<string> = [
   'base',

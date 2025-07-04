@@ -1,5 +1,5 @@
-import { Delta, Order, SyncActionConfig } from '../utils-ts/types';
-import { buildBaseAttributesActions } from '../utils-ts/common-actions';
+import { Delta, Order, SyncActionConfig } from '../utils/types';
+import { buildBaseAttributesActions } from '../utils/common-actions';
 
 export const baseActionsList = [
   { action: 'setKey', key: 'key' },

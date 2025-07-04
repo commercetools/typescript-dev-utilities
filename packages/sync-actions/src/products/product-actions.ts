@@ -3,18 +3,18 @@ import uniqWith from 'lodash.uniqwith';
 import intersection from 'lodash.intersection';
 import without from 'lodash.without';
 
-import * as diffpatcher from '../utils-ts/diffpatcher';
-import extractMatchingPairs from '../utils-ts/extract-matching-pairs';
-import actionsMapCustom from '../utils-ts/action-map-custom';
+import * as diffpatcher from '../utils/diffpatcher';
+import extractMatchingPairs from '../utils/extract-matching-pairs';
+import actionsMapCustom from '../utils/action-map-custom';
 import {
   buildBaseAttributesActions,
   buildReferenceActions,
-} from '../utils-ts/common-actions';
+} from '../utils/common-actions';
 import createBuildArrayActions, {
   ADD_ACTIONS,
   REMOVE_ACTIONS,
-} from '../utils-ts/create-build-array-actions';
-import findMatchingPairs from '../utils-ts/find-matching-pairs';
+} from '../utils/create-build-array-actions';
+import findMatchingPairs from '../utils/find-matching-pairs';
 import {
   Asset,
   Attribute,
@@ -27,8 +27,8 @@ import {
   ProductVariant,
   SyncActionConfig,
   UpdateAction,
-} from '../utils-ts/types';
-import clone from '../utils-ts/clone';
+} from '../utils/types';
+import clone from '../utils/clone';
 
 const REGEX_NUMBER = new RegExp(/^\d+$/);
 const REGEX_UNDERSCORE_NUMBER = new RegExp(/^_\d+$/);

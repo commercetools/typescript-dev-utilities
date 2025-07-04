@@ -3,13 +3,13 @@ import { deepEqual } from 'fast-equals';
 import {
   createIsEmptyValue,
   buildBaseAttributesActions,
-} from '../utils-ts/common-actions';
+} from '../utils/common-actions';
 import {
   Delta,
   ProductType,
   SyncActionConfig,
   UpdateAction,
-} from '../utils-ts/types';
+} from '../utils/types';
 
 export const baseActionsList = [
   { action: 'changeName', key: 'name' },

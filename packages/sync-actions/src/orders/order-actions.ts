@@ -1,12 +1,12 @@
 import forEach from 'lodash.foreach';
-import * as diffpatcher from '../utils-ts/diffpatcher';
-import { buildBaseAttributesActions } from '../utils-ts/common-actions';
+import * as diffpatcher from '../utils/diffpatcher';
+import { buildBaseAttributesActions } from '../utils/common-actions';
 import createBuildArrayActions, {
   ADD_ACTIONS,
   CHANGE_ACTIONS,
-} from '../utils-ts/create-build-array-actions';
-import extractMatchingPairs from '../utils-ts/extract-matching-pairs';
-import findMatchingPairs from '../utils-ts/find-matching-pairs';
+} from '../utils/create-build-array-actions';
+import extractMatchingPairs from '../utils/extract-matching-pairs';
+import findMatchingPairs from '../utils/find-matching-pairs';
 import {
   Delivery,
   Delta,
@@ -14,7 +14,7 @@ import {
   Parcel,
   SyncActionConfig,
   UpdateAction,
-} from '../utils-ts/types';
+} from '../utils/types';
 
 const REGEX_NUMBER = new RegExp(/^\d+$/);
 const REGEX_UNDERSCORE_NUMBER = new RegExp(/^_\d+$/);

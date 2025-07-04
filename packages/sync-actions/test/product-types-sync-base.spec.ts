@@ -1,4 +1,4 @@
-import clone from '../src/utils-ts/clone';
+import clone from '../src/utils/clone';
 import createSyncProductTypes, {
   actionGroups,
 } from '../src/product-types/product-types';
@@ -10,7 +10,7 @@ import {
   ProductType,
   ProductTypeUpdateAction,
   SyncAction,
-} from '../src/utils-ts/types';
+} from '../src/utils/types';
 
 describe('ProductTypes sync', () => {
   test('action group list', () => {

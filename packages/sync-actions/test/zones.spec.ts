@@ -1,4 +1,4 @@
-import { SyncAction, Zone, ZoneUpdateAction } from '../src/utils-ts/types';
+import { SyncAction, Zone, ZoneUpdateAction } from '../src/utils/types';
 import zonesSyncFn, { actionGroups } from '../src/zones/zones';
 import { baseActionsList } from '../src/zones/zones-actions';
 

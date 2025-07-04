@@ -4,13 +4,13 @@ import type {
   ActionGroup,
   UpdateAction,
   OrderUpdateAction,
-} from '../utils-ts/types';
-import createBuildActions from '../utils-ts/create-build-actions';
-import createMapActionGroup from '../utils-ts/create-map-action-group';
-import actionsMapCustom from '../utils-ts/action-map-custom';
+} from '../utils/types';
+import createBuildActions from '../utils/create-build-actions';
+import createMapActionGroup from '../utils/create-map-action-group';
+import actionsMapCustom from '../utils/action-map-custom';
 import * as RecurringOrdersActions from './recurring-orders-actions';
-import * as diffpatcher from '../utils-ts/diffpatcher';
-import { Delta, Order } from '../utils-ts/types';
+import * as diffpatcher from '../utils/diffpatcher';
+import { Delta, Order } from '../utils/types';
 
 export const actionGroups = ['base', 'custom'];
 

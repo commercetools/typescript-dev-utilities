@@ -2,7 +2,7 @@ import createQuoteRequestsSync, {
   actionGroups,
 } from '../src/quotes-requests/quote-requests';
 import { baseActionsList } from '../src/quotes-requests/quote-requests-actions';
-import { Quote, QuoteUpdateAction, SyncAction } from '../src/utils-ts/types';
+import { Quote, QuoteUpdateAction, SyncAction } from '../src/utils/types';
 
 describe('Exports', () => {
   test('action group list', () => {
