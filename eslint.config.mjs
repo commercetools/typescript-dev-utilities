@@ -7,7 +7,14 @@ import { defineConfig, globalIgnores } from 'eslint/config';
 
 export default defineConfig([
   globalIgnores(
-    ['node_modules/', '**/bin/', '**/dist/', '**/coverage/', '**/.jest/'],
+    [
+      'node_modules/',
+      '**/node_modules',
+      '**/bin/',
+      '**/dist/',
+      '**/coverage/',
+      '**/.jest/',
+    ],
     'Ignored directory'
   ),
   {
@@ -35,5 +42,21 @@ export default defineConfig([
     plugins: { markdown },
     language: 'markdown/gfm',
     extends: ['markdown/recommended'],
+  },
+  {
+    rules: {
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          args: 'all',
+          argsIgnorePattern: '^_',
+          caughtErrors: 'all',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
+      ],
+    },
   },
 ]);

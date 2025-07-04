@@ -97,7 +97,7 @@ describe('PersonalDataErasure', () => {
           },
         };
         personalDataErasure.client.process = jest.fn(
-          async (request, callback) => {
+          async (_request, callback) => {
             await callback(payload);
           }
         );
