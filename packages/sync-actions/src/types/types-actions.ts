@@ -5,10 +5,10 @@ import isEqual from 'lodash.isequal';
 import createBuildArrayActions, {
   ADD_ACTIONS,
   CHANGE_ACTIONS,
-} from '../utils-ts/create-build-array-actions';
-import { buildBaseAttributesActions } from '../utils-ts/common-actions';
-import * as diffPatcher from '../utils-ts/diffpatcher';
-import extractMatchingPairs from '../utils-ts/extract-matching-pairs';
+} from '../utils/create-build-array-actions';
+import { buildBaseAttributesActions } from '../utils/common-actions';
+import * as diffPatcher from '../utils/diffpatcher';
+import extractMatchingPairs from '../utils/extract-matching-pairs';
 import {
   CustomFieldEnumType,
   CustomFieldEnumValue,
@@ -16,7 +16,7 @@ import {
   FieldDefinition,
   SyncActionConfig,
   UpdateAction,
-} from '../utils-ts/types';
+} from '../utils/types';
 
 const REGEX_NUMBER = new RegExp(/^\d+$/);
 const REGEX_UNDERSCORE_NUMBER = new RegExp(/^_\d+$/);

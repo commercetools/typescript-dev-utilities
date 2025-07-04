@@ -2,20 +2,20 @@ import {
   buildBaseAttributesActions,
   buildReferenceActions,
   createIsEmptyValue,
-} from '../utils-ts/common-actions';
+} from '../utils/common-actions';
 import createBuildArrayActions, {
   ADD_ACTIONS,
   REMOVE_ACTIONS,
   CHANGE_ACTIONS,
-} from '../utils-ts/create-build-array-actions';
-import * as diffpatcher from '../utils-ts/diffpatcher';
-import clone, { notEmpty } from '../utils-ts/clone';
+} from '../utils/create-build-array-actions';
+import * as diffpatcher from '../utils/diffpatcher';
+import clone, { notEmpty } from '../utils/clone';
 import {
   Customer,
   Delta,
   SyncActionConfig,
   UpdateAction,
-} from '../utils-ts/types';
+} from '../utils/types';
 
 const isEmptyValue = createIsEmptyValue([undefined, null, '']);
 

@@ -1,8 +1,8 @@
-import createBuildActions from '../utils-ts/create-build-actions';
-import createMapActionGroup from '../utils-ts/create-map-action-group';
+import createBuildActions from '../utils/create-build-actions';
+import createMapActionGroup from '../utils/create-map-action-group';
 import * as typeActions from './types-actions';
-import * as diffPatcher from '../utils-ts/diffpatcher';
-import findMatchingPairs from '../utils-ts/find-matching-pairs';
+import * as diffPatcher from '../utils/diffpatcher';
+import findMatchingPairs from '../utils/find-matching-pairs';
 import {
   ActionGroup,
   Delta,
@@ -11,7 +11,7 @@ import {
   Type,
   TypeUpdateAction,
   UpdateAction,
-} from '../utils-ts/types';
+} from '../utils/types';
 
 const actionGroups = ['base', 'fieldDefinitions'];
 

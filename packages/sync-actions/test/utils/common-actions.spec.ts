@@ -1,8 +1,8 @@
 import {
   buildBaseAttributesActions,
   buildReferenceActions,
-} from '../../src/utils-ts/common-actions';
-import * as diffpatcher from '../../src/utils-ts/diffpatcher';
+} from '../../src/utils/common-actions';
+import * as diffpatcher from '../../src/utils/diffpatcher';
 
 describe('Common actions', () => {
   describe('::buildBaseAttributesActions', () => {

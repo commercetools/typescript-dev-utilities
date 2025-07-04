@@ -1,6 +1,6 @@
 import createQuotesSync, { actionGroups } from '../src/quotes/quotes';
 import { baseActionsList } from '../src/quotes/quotes-actions';
-import { Quote, QuoteUpdateAction, SyncAction } from '../src/utils-ts/types';
+import { Quote, QuoteUpdateAction, SyncAction } from '../src/utils/types';
 
 describe('Exports', () => {
   test('action group list', () => {

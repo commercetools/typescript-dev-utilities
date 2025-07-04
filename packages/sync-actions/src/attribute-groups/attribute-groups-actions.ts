@@ -1,16 +1,16 @@
-import { buildBaseAttributesActions } from '../utils-ts/common-actions';
+import { buildBaseAttributesActions } from '../utils/common-actions';
 import {
   AttributeGroup,
   AttributeReference,
   Delta,
   SyncActionConfig,
   UpdateAction,
-} from '../utils-ts/types';
+} from '../utils/types';
 import createBuildArrayActions, {
   ADD_ACTIONS,
   REMOVE_ACTIONS,
   CHANGE_ACTIONS,
-} from '../utils-ts/create-build-array-actions';
+} from '../utils/create-build-array-actions';
 
 const hasAttribute = <T extends AttributeReference>(
   attributes: Array<T>,

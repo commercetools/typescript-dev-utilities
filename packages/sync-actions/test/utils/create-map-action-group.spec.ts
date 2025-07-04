@@ -1,4 +1,4 @@
-import createMapActionGroup from '../../src/utils-ts/create-map-action-group';
+import createMapActionGroup from '../../src/utils/create-map-action-group';
 
 describe('createMapActionGroup', () => {
   describe('without actionGroups', () => {

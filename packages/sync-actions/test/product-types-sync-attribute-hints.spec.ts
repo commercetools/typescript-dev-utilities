@@ -3,7 +3,7 @@ import {
   ProductType,
   ProductTypeUpdateAction,
   SyncAction,
-} from '../src/utils-ts/types';
+} from '../src/utils/types';
 
 const createAttributeDefinitionDraftItem = (custom) => ({
   previous: {

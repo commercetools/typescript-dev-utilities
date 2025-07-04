@@ -1,9 +1,5 @@
 import productsSyncFn from '../src/products/products';
-import {
-  Product,
-  ProductUpdateAction,
-  SyncAction,
-} from '../src/utils-ts/types';
+import { Product, ProductUpdateAction, SyncAction } from '../src/utils/types';
 
 describe('Actions', () => {
   let productsSync: SyncAction<Product, ProductUpdateAction>;

@@ -1,5 +1,5 @@
-import { buildBaseAttributesActions } from '../utils-ts/common-actions';
-import { Delta, SyncActionConfig } from '../utils-ts/types';
+import { buildBaseAttributesActions } from '../utils/common-actions';
+import { Delta, SyncActionConfig } from '../utils/types';
 
 export const baseActionsList = [
   { action: 'changeIsActive', key: 'isActive' },

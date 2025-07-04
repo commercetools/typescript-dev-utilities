@@ -1,9 +1,9 @@
-import { diff, getDeltaValue } from '../../src/utils-ts/diffpatcher';
+import { diff, getDeltaValue } from '../../src/utils/diffpatcher';
 import createBuildArrayActions, {
   ADD_ACTIONS,
   REMOVE_ACTIONS,
   CHANGE_ACTIONS,
-} from '../../src/utils-ts/create-build-array-actions';
+} from '../../src/utils/create-build-array-actions';
 
 const testObjKey = 'someNestedObjects';
 const getTestObj = (list) => ({ [testObjKey]: list || [] });

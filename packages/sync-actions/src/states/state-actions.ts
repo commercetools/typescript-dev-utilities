@@ -1,14 +1,9 @@
 import createBuildArrayActions, {
   ADD_ACTIONS,
   REMOVE_ACTIONS,
-} from '../utils-ts/create-build-array-actions';
-import { buildBaseAttributesActions } from '../utils-ts/common-actions';
-import {
-  Delta,
-  State,
-  SyncActionConfig,
-  UpdateAction,
-} from '../utils-ts/types';
+} from '../utils/create-build-array-actions';
+import { buildBaseAttributesActions } from '../utils/common-actions';
+import { Delta, State, SyncActionConfig, UpdateAction } from '../utils/types';
 
 export const baseActionsList: Array<UpdateAction> = [
   { action: 'changeKey', key: 'key' },

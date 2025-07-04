@@ -2,7 +2,7 @@ import apiExtensionsSyncFn, {
   actionGroups,
 } from '../src/api-extensions/api-extensions';
 import { baseActionsList } from '../src/api-extensions/api-extensions-actions';
-import { Extension } from '../src/utils-ts/types';
+import { Extension } from '../src/utils/types';
 
 describe('Exports', () => {
   test('action group list', () => {

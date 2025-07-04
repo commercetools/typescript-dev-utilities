@@ -1,18 +1,18 @@
 import { deepEqual } from 'fast-equals';
-import { buildBaseAttributesActions } from '../utils-ts/common-actions';
+import { buildBaseAttributesActions } from '../utils/common-actions';
 import createBuildArrayActions, {
   ADD_ACTIONS,
   REMOVE_ACTIONS,
   CHANGE_ACTIONS,
-} from '../utils-ts/create-build-array-actions';
-import removeTypename from '../utils-ts/remove-typename';
+} from '../utils/create-build-array-actions';
+import removeTypename from '../utils/remove-typename';
 import {
   Delta,
   SyncActionConfig,
   TaxCategory,
   TaxRate,
   UpdateAction,
-} from '../utils-ts/types';
+} from '../utils/types';
 
 export const baseActionsList: Array<UpdateAction> = [
   { action: 'changeName', key: 'name' },

@@ -1,4 +1,4 @@
-import findMatchingPairs from '../../src/utils-ts/find-matching-pairs';
+import findMatchingPairs from '../../src/utils/find-matching-pairs';
 
 describe('findMatchingPairs', () => {
   let diff;

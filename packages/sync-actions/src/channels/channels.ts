@@ -1,8 +1,8 @@
-import createBuildActions from '../utils-ts/create-build-actions';
-import createMapActionGroup from '../utils-ts/create-map-action-group';
-import actionsMapCustom from '../utils-ts/action-map-custom';
+import createBuildActions from '../utils/create-build-actions';
+import createMapActionGroup from '../utils/create-map-action-group';
+import actionsMapCustom from '../utils/action-map-custom';
 import { actionsMapBase } from './channels-actions';
-import * as diffpatcher from '../utils-ts/diffpatcher';
+import * as diffpatcher from '../utils/diffpatcher';
 import {
   ActionGroup,
   Channel,
@@ -11,7 +11,7 @@ import {
   SyncAction,
   SyncActionConfig,
   UpdateAction,
-} from '../utils-ts/types';
+} from '../utils/types';
 
 export const actionGroups = ['base', 'custom'];
 

@@ -1,5 +1,5 @@
 import typesSyncFn from '../src/types/types';
-import { SyncAction, Type, TypeUpdateAction } from '../src/utils-ts/types';
+import { SyncAction, Type, TypeUpdateAction } from '../src/utils/types';
 
 const createTestType = (custom) => ({
   id: 'type-id',

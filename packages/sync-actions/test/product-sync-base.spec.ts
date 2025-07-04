@@ -1,11 +1,11 @@
-import clone from '../src/utils-ts/clone';
+import clone from '../src/utils/clone';
 import productsSyncFn, { actionGroups } from '../src/products/products';
 import {
   baseActionsList,
   metaActionsList,
   referenceActionsList,
 } from '../src/products/product-actions';
-import { Product, ProductData } from '../src/utils-ts/types';
+import { Product, ProductData } from '../src/utils/types';
 
 describe('Exports', () => {
   test('action group list', () => {

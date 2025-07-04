@@ -1,10 +1,5 @@
-import { buildBaseAttributesActions } from '../utils-ts/common-actions';
-import {
-  Channel,
-  Delta,
-  SyncActionConfig,
-  UpdateAction,
-} from '../utils-ts/types';
+import { buildBaseAttributesActions } from '../utils/common-actions';
+import { Channel, Delta, SyncActionConfig, UpdateAction } from '../utils/types';
 
 export const baseActionsList: Array<UpdateAction> = [
   { action: 'changeKey', key: 'key' },

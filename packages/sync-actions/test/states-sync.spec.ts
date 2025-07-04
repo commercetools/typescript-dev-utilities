@@ -1,6 +1,6 @@
 import statesSyncFn, { actionGroups } from '../src/states/states';
 import { baseActionsList } from '../src/states/state-actions';
-import { State, StateUpdateAction, SyncAction } from '../src/utils-ts/types';
+import { State, StateUpdateAction, SyncAction } from '../src/utils/types';
 
 describe('Exports', () => {
   test('action group list', () => {

@@ -1,8 +1,8 @@
-import clone from '../src/utils-ts/clone';
+import clone from '../src/utils/clone';
 import createSyncTypes, { actionGroups } from '../src/types/types';
 import { baseActionsList } from '../src/types/types-actions';
 import { Type, TypeUpdateAction } from '@commercetools/platform-sdk';
-import { SyncAction } from '../src/utils-ts/types';
+import { SyncAction } from '../src/utils/types';
 
 describe('Exports', () => {
   test('action group list', () => {

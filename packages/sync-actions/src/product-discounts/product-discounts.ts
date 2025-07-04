@@ -1,8 +1,8 @@
-import createBuildActions from '../utils-ts/create-build-actions';
-import createMapActionGroup from '../utils-ts/create-map-action-group';
+import createBuildActions from '../utils/create-build-actions';
+import createMapActionGroup from '../utils/create-map-action-group';
 import { actionsMapBase } from './product-discounts-actions';
-import combineValidityActions from '../utils-ts/combine-validity-actions';
-import * as diffpatcher from '../utils-ts/diffpatcher';
+import combineValidityActions from '../utils/combine-validity-actions';
+import * as diffpatcher from '../utils/diffpatcher';
 import {
   ActionGroup,
   Delta,
@@ -11,7 +11,7 @@ import {
   SyncAction,
   SyncActionConfig,
   UpdateAction,
-} from '../utils-ts/types';
+} from '../utils/types';
 
 export const actionGroups = ['base'];
 

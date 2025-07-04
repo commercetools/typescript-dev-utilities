@@ -3,8 +3,8 @@ import {
   Delta,
   SyncActionConfig,
   UpdateAction,
-} from '../utils-ts/types';
-import { buildBaseAttributesActions } from '../utils-ts/common-actions';
+} from '../utils/types';
+import { buildBaseAttributesActions } from '../utils/common-actions';
 
 export const baseActionsList: Array<UpdateAction> = [
   { action: 'changeName', key: 'name' },

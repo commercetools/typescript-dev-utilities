@@ -2,8 +2,8 @@ import createBuildArrayActions, {
   ADD_ACTIONS,
   REMOVE_ACTIONS,
   CHANGE_ACTIONS,
-} from '../utils-ts/create-build-array-actions';
-import { Asset, Delta, UpdateAction } from '../utils-ts/types';
+} from '../utils/create-build-array-actions';
+import { Asset, Delta, UpdateAction } from '../utils/types';
 
 function toAssetIdentifier(asset: Partial<Asset>) {
   const assetIdentifier = asset.id

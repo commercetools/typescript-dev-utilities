@@ -1,4 +1,4 @@
-import combineValidityActions from '../../src/utils-ts/combine-validity-actions';
+import combineValidityActions from '../../src/utils/combine-validity-actions';
 
 describe('combineValidityActions', () => {
   let combinedActions;
