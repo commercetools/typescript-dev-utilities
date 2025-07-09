@@ -54,8 +54,8 @@ function createAttributeGroupsMapActions(
 }
 
 export default (
-  actionGroupList: Array<ActionGroup>,
-  syncActionConfig: SyncActionConfig
+  actionGroupList?: Array<ActionGroup>,
+  syncActionConfig?: SyncActionConfig
 ): SyncAction<AttributeGroup, AttributeGroupUpdateAction> => {
   const mapActionGroup = createMapActionGroup(actionGroupList);
   const doMapActions = createAttributeGroupsMapActions(

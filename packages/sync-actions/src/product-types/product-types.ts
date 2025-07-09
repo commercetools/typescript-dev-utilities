@@ -55,8 +55,8 @@ function createProductTypeMapActions(
 }
 
 export default (
-  actionGroupList: Array<ActionGroup>,
-  syncActionConfig: SyncActionConfig
+  actionGroupList?: Array<ActionGroup>,
+  syncActionConfig: SyncActionConfig = {}
 ): SyncAction<ProductType, ProductTypeUpdateAction> => {
   const mapActionGroup = createMapActionGroup(actionGroupList);
   const doMapActions = createProductTypeMapActions(

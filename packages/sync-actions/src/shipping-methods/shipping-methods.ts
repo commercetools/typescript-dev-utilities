@@ -63,8 +63,8 @@ function createShippingMethodsMapActions(
 }
 
 export default (
-  actionGroupList: Array<ActionGroup>,
-  syncActionConfig: SyncActionConfig
+  actionGroupList?: Array<ActionGroup>,
+  syncActionConfig: SyncActionConfig = {}
 ): SyncAction<ShippingMethod, ShippingMethodUpdateAction> => {
   // actionGroupList contains information about which action groups
   // are allowed or ignored

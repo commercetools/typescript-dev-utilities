@@ -56,8 +56,8 @@ function createTaxCategoriesMapActions(
 }
 
 export default (
-  actionGroupList: Array<ActionGroup>,
-  syncActionConfig: SyncActionConfig
+  actionGroupList?: Array<ActionGroup>,
+  syncActionConfig: SyncActionConfig = {}
 ): SyncAction<TaxCategory, TaxCategoryUpdateAction> => {
   // config contains information about which action groups
   // are allowed or ignored
