@@ -5,7 +5,12 @@ import {
   metaActionsList,
   referenceActionsList,
 } from '../src/products/product-actions';
-import { Product, ProductData } from '../src/utils/types';
+import {
+  Product,
+  ProductData,
+  ProductUpdateAction,
+  SyncAction,
+} from '../src/utils/types';
 
 describe('Exports', () => {
   test('action group list', () => {
@@ -52,7 +57,7 @@ describe('Exports', () => {
 });
 
 describe('Actions', () => {
-  let productsSync;
+  let productsSync: SyncAction<Product, ProductUpdateAction>;
   beforeEach(() => {
     productsSync = productsSyncFn([], {});
   });
@@ -205,7 +210,7 @@ describe('Actions', () => {
   });
 
   test('should build no actions if searchKeywords did not change', () => {
-    const before = {
+    const before: object = {
       name: { en: 'Car', de: 'Auto' },
       searchKeywords: {
         en: [
@@ -232,13 +237,13 @@ describe('Actions', () => {
   });
 
   test('should build `add/remove Category` actions', () => {
-    const before = {
+    const before: object = {
       categories: [
         { id: 'aebe844e-0616-420a-8397-a22c48d5e99f' },
         { id: '34cae6ad-5898-4f94-973b-ae9ceb7464ce' },
       ],
     };
-    const now = {
+    const now: object = {
       categories: [
         { id: 'aebe844e-0616-420a-8397-a22c48d5e99f' },
         { id: '4f278964-48c0-4f2c-8b61-09310d1de60a' },
@@ -264,7 +269,7 @@ describe('Actions', () => {
   });
 
   test('should add/remove category and categoryOrderHints', () => {
-    const before = {
+    const before: object = {
       categories: [
         { id: '123e844e-0616-420a-8397-a22c48d5e99f' },
         { id: 'aebe844e-0616-420a-8397-a22c48d5e99f' },
@@ -277,7 +282,7 @@ describe('Actions', () => {
       },
     };
 
-    const now = {
+    const now: object = {
       categories: [
         { id: '123e844e-0616-420a-8397-a22c48d5e99f' },
         { id: 'aebe844e-0616-420a-8397-a22c48d5e99f' },
@@ -318,7 +323,7 @@ describe('Actions', () => {
   });
 
   test('shouldnt generate any categoryOrderHints actions', () => {
-    const before = {
+    const before: object = {
       categoryOrderHints: {},
     };
 
@@ -472,7 +477,7 @@ describe('Actions', () => {
   });
 
   test('shouldnt generate any searchKeywords actions', () => {
-    const before = {
+    const before: object = {
       searchKeywords: {},
     };
 
@@ -506,7 +511,8 @@ describe('Actions', () => {
       description: {
         en: longText,
       },
-    };
+    } as Partial<Product>;
+
     const now = {
       name: {
         en: `Hello, ${longText}`,
@@ -517,21 +523,21 @@ describe('Actions', () => {
       description: {
         en: `Hello, ${longText}`,
       },
-    };
+    } as Partial<Product>;
 
     const actions = productsSync.buildActions(now, before);
     expect(actions).toEqual([
       {
         action: 'changeName',
-        name: now.name,
+        name: now['name'],
       },
       {
         action: 'changeSlug',
-        slug: now.slug,
+        slug: now['slug'],
       },
       {
         action: 'setDescription',
-        description: now.description,
+        description: now['description'],
       },
     ]);
   });

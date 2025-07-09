@@ -1,11 +1,17 @@
 import pricesSyncFn, { actionGroups } from '../src/prices/prices';
-import { Price } from '../src/utils/types';
+import {
+  Price,
+  StandalonePrice,
+  StandalonePriceUpdateAction,
+  SyncAction,
+  TypedMoney,
+} from '../src/utils/types';
 
-const dateNow = new Date();
-const twoWeeksFromNow = new Date(Date.now() + 12096e5);
+const dateNow = new Date() as unknown as string;
+const twoWeeksFromNow = new Date(Date.now() + 12096e5) as unknown as string;
 
 describe('price actions', () => {
-  let pricesSync;
+  let pricesSync: SyncAction<StandalonePrice, StandalonePriceUpdateAction>;
   beforeAll(() => {
     pricesSync = pricesSyncFn();
   });
@@ -37,7 +43,7 @@ describe('price actions', () => {
   });
 
   test('should not build actions if there is no change', () => {
-    const before = {
+    const before: Partial<StandalonePrice> = {
       id: '9fe6610f',
       value: {
         type: 'centPrecision',
@@ -46,7 +52,7 @@ describe('price actions', () => {
         fractionDigits: 2,
       },
       discounted: {
-        value: { centAmount: 4000, currencyCode: 'EGP' },
+        value: { centAmount: 4000, currencyCode: 'EGP' } as TypedMoney,
         discount: { typeId: 'product-discount', id: 'pd1' },
       },
       custom: {
@@ -60,7 +66,7 @@ describe('price actions', () => {
       },
     };
 
-    const now = {
+    const now: Partial<StandalonePrice> = {
       id: '9fe6610f',
       value: {
         type: 'centPrecision',
@@ -69,7 +75,7 @@ describe('price actions', () => {
         fractionDigits: 2,
       },
       discounted: {
-        value: { centAmount: 4000, currencyCode: 'EGP' },
+        value: { centAmount: 4000, currencyCode: 'EGP' } as TypedMoney,
         discount: { typeId: 'product-discount', id: 'pd1' },
       },
       custom: {
@@ -88,7 +94,7 @@ describe('price actions', () => {
 
   describe('changeValue', () => {
     test('should generate changeValue action', () => {
-      const before = {
+      const before: Partial<StandalonePrice> = {
         id: '9fe6610f',
         value: {
           type: 'centPrecision',
@@ -98,7 +104,7 @@ describe('price actions', () => {
         },
       };
 
-      const now = {
+      const now: Partial<StandalonePrice> = {
         id: '9fe6610f',
         value: {
           type: 'centPrecision',
@@ -125,22 +131,22 @@ describe('price actions', () => {
 
   describe('setDiscountedPrice', () => {
     test('should build `setDiscountedPrice` action for newly discounted', () => {
-      const before = {
+      const before: Partial<StandalonePrice> = {
         id: '1010',
-        value: { currencyCode: 'EGP', centAmount: 1000 },
+        value: { currencyCode: 'EGP', centAmount: 1000 } as TypedMoney,
         country: 'UK',
         validFrom: dateNow,
         validUntil: twoWeeksFromNow,
       };
 
-      const now = {
+      const now: Partial<StandalonePrice> = {
         id: '1010',
-        value: { currencyCode: 'EGP', centAmount: 1000 },
+        value: { currencyCode: 'EGP', centAmount: 1000 } as TypedMoney,
         country: 'UK',
         validFrom: dateNow,
         validUntil: twoWeeksFromNow,
         discounted: {
-          value: { centAmount: 4000, currencyCode: 'EGP' },
+          value: { centAmount: 4000, currencyCode: 'EGP' } as TypedMoney,
           discount: { typeId: 'product-discount', id: 'pd1' },
         },
       };
@@ -161,21 +167,21 @@ describe('price actions', () => {
     });
 
     test('should build `setDiscountedPrice` action for removed discounted', () => {
-      const before = {
+      const before: Partial<StandalonePrice> = {
         id: '1010',
-        value: { currencyCode: 'EGP', centAmount: 1000 },
+        value: { currencyCode: 'EGP', centAmount: 1000 } as TypedMoney,
         country: 'UK',
         validFrom: dateNow,
         validUntil: twoWeeksFromNow,
         discounted: {
-          value: { centAmount: 4000, currencyCode: 'EGP' },
+          value: { centAmount: 4000, currencyCode: 'EGP' } as TypedMoney,
           discount: { typeId: 'product-discount', id: 'pd1' },
         },
       };
 
-      const now = {
+      const now: Partial<StandalonePrice> = {
         id: '1010',
-        value: { currencyCode: 'EGP', centAmount: 1000 },
+        value: { currencyCode: 'EGP', centAmount: 1000 } as TypedMoney,
         country: 'UK',
         validFrom: dateNow,
         validUntil: twoWeeksFromNow,
@@ -193,26 +199,26 @@ describe('price actions', () => {
     });
 
     test('should build `setDiscountedPrice` action for changed value centAmount', () => {
-      const before = {
+      const before: Partial<StandalonePrice> = {
         id: '1010',
-        value: { currencyCode: 'GBP', centAmount: 1000 },
+        value: { currencyCode: 'GBP', centAmount: 1000 } as TypedMoney,
         country: 'UK',
         validFrom: dateNow,
         validUntil: twoWeeksFromNow,
         discounted: {
-          value: { centAmount: 4000, currencyCode: 'EUR' },
+          value: { centAmount: 4000, currencyCode: 'EUR' } as TypedMoney,
           discount: { typeId: 'product-discount', id: 'pd1' },
         },
       };
 
-      const now = {
+      const now: Partial<StandalonePrice> = {
         id: '1010',
-        value: { currencyCode: 'GBP', centAmount: 1000 },
+        value: { currencyCode: 'GBP', centAmount: 1000 } as TypedMoney,
         country: 'UK',
         validFrom: dateNow,
         validUntil: twoWeeksFromNow,
         discounted: {
-          value: { centAmount: 3000, currencyCode: 'EUR' },
+          value: { centAmount: 3000, currencyCode: 'EUR' } as TypedMoney,
           discount: { typeId: 'product-discount', id: 'pd1' },
         },
       };
@@ -235,22 +241,22 @@ describe('price actions', () => {
 
   describe('setDiscountedPrice-00', () => {
     test('should build `setDiscountedPrice` action for newly discounted', () => {
-      const before = {
+      const before: Partial<StandalonePrice> = {
         id: '1010',
-        value: { currencyCode: 'EGP', centAmount: 1000 },
+        value: { currencyCode: 'EGP', centAmount: 1000 } as TypedMoney,
         country: 'UK',
         validFrom: dateNow,
         validUntil: twoWeeksFromNow,
       };
 
-      const now = {
+      const now: Partial<StandalonePrice> = {
         id: '1010',
-        value: { currencyCode: 'EGP', centAmount: 1000 },
+        value: { currencyCode: 'EGP', centAmount: 1000 } as TypedMoney,
         country: 'UK',
         validFrom: dateNow,
         validUntil: twoWeeksFromNow,
         discounted: {
-          value: { centAmount: 4000, currencyCode: 'EGP' },
+          value: { centAmount: 4000, currencyCode: 'EGP' } as TypedMoney,
           discount: { typeId: 'product-discount', id: 'pd1' },
         },
       };
@@ -271,14 +277,14 @@ describe('price actions', () => {
     });
 
     test('should build `setDiscountedPrice` action for removed discounted', () => {
-      const before = {
+      const before: Partial<StandalonePrice> = {
         id: '1010',
-        value: { currencyCode: 'EGP', centAmount: 1000 },
+        value: { currencyCode: 'EGP', centAmount: 1000 } as TypedMoney,
         country: 'UK',
         validFrom: dateNow,
         validUntil: twoWeeksFromNow,
         discounted: {
-          value: { centAmount: 4000, currencyCode: 'EGP' },
+          value: { centAmount: 4000, currencyCode: 'EGP' } as TypedMoney,
           discount: { typeId: 'product-discount', id: 'pd1' },
         },
       };
@@ -303,26 +309,26 @@ describe('price actions', () => {
     });
 
     test('should build `setDiscountedPrice` action for changed value centAmount', () => {
-      const before = {
+      const before: Partial<StandalonePrice> = {
         id: '1010',
-        value: { currencyCode: 'GBP', centAmount: 1000 },
+        value: { currencyCode: 'GBP', centAmount: 1000 } as TypedMoney,
         country: 'UK',
         validFrom: dateNow,
         validUntil: twoWeeksFromNow,
         discounted: {
-          value: { centAmount: 4000, currencyCode: 'EUR' },
+          value: { centAmount: 4000, currencyCode: 'EUR' } as TypedMoney,
           discount: { typeId: 'product-discount', id: 'pd1' },
         },
       };
 
-      const now = {
+      const now: Partial<StandalonePrice> = {
         id: '1010',
-        value: { currencyCode: 'GBP', centAmount: 1000 },
+        value: { currencyCode: 'GBP', centAmount: 1000 } as TypedMoney,
         country: 'UK',
         validFrom: dateNow,
         validUntil: twoWeeksFromNow,
         discounted: {
-          value: { centAmount: 3000, currencyCode: 'EUR' },
+          value: { centAmount: 3000, currencyCode: 'EUR' } as TypedMoney,
           discount: { typeId: 'product-discount', id: 'pd1' },
         },
       };
@@ -346,7 +352,7 @@ describe('price actions', () => {
   describe('setPriceTiers', () => {
     test('should  build `setPriceTiers` action if price tier are set', () => {
       const before = {};
-      const now = {
+      const now: Partial<StandalonePrice> = {
         id: '9fe6610f',
         value: {
           type: 'centPrecision',
@@ -395,7 +401,7 @@ describe('price actions', () => {
     });
 
     test('should  build `setPriceTiers` action for price tier change', () => {
-      const before = {
+      const before: Partial<StandalonePrice> = {
         id: '9fe6610f',
         value: {
           type: 'centPrecision',
@@ -415,7 +421,7 @@ describe('price actions', () => {
           },
         ],
       };
-      const now = {
+      const now: Partial<StandalonePrice> = {
         id: '9fe6610f',
         value: {
           type: 'centPrecision',
@@ -455,7 +461,7 @@ describe('price actions', () => {
     });
 
     test('should build `setPriceTiers` action for removed price tier', () => {
-      const before = {
+      const before: Partial<StandalonePrice> = {
         id: '9fe6610f',
         value: {
           type: 'centPrecision',
@@ -485,7 +491,7 @@ describe('price actions', () => {
         ],
       };
 
-      const now = {
+      const now: Partial<StandalonePrice> = {
         id: '9fe6610f',
         value: {
           type: 'centPrecision',
@@ -526,7 +532,7 @@ describe('price actions', () => {
     });
 
     test('should build `setPriceTiers` action when removed all price tier', () => {
-      const before = {
+      const before: Partial<StandalonePrice> = {
         id: '9fe6610f',
         value: {
           type: 'centPrecision',
@@ -556,7 +562,7 @@ describe('price actions', () => {
         ],
       };
 
-      const now = {
+      const now: Partial<StandalonePrice> = {
         id: '9fe6610f',
         value: {
           type: 'centPrecision',
@@ -577,7 +583,7 @@ describe('price actions', () => {
     });
 
     test('should not build `setPriceTiers` action when price tiers on now and then are equal', () => {
-      const before = {
+      const before: Partial<StandalonePrice> = {
         id: '9fe6610f',
         value: {
           type: 'centPrecision',
@@ -607,7 +613,7 @@ describe('price actions', () => {
         ],
       };
 
-      const now = {
+      const now: Partial<StandalonePrice> = {
         id: '9fe6610f',
         value: {
           type: 'centPrecision',
@@ -794,9 +800,9 @@ describe('price actions', () => {
         validUntil: twoWeeksFromNow,
       };
 
-      const now = {
+      const now: Partial<StandalonePrice> = {
         id: '888',
-        value: { currencyCode: 'GBP', centAmount: 1000 },
+        value: { currencyCode: 'GBP', centAmount: 1000 } as TypedMoney,
         country: 'UK',
         validFrom: dateNow,
         validUntil: twoWeeksFromNow,
@@ -805,7 +811,7 @@ describe('price actions', () => {
             typeId: 'type',
             id: '5678',
           },
-        },
+        } as StandalonePrice['custom'],
       };
 
       const actions = pricesSync.buildActions(now, before);
@@ -829,10 +835,10 @@ describe('price actions', () => {
         validUntil: twoWeeksFromNow,
       };
 
-      const now = {
+      const now: Partial<StandalonePrice> = {
         // set price custom type and field
         id: '999',
-        value: { currencyCode: 'GBP', centAmount: 1000 },
+        value: { currencyCode: 'GBP', centAmount: 1000 } as TypedMoney,
         country: 'UK',
         validFrom: dateNow,
         validUntil: twoWeeksFromNow,
@@ -863,9 +869,9 @@ describe('price actions', () => {
     });
 
     test('should build `setCustomType` action which delete custom type', () => {
-      const before = {
+      const before: Partial<StandalonePrice> = {
         id: '1111',
-        value: { currencyCode: 'GBP', centAmount: 1000 },
+        value: { currencyCode: 'GBP', centAmount: 1000 } as TypedMoney,
         country: 'UK',
         validFrom: dateNow,
         validUntil: twoWeeksFromNow,
@@ -900,7 +906,7 @@ describe('price actions', () => {
 
   describe('setCustomField', () => {
     test('should generate `setCustomField` actions', () => {
-      const before = {
+      const before: Partial<StandalonePrice> = {
         value: {
           type: 'centPrecision',
           currencyCode: 'EUR',
@@ -920,7 +926,7 @@ describe('price actions', () => {
         },
       };
 
-      const now = {
+      const now: Partial<StandalonePrice> = {
         value: {
           type: 'centPrecision',
           currencyCode: 'EUR',
@@ -956,9 +962,9 @@ describe('price actions', () => {
     });
 
     test('should build `setCustomField` action', () => {
-      const before = {
+      const before: Partial<StandalonePrice> = {
         id: '1010',
-        value: { currencyCode: 'GBP', centAmount: 1000 },
+        value: { currencyCode: 'GBP', centAmount: 1000 } as TypedMoney,
         country: 'UK',
         validFrom: dateNow,
         validUntil: twoWeeksFromNow,
@@ -973,9 +979,9 @@ describe('price actions', () => {
         },
       };
 
-      const now = {
+      const now: Partial<StandalonePrice> = {
         id: '1010',
-        value: { currencyCode: 'GBP', centAmount: 1000 },
+        value: { currencyCode: 'GBP', centAmount: 1000 } as TypedMoney,
         country: 'UK',
         validFrom: dateNow,
         validUntil: twoWeeksFromNow,
@@ -1001,9 +1007,9 @@ describe('price actions', () => {
     });
 
     test('should build three `setCustomField` action', () => {
-      const before = {
+      const before: Partial<StandalonePrice> = {
         id: '1010',
-        value: { currencyCode: 'GBP', centAmount: 1000 },
+        value: { currencyCode: 'GBP', centAmount: 1000 } as TypedMoney,
         country: 'UK',
         validFrom: dateNow,
         validUntil: twoWeeksFromNow,
@@ -1021,9 +1027,9 @@ describe('price actions', () => {
         },
       };
 
-      const now = {
+      const now: Partial<StandalonePrice> = {
         id: '1010',
-        value: { currencyCode: 'GBP', centAmount: 1000 },
+        value: { currencyCode: 'GBP', centAmount: 1000 } as TypedMoney,
         country: 'UK',
         validFrom: dateNow,
         validUntil: twoWeeksFromNow,

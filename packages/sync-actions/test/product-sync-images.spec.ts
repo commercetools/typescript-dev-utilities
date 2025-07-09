@@ -4,7 +4,7 @@ import { Product, ProductUpdateAction, SyncAction } from '../src/utils/types';
 describe('Actions', () => {
   let productsSync: SyncAction<Product, ProductUpdateAction>;
   beforeEach(() => {
-    productsSync = productsSyncFn([], {});
+    productsSync = productsSyncFn();
   });
 
   describe('with matching variant order', () => {

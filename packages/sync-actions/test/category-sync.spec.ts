@@ -4,6 +4,7 @@ import {
   metaActionsList,
   referenceActionsList,
 } from '../src/categories/category-actions';
+import { Category, CategoryUpdateAction, SyncAction } from '../src/utils/types';
 
 describe('Exports', () => {
   test('action group list', () => {
@@ -43,14 +44,14 @@ describe('Exports', () => {
 });
 
 describe('Actions', () => {
-  let categorySync;
+  let categorySync: SyncAction<Category, CategoryUpdateAction>;
   beforeEach(() => {
-    categorySync = categorySyncFn([], {});
+    categorySync = categorySyncFn();
   });
 
   describe('custom fields', () => {
     test('should build `setCustomType` action', () => {
-      const before = {
+      const before: Partial<Category> = {
         custom: {
           type: {
             typeId: 'type',
@@ -61,7 +62,7 @@ describe('Actions', () => {
           },
         },
       };
-      const now = {
+      const now: Partial<Category> = {
         custom: {
           type: {
             typeId: 'type',
@@ -72,6 +73,7 @@ describe('Actions', () => {
           },
         },
       };
+
       const actual = categorySync.buildActions(now, before);
       const expected = [{ action: 'setCustomType', ...now.custom }];
       expect(actual).toEqual(expected);
@@ -79,7 +81,7 @@ describe('Actions', () => {
   });
 
   test('should build `setCustomField` action', () => {
-    const before = {
+    const before: Partial<Category> = {
       custom: {
         type: {
           typeId: 'type',
@@ -90,7 +92,7 @@ describe('Actions', () => {
         },
       },
     };
-    const now = {
+    const now: Partial<Category> = {
       custom: {
         type: {
           typeId: 'type',

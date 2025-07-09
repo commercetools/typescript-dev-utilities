@@ -80,8 +80,8 @@ function createCategoryMapActions(
 }
 
 export default (
-  actionGroupList: Array<ActionGroup>,
-  syncActionConfig: SyncActionConfig
+  actionGroupList?: Array<ActionGroup>,
+  syncActionConfig?: SyncActionConfig
 ): SyncAction<Category, CategoryUpdateAction> => {
   // actionGroupList contains information about which action groups
   // are allowed or ignored

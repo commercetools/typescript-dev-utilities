@@ -2,6 +2,11 @@ import discountCodesSyncFn, {
   actionGroups,
 } from '../src/discount-codes/discount-codes';
 import { baseActionsList } from '../src/discount-codes/discount-codes-actions';
+import {
+  DiscountCode,
+  DiscountCodeUpdateAction,
+  SyncAction,
+} from '../src/utils/types';
 
 describe('Exports', () => {
   test('action group list', () => {
@@ -97,7 +102,7 @@ describe('Exports', () => {
 });
 
 describe('Actions', () => {
-  let discountCodesSync;
+  let discountCodesSync: SyncAction<DiscountCode, DiscountCodeUpdateAction>;
   beforeEach(() => {
     discountCodesSync = discountCodesSyncFn([]);
   });
@@ -212,7 +217,7 @@ describe('Actions', () => {
   });
 
   test('should build `changeCartDiscounts` action', () => {
-    const before = {
+    const before: Partial<object> = {
       cartDiscounts: [
         {
           typeId: 'previous-cart-discount',
@@ -224,7 +229,7 @@ describe('Actions', () => {
         },
       ],
     };
-    const now = {
+    const now: Partial<object> = {
       cartDiscounts: [
         {
           typeId: 'previous-cart-discount',
@@ -353,7 +358,7 @@ describe('Actions', () => {
 
   describe('custom fields', () => {
     test('should build `setCustomType` action', () => {
-      const before = {
+      const before: Partial<DiscountCode> = {
         custom: {
           type: {
             typeId: 'type',
@@ -364,7 +369,7 @@ describe('Actions', () => {
           },
         },
       };
-      const now = {
+      const now: Partial<DiscountCode> = {
         custom: {
           type: {
             typeId: 'type',
@@ -382,7 +387,7 @@ describe('Actions', () => {
   });
 
   test('should build `setCustomField` action', () => {
-    const before = {
+    const before: Partial<DiscountCode> = {
       custom: {
         type: {
           typeId: 'type',
@@ -393,7 +398,7 @@ describe('Actions', () => {
         },
       },
     };
-    const now = {
+    const now: Partial<DiscountCode> = {
       custom: {
         type: {
           typeId: 'type',

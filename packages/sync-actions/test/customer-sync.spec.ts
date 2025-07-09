@@ -4,6 +4,7 @@ import {
   setDefaultBaseActionsList,
   referenceActionsList,
 } from '../src/customers/customer-actions';
+import { Customer, CustomerUpdateAction, SyncAction } from '../src/utils/types';
 
 describe('Exports', () => {
   test('action group list', () => {
@@ -64,7 +65,7 @@ describe('Exports', () => {
 });
 
 describe('Actions', () => {
-  let customerSync;
+  let customerSync: SyncAction<Customer, CustomerUpdateAction>;
   beforeEach(() => {
     customerSync = customerSyncFn([], {});
   });
@@ -379,10 +380,11 @@ describe('Actions', () => {
 
   test('should build `setCustomerGroup` action with key', () => {
     const before = {};
-    const now = {
+    const now: Partial<Customer> = {
       customerGroup: {
         typeId: 'customer-group',
-        key: 'foo-customer-group',
+        id: 'foo-customer-group',
+        // key: 'foo-customer-group',
       },
     };
     const actual = customerSync.buildActions(now, before);
@@ -397,7 +399,7 @@ describe('Actions', () => {
 
   describe('custom fields', () => {
     test('should build `setCustomType` action', () => {
-      const before = {
+      const before: Partial<Customer> = {
         custom: {
           type: {
             typeId: 'type',
@@ -408,7 +410,8 @@ describe('Actions', () => {
           },
         },
       };
-      const now = {
+
+      const now: Partial<Customer> = {
         custom: {
           type: {
             typeId: 'type',
@@ -426,7 +429,7 @@ describe('Actions', () => {
   });
 
   test('should build `setCustomField` action', () => {
-    const before = {
+    const before: Partial<Customer> = {
       custom: {
         type: {
           typeId: 'type',
@@ -437,7 +440,7 @@ describe('Actions', () => {
         },
       },
     };
-    const now = {
+    const now: Partial<Customer> = {
       custom: {
         type: {
           typeId: 'type',
@@ -460,7 +463,7 @@ describe('Actions', () => {
   });
 
   test('should build `setStores` action', () => {
-    const before = {
+    const before: Partial<Customer> = {
       stores: [
         {
           typeId: 'store',
@@ -468,7 +471,7 @@ describe('Actions', () => {
         },
       ],
     };
-    const now = {
+    const now: Partial<Customer> = {
       stores: [
         {
           typeId: 'store',
@@ -516,7 +519,7 @@ describe('Actions', () => {
   });
 
   test('should build not throw error for empty array', () => {
-    const before = {
+    const before: Partial<Customer> = {
       stores: [
         {
           typeId: 'store',

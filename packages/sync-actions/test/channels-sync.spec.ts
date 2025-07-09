@@ -1,5 +1,11 @@
 import createChannelsSync, { actionGroups } from '../src/channels/channels';
 import { baseActionsList } from '../src/channels/channels-actions';
+import {
+  Channel,
+  SyncAction,
+  UpdateAction,
+  LocalizedString,
+} from '../src/utils/types';
 
 describe('Exports', () => {
   test('action group list', () => {
@@ -66,7 +72,7 @@ describe('Exports', () => {
 });
 
 describe('Actions', () => {
-  let channelsSync;
+  let channelsSync: SyncAction<Channel, UpdateAction>;
   beforeEach(() => {
     channelsSync = createChannelsSync([]);
   });
@@ -85,8 +91,11 @@ describe('Actions', () => {
   });
 
   test('should build `changeName` action', () => {
-    const before = { name: 'nameBefore' };
-    const now = { name: 'nameAfter' };
+    const before = { name: 'nameBefore' } as LocalizedString;
+    const now = { name: 'nameAfter' } as LocalizedString;
+
+    // const before = { name: { en: 'nameBefore' } };
+    // const now = { name: { en: 'nameAfter' } };
     const actual = channelsSync.buildActions(now, before);
     const expected = [
       {
@@ -98,8 +107,11 @@ describe('Actions', () => {
   });
 
   test('should build `changeDescription` action', () => {
-    const before = { description: 'descriptionBefore' };
-    const now = { description: 'descriptionAfter' };
+    const before = { description: 'descriptionBefore' } as LocalizedString;
+    const now = { description: 'descriptionAfter' } as LocalizedString;
+
+    // const before = { description: { en: 'descriptionBefore' } };
+    // const now = { description: { en: 'descriptionAfter' } };
     const actual = channelsSync.buildActions(now, before);
     const expected = [
       {
@@ -111,8 +123,8 @@ describe('Actions', () => {
   });
 
   test('should build `setAddress` action', () => {
-    const before = { address: 'addressBefore' };
-    const now = { address: 'addressAfter' };
+    const before = { address: { country: 'DE', title: 'addressBefore' } };
+    const now = { address: { country: 'DE', title: 'addressAfter' } };
     const actual = channelsSync.buildActions(now, before);
     const expected = [
       {
@@ -124,8 +136,9 @@ describe('Actions', () => {
   });
 
   test('should build `setGeoLocation` action', () => {
-    const before = { geoLocation: 'geoLocationBefore' };
-    const now = { geoLocation: 'geoLocationAfter' };
+    const before = { geoLocation: 'geoLocationBefore' } as LocalizedString;
+    const now = { geoLocation: 'geoLocationAfter' } as LocalizedString;
+
     const actual = channelsSync.buildActions(now, before);
     const expected = [
       {
@@ -173,14 +186,17 @@ describe('Actions', () => {
           },
         },
       };
-      const actual = channelsSync.buildActions(now, before);
+      const actual = channelsSync.buildActions(
+        now as Partial<Channel>,
+        before as Partial<Channel>
+      );
       const expected = [{ action: 'setCustomType', ...now.custom }];
       expect(actual).toEqual(expected);
     });
   });
 
   test('should build `setCustomField` action', () => {
-    const before = {
+    const before: Partial<Channel> = {
       custom: {
         type: {
           typeId: 'type',
@@ -191,7 +207,7 @@ describe('Actions', () => {
         },
       },
     };
-    const now = {
+    const now: Partial<Channel> = {
       custom: {
         type: {
           typeId: 'type',

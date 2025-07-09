@@ -2,7 +2,11 @@ import apiExtensionsSyncFn, {
   actionGroups,
 } from '../src/api-extensions/api-extensions';
 import { baseActionsList } from '../src/api-extensions/api-extensions-actions';
-import { Extension } from '../src/utils/types';
+import {
+  Extension,
+  ExtensionUpdateAction,
+  SyncAction,
+} from '../src/utils/types';
 
 describe('Exports', () => {
   test('action group list', () => {
@@ -38,9 +42,9 @@ describe('Exports', () => {
 });
 
 describe('Actions', () => {
-  let apiExtensionsSync;
+  let apiExtensionsSync: SyncAction<Extension, ExtensionUpdateAction>;
   beforeEach(() => {
-    apiExtensionsSync = apiExtensionsSyncFn([], {});
+    apiExtensionsSync = apiExtensionsSyncFn();
   });
 
   test('should build `setKey` action', () => {

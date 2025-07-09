@@ -63,8 +63,8 @@ function createInventoryMapActions(
 }
 
 export default (
-  actionGroupList: Array<ActionGroup>,
-  syncActionConfig: SyncActionConfig
+  actionGroupList?: Array<ActionGroup>,
+  syncActionConfig?: SyncActionConfig
 ): SyncAction<InventoryEntry, InventoryEntryUpdateAction> => {
   // actionGroupList contains information about which action groups
   // are allowed or ignored

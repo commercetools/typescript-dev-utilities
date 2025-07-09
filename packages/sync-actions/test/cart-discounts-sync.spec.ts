@@ -2,6 +2,11 @@ import cartDiscountsSyncFn, {
   actionGroups,
 } from '../src/cart-discounts/cart-discounts';
 import { baseActionsList } from '../src/cart-discounts/cart-discounts-actions';
+import {
+  CartDiscount,
+  CartDiscountUpdateAction,
+  SyncAction,
+} from '../src/utils/types';
 
 describe('Cart Discounts Exports', () => {
   test('action group list', () => {
@@ -111,7 +116,7 @@ describe('Cart Discounts Exports', () => {
 });
 
 describe('Cart Discounts Actions', () => {
-  let cartDiscountsSync;
+  let cartDiscountsSync: SyncAction<CartDiscount, CartDiscountUpdateAction>;
   beforeEach(() => {
     cartDiscountsSync = cartDiscountsSyncFn([]);
   });
@@ -193,14 +198,14 @@ describe('Cart Discounts Actions', () => {
   });
 
   test('should build the `changeValue` action', () => {
-    const before = {
+    const before: Partial<CartDiscount> = {
       value: {
         type: 'relative',
         permyriad: 100,
       },
     };
 
-    const now = {
+    const now: Partial<CartDiscount> = {
       value: {
         type: 'relative',
         permyriad: 200,
@@ -240,14 +245,14 @@ describe('Cart Discounts Actions', () => {
   });
 
   test('should build the `changeTarget` action', () => {
-    const before = {
+    const before: Partial<CartDiscount> = {
       target: {
         type: 'customLineItems',
         predicate: 'sku="sku-a"',
       },
     };
 
-    const now = {
+    const now: Partial<CartDiscount> = {
       target: {
         type: 'lineItems',
         predicate: 'sku="sku-b"',
@@ -368,7 +373,7 @@ describe('Cart Discounts Actions', () => {
 
   describe('custom fields', () => {
     test('should build `setCustomType` action', () => {
-      const before = {
+      const before: Partial<CartDiscount> = {
         custom: {
           type: {
             typeId: 'type',
@@ -379,7 +384,7 @@ describe('Cart Discounts Actions', () => {
           },
         },
       };
-      const now = {
+      const now: Partial<CartDiscount> = {
         custom: {
           type: {
             typeId: 'type',
@@ -397,7 +402,7 @@ describe('Cart Discounts Actions', () => {
   });
 
   test('should build `setCustomField` action', () => {
-    const before = {
+    const before: Partial<CartDiscount> = {
       custom: {
         type: {
           typeId: 'type',
@@ -408,7 +413,7 @@ describe('Cart Discounts Actions', () => {
         },
       },
     };
-    const now = {
+    const now: Partial<CartDiscount> = {
       custom: {
         type: {
           typeId: 'type',
