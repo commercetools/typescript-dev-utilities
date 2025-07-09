@@ -47,8 +47,8 @@ function createTypeMapActions(
 }
 
 export default (
-  actionGroupList: Array<ActionGroup>,
-  syncActionConfig: SyncActionConfig
+  actionGroupList?: Array<ActionGroup>,
+  syncActionConfig?: SyncActionConfig
 ): SyncAction<Type, TypeUpdateAction> => {
   const mapActionGroup = createMapActionGroup(actionGroupList);
   const doMapActions = createTypeMapActions(mapActionGroup, syncActionConfig);

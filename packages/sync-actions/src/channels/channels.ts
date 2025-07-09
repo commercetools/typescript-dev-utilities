@@ -40,7 +40,7 @@ function createChannelsMapActions(
 }
 
 export default (
-  actionGroupList: Array<ActionGroup>,
+  actionGroupList?: Array<ActionGroup>,
   syncActionConfig: SyncActionConfig = {}
 ): SyncAction<Channel, ChannelUpdateAction> => {
   const mapActionGroup = createMapActionGroup(actionGroupList);

@@ -44,7 +44,7 @@ function createCustomerGroupMapActions(
 }
 
 export default (
-  actionGroupList: Array<ActionGroup>,
+  actionGroupList?: Array<ActionGroup>,
   syncActionConfig: SyncActionConfig = {}
 ): SyncAction<CustomerGroup, CustomerGroupUpdateAction> => {
   const mapActionGroup = createMapActionGroup(actionGroupList);

@@ -51,7 +51,7 @@ function createStoresMapActions(
 }
 
 export default (
-  actionGroupList: Array<ActionGroup>,
+  actionGroupList?: Array<ActionGroup>,
   options: SyncActionConfig = {}
 ): SyncAction<Store, StoreUpdateAction> => {
   const mapActionGroup = createMapActionGroup(actionGroupList);

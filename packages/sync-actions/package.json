@@ -10,17 +10,17 @@
   "description": "Build API update actions for the commercetools platform.",
   "keywords": ["commercetools", "sync", "actions"],
   "homepage": "https://commercetools.github.io/nodejs",
-  "bugs": "https://github.com/commercetools/nodejs/issues",
+  "bugs": "https://github.com/commercetools/typescript-dev-utilities/issues",
   "author": "",
   "main": "dist/commercetools-sync-actions.cjs.js",
   "module": "dist/commercetools-sync-actions.esm.js",
-  "types": "dist/declations/index",
+  "types": "dist/declarations/index.d.ts",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/commercetools/nodejs.git"
+    "url": "https://github.com/commercetools/typescript-dev-utilities.git"
   },
-  "files": ["dist"],
+  "files": ["dist", "CHANGELOG.md"],
   "scripts": {
     "clean": "rm -rf dist",
     "build": "yarn clean;tsc && node esbuild.mjs",

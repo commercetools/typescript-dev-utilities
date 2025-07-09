@@ -40,7 +40,7 @@ function createDiscountCodesMapActions(
 }
 
 export default (
-  actionGroupList: Array<ActionGroup>,
+  actionGroupList?: Array<ActionGroup>,
   syncActionConfig: SyncActionConfig = {}
 ) => {
   // actionGroupList contains information about which action groups

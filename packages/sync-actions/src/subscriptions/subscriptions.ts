@@ -49,8 +49,8 @@ const createSubscriptionsMapActions = (
 };
 
 export default (
-  actionGroupList: Array<ActionGroup>,
-  syncActionConfig: SyncActionConfig
+  actionGroupList?: Array<ActionGroup>,
+  syncActionConfig: SyncActionConfig = {}
 ): SyncAction<Subscription, SubscriptionUpdateAction> => {
   const mapActionGroup = createMapActionGroup(actionGroupList);
   const doMapActions = createSubscriptionsMapActions(
