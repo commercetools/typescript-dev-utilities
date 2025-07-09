@@ -1,5 +1,10 @@
 import businessUnitsSyncFn from '../src/business-units/business-units';
 import { baseActionsList } from '../src/business-units/business-units-actions';
+import {
+  BusinessUnit,
+  BusinessUnitUpdateAction,
+  SyncAction,
+} from '../src/utils/types';
 
 describe('Exports', () => {
   test('correctly define base actions list', () => {
@@ -29,7 +34,7 @@ describe('Exports', () => {
 });
 
 describe('Actions', () => {
-  let businessUnitsSync;
+  let businessUnitsSync: SyncAction<BusinessUnit, BusinessUnitUpdateAction>;
   beforeEach(() => {
     businessUnitsSync = businessUnitsSyncFn([], {});
   });
@@ -318,7 +323,7 @@ describe('Actions', () => {
 
   describe('custom fields', () => {
     test('should build `setCustomType` action', () => {
-      const before = {
+      const before: Partial<BusinessUnit> = {
         custom: {
           type: {
             typeId: 'type',
@@ -329,7 +334,7 @@ describe('Actions', () => {
           },
         },
       };
-      const now = {
+      const now: Partial<BusinessUnit> = {
         custom: {
           type: {
             typeId: 'type',
@@ -347,7 +352,7 @@ describe('Actions', () => {
   });
 
   test('should build `setCustomField` action', () => {
-    const before = {
+    const before: Partial<BusinessUnit> = {
       custom: {
         type: {
           typeId: 'type',
@@ -358,7 +363,7 @@ describe('Actions', () => {
         },
       },
     };
-    const now = {
+    const now: Partial<BusinessUnit> = {
       custom: {
         type: {
           typeId: 'type',
@@ -381,10 +386,10 @@ describe('Actions', () => {
   });
 
   test('should build `addStore` action', () => {
-    const before = {
+    const before: Partial<BusinessUnit> = {
       stores: [],
     };
-    const now = {
+    const now: Partial<BusinessUnit> = {
       stores: [
         {
           typeId: 'store',
@@ -407,7 +412,7 @@ describe('Actions', () => {
   });
 
   test('should build `setStores` action', () => {
-    const before = {
+    const before: Partial<BusinessUnit> = {
       stores: [
         {
           typeId: 'store',
@@ -415,7 +420,7 @@ describe('Actions', () => {
         },
       ],
     };
-    const now = {
+    const now: Partial<BusinessUnit> = {
       stores: [
         {
           typeId: 'store',
@@ -445,7 +450,7 @@ describe('Actions', () => {
     ]);
   });
   test('should build `setStores` action but empty', () => {
-    const before = {
+    const before: Partial<BusinessUnit> = {
       stores: [
         {
           typeId: 'store',
@@ -480,7 +485,7 @@ describe('Actions', () => {
           },
         },
       ],
-    };
+    } as Partial<BusinessUnit>;
 
     const actual = businessUnitsSync.buildActions(now, before);
     const expected = [
@@ -498,7 +503,7 @@ describe('Actions', () => {
   });
 
   test('should build `removeAssociate` action', () => {
-    const before = {
+    const before: Partial<BusinessUnit> = {
       associates: [
         {
           customer: {
@@ -554,7 +559,8 @@ describe('Actions', () => {
           },
         },
       ],
-    };
+    } as Partial<BusinessUnit>;
+
     const now = {
       associates: [
         {
@@ -570,7 +576,7 @@ describe('Actions', () => {
           },
         },
       ],
-    };
+    } as Partial<BusinessUnit>;
 
     const actual = businessUnitsSync.buildActions(now, before);
     const expected = [
@@ -635,13 +641,13 @@ describe('Actions', () => {
   });
 
   test('should build `changeParentUnit` action', () => {
-    const before = {
+    const before: Partial<BusinessUnit> = {
       parentUnit: {
         typeId: 'business-unit',
         key: 'old',
       },
     };
-    const now = {
+    const now: Partial<BusinessUnit> = {
       parentUnit: {
         typeId: 'business-unit',
         key: 'new',

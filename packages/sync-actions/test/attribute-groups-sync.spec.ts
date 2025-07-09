@@ -1,5 +1,11 @@
 import attributeGroupSyncFn from '../src/attribute-groups/attribute-groups';
 import { baseActionsList } from '../src/attribute-groups/attribute-groups-actions';
+import {
+  AttributeGroup,
+  AttributeGroupUpdateAction,
+  LocalizedString,
+  SyncAction,
+} from '../src/utils/types';
 
 describe('Exports', () => {
   test('correctly define base actions list', () => {
@@ -12,16 +18,19 @@ describe('Exports', () => {
 });
 
 describe('Actions', () => {
-  let attributeGroupSync;
+  let attributeGroupSync: SyncAction<
+    AttributeGroup,
+    AttributeGroupUpdateAction
+  >;
   beforeEach(() => {
     attributeGroupSync = attributeGroupSyncFn([], {});
   });
 
   test('should build `changeName` action', () => {
-    const before = {
+    const before: LocalizedString = {
       name: 'John',
     };
-    const now = {
+    const now: LocalizedString = {
       name: 'Robert',
     };
 
@@ -31,10 +40,10 @@ describe('Actions', () => {
   });
 
   test('should build `setDescription` action', () => {
-    const before = {
+    const before: LocalizedString = {
       description: 'some description',
     };
-    const now = {
+    const now: LocalizedString = {
       description: 'some updated description',
     };
 

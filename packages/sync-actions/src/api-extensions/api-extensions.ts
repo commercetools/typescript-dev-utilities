@@ -36,8 +36,8 @@ const createApiExtensionsMapActions = (
 };
 
 export default (
-  actionGroupList: Array<ActionGroup>,
-  syncActionConfig: SyncActionConfig
+  actionGroupList?: Array<ActionGroup>,
+  syncActionConfig?: SyncActionConfig
 ): SyncAction<Extension, ExtensionUpdateAction> => {
   const mapActionGroup = createMapActionGroup(actionGroupList);
   const doMapActions = createApiExtensionsMapActions(

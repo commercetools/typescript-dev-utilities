@@ -3,6 +3,11 @@ import {
   baseActionsList,
   referenceActionsList,
 } from '../src/inventories/inventory-actions';
+import {
+  InventoryEntry,
+  InventoryEntryUpdateAction,
+  SyncAction,
+} from '../src/utils/types';
 
 describe('Exports', () => {
   test('action group list', () => {
@@ -29,9 +34,9 @@ describe('Exports', () => {
 });
 
 describe('Actions', () => {
-  let inventorySync;
+  let inventorySync: SyncAction<InventoryEntry, InventoryEntryUpdateAction>;
   beforeEach(() => {
-    inventorySync = inventorySyncFn([], {});
+    inventorySync = inventorySyncFn();
   });
 
   test('should build `changeQuantity` action', () => {
@@ -49,7 +54,7 @@ describe('Actions', () => {
 
   describe('custom fields', () => {
     test('should build `setCustomType` action', () => {
-      const before = {
+      const before: Partial<InventoryEntry> = {
         custom: {
           type: {
             typeId: 'type',
@@ -60,7 +65,7 @@ describe('Actions', () => {
           },
         },
       };
-      const now = {
+      const now: Partial<InventoryEntry> = {
         custom: {
           type: {
             typeId: 'type',
@@ -78,7 +83,7 @@ describe('Actions', () => {
   });
 
   test('should build `setCustomField` action', () => {
-    const before = {
+    const before: Partial<InventoryEntry> = {
       custom: {
         type: {
           typeId: 'type',
@@ -89,7 +94,7 @@ describe('Actions', () => {
         },
       },
     };
-    const now = {
+    const now: Partial<InventoryEntry> = {
       custom: {
         type: {
           typeId: 'type',

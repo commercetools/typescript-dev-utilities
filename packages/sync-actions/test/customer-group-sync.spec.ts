@@ -2,6 +2,11 @@ import customerGroupSyncFn, {
   actionGroups,
 } from '../src/customer-group/customer-group';
 import { baseActionsList } from '../src/customer-group/customer-group-actions';
+import {
+  CustomerGroup,
+  CustomerGroupUpdateAction,
+  SyncAction,
+} from '../src/utils/types';
 
 describe('Customer Groups Exports', () => {
   test('action group list', () => {
@@ -29,17 +34,20 @@ describe('Customer Groups Exports', () => {
 });
 
 describe('Customer Groups Actions', () => {
-  let customerGroupSync;
+  let customerGroupSync: SyncAction<CustomerGroup, CustomerGroupUpdateAction>;
   beforeEach(() => {
     customerGroupSync = customerGroupSyncFn([]);
   });
 
   test('should build the `changeName` action', () => {
-    const before = {
+    // const before = { name: 'en-name-before' };
+    // const now = { name: 'en-name-now' };
+
+    const before: Partial<object> = {
       name: { en: 'en-name-before', de: 'de-name-before' },
     };
 
-    const now = {
+    const now: Partial<object> = {
       name: { en: 'en-name-now', de: 'de-name-now' },
     };
 
@@ -74,7 +82,7 @@ describe('Customer Groups Actions', () => {
 
   describe('custom fields', () => {
     test('should build `setCustomType` action', () => {
-      const before = {
+      const before: Partial<CustomerGroup> = {
         custom: {
           type: {
             typeId: 'type',
@@ -85,7 +93,8 @@ describe('Customer Groups Actions', () => {
           },
         },
       };
-      const now = {
+
+      const now: Partial<CustomerGroup> = {
         custom: {
           type: {
             typeId: 'type',
@@ -103,7 +112,7 @@ describe('Customer Groups Actions', () => {
   });
 
   test('should build `setCustomField` action', () => {
-    const before = {
+    const before: Partial<CustomerGroup> = {
       custom: {
         type: {
           typeId: 'type',
@@ -114,7 +123,8 @@ describe('Customer Groups Actions', () => {
         },
       },
     };
-    const now = {
+
+    const now: Partial<CustomerGroup> = {
       custom: {
         type: {
           typeId: 'type',

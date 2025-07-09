@@ -1,8 +1,16 @@
 import productsSyncFn from '../src/products/products';
-import { Product } from '../src/utils/types';
+import {
+  Asset,
+  Price,
+  Product,
+  ProductData,
+  ProductUpdateAction,
+  ProductVariant,
+  SyncAction,
+} from '../src/utils/types';
 
 describe('Actions', () => {
-  let productsSync;
+  let productsSync: SyncAction<Product | ProductData, ProductUpdateAction>;
   beforeEach(() => {
     productsSync = productsSyncFn([], {});
   });
@@ -314,7 +322,7 @@ describe('Actions', () => {
   });
 
   test('should build `addVariant` action', () => {
-    const newVariant = {
+    const newVariant: ProductVariant = {
       id: 0,
       key: 'ddd',
       sku: 'ccc',
@@ -346,18 +354,25 @@ describe('Actions', () => {
           key: 'eee',
           sku: 'aaa',
           attributes: [{ name: 'color', value: 'green' }],
-          prices: [{ value: { centAmount: 100, currencyCode: 'EUR' } }],
+          prices: [
+            { value: { centAmount: 100, currencyCode: 'EUR' } },
+          ] as Price[],
         },
         {
           id: 3,
           key: 'fff',
           sku: 'bbb',
           attributes: [{ name: 'color', value: 'yellow' }],
-          prices: [{ value: { centAmount: 200, currencyCode: 'GBP' } }],
+          prices: [
+            { value: { centAmount: 200, currencyCode: 'GBP' } },
+          ] as Price[],
         },
       ],
-    };
-    const now = { variants: before.variants.slice(0, 1).concat(newVariant) };
+    } as Partial<ProductData>;
+
+    const now = {
+      variants: before.variants.slice(0, 1).concat(newVariant),
+    } as Partial<Product>;
 
     const actions = productsSync.buildActions(now, before);
 
@@ -1007,7 +1022,7 @@ describe('Actions', () => {
 
     const newLongText = `Hello, ${longText}`;
 
-    const before = {
+    const before: Partial<ProductData> = {
       masterVariant: {
         id: 1,
         attributes: [
@@ -1031,7 +1046,7 @@ describe('Actions', () => {
         },
       ],
     };
-    const now = {
+    const now: Partial<ProductData> = {
       masterVariant: {
         id: 1,
         attributes: [
@@ -1075,7 +1090,7 @@ describe('Actions', () => {
   });
 
   test('should build `setAttribute` action', async () => {
-    const before = {
+    const before: object = {
       categories: [],
       masterVariant: {
         id: 1,
@@ -1088,7 +1103,7 @@ describe('Actions', () => {
       },
     };
 
-    const now = {
+    const now: object = {
       masterVariant: {
         id: 1,
         key: 'default-masterVariant-key-de07e9bc-e352-422f-abe6-910d9879b995',
@@ -1115,7 +1130,7 @@ describe('Actions', () => {
   });
 
   test('should build `setPriceMode` action', async () => {
-    const before = {
+    const before: Partial<ProductData> = {
       masterVariant: {
         id: 1,
         prices: [],
@@ -1215,13 +1230,13 @@ describe('Actions', () => {
 
   describe('assets', () => {
     test('should build "addAsset" action with empty assets', () => {
-      const before = {
+      const before: Partial<ProductData> = {
         masterVariant: {
           id: 1,
           assets: [],
         },
       };
-      const now = {
+      const now: Partial<ProductData> = {
         masterVariant: {
           id: 1,
           assets: [
@@ -1236,7 +1251,7 @@ describe('Actions', () => {
                 },
               ],
             },
-          ],
+          ] as unknown as Asset[],
         },
       };
       const actual = productsSync.buildActions(now, before);
@@ -1252,13 +1267,15 @@ describe('Actions', () => {
     });
 
     test('should build "addAsset" action with non exist assets', () => {
-      const before = {
+      const before: Partial<ProductData> = {
         masterVariant: {
           id: 1,
           assets: [
             {
               id: 'xyz',
               key: 'asset-key-one',
+              sources: [],
+              name: undefined,
             },
             {
               id: 'xyz2',
@@ -1266,11 +1283,12 @@ describe('Actions', () => {
               name: {
                 en: 'asset name two',
               },
+              sources: [],
             },
           ],
         },
       };
-      const now = {
+      const now: Partial<ProductData> = {
         masterVariant: {
           id: 1,
           assets: [
@@ -1292,8 +1310,9 @@ describe('Actions', () => {
                   uri: 'http://example.org/content/product-manual.pdf',
                 },
               ],
+              id: '',
             },
-          ],
+          ] as unknown as Asset[],
         },
       };
       const actual = productsSync.buildActions(now, before);
@@ -1309,17 +1328,19 @@ describe('Actions', () => {
     });
 
     test('should build "addAsset" action for variant with sku with empty assets', () => {
-      const before = {
+      const before: Partial<ProductData> = {
         variants: [
           {
             sku: 'my-sku',
             assets: [],
+            id: 0,
           },
         ],
       };
-      const now = {
+      const now: Partial<ProductData> = {
         variants: [
           {
+            id: 0,
             sku: 'my-sku',
             assets: [
               {
@@ -1333,7 +1354,7 @@ describe('Actions', () => {
                   },
                 ],
               },
-            ],
+            ] as unknown as Asset[],
           },
         ],
       };
@@ -1357,7 +1378,7 @@ describe('Actions', () => {
             uri: 'http://example.org/content/product-manual.pdf',
           },
         ],
-      };
+      } as Asset;
       const newAsset = {
         key: 'new',
         sources: [
@@ -1365,8 +1386,8 @@ describe('Actions', () => {
             uri: 'http://example.org/content/product-manual.gif',
           },
         ],
-      };
-      const before = {
+      } as Asset;
+      const before: Partial<ProductData> = {
         variants: [
           {
             id: 2,
@@ -1374,7 +1395,7 @@ describe('Actions', () => {
           },
         ],
       };
-      const now = {
+      const now: Partial<ProductData> = {
         variants: [
           {
             id: 2,
@@ -1558,7 +1579,7 @@ describe('Actions', () => {
     });
 
     test('should build "setAssetKey", "changeAssetName", "setAssetDescription", "setAssetSources", "setAssetTags", "setAssetCustomType" actions', () => {
-      const initialAsset = {
+      const initialAsset: Asset = {
         id: 'xyz',
         key: 'asset-key',
         name: {
@@ -1585,7 +1606,7 @@ describe('Actions', () => {
         },
       };
 
-      const changedAsset = {
+      const changedAsset: Asset = {
         id: 'xyz',
         key: 'update-asset-key',
         name: {
@@ -1612,7 +1633,7 @@ describe('Actions', () => {
         },
       };
 
-      const before = {
+      const before: Partial<ProductData> = {
         variants: [
           {
             id: 1,
@@ -1620,7 +1641,7 @@ describe('Actions', () => {
           },
         ],
       };
-      const now = {
+      const now: Partial<ProductData> = {
         variants: [
           {
             id: 1,
@@ -1692,7 +1713,7 @@ describe('Actions', () => {
             customField1: true,
           },
         },
-      };
+      } as unknown as Asset;
       const changedAsset = {
         id: 'xyz',
         key: 'asset-key-two',
@@ -1708,8 +1729,8 @@ describe('Actions', () => {
             customField1: false,
           },
         },
-      };
-      const before = {
+      } as unknown as Asset;
+      const before: Partial<ProductData> = {
         variants: [
           {
             id: 1,
@@ -1717,7 +1738,7 @@ describe('Actions', () => {
           },
         ],
       };
-      const now = {
+      const now: Partial<ProductData> = {
         variants: [
           {
             id: 1,
