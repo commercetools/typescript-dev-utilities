@@ -1,0 +1,64 @@
+import createBuildActions from '../utils/create-build-actions';
+import createMapActionGroup from '../utils/create-map-action-group';
+import actionsMapCustom from '../utils/action-map-custom';
+import { actionsMapBase } from './discount-codes-actions';
+import combineValidityActions from '../utils/combine-validity-actions';
+import * as diffpatcher from '../utils/diffpatcher';
+import {
+  ActionGroup,
+  Delta,
+  DiscountCode,
+  SyncActionConfig,
+  UpdateAction,
+} from '../utils/types';
+
+export const actionGroups = ['base', 'custom'];
+
+function createDiscountCodesMapActions(
+  mapActionGroup: (
+    type: string,
+    fn: () => Array<UpdateAction>
+  ) => Array<UpdateAction>,
+  syncActionConfig: SyncActionConfig
+) {
+  return function doMapActions(
+    diff: Delta,
+    newObj: DiscountCode,
+    oldObj: DiscountCode
+  ) {
+    const allActions = [];
+    allActions.push(
+      mapActionGroup('base', () =>
+        actionsMapBase(diff, oldObj, newObj, syncActionConfig)
+      )
+    );
+    allActions.push(
+      mapActionGroup('custom', () => actionsMapCustom(diff, newObj, oldObj))
+    );
+    return combineValidityActions(allActions.flat());
+  };
+}
+
+export default (
+  actionGroupList?: Array<ActionGroup>,
+  syncActionConfig: SyncActionConfig = {}
+) => {
+  // actionGroupList contains information about which action groups
+  // are allowed or ignored
+
+  // createMapActionGroup returns function 'mapActionGroup' that takes params:
+  // - action group name
+  // - callback function that should return a list of actions that correspond
+  //    to the for the action group
+
+  // this resulting function mapActionGroup will call the callback function
+  // for allowed action groups and return the return value of the callback
+  // It will return an empty array for ignored action groups
+  const mapActionGroup = createMapActionGroup(actionGroupList);
+  const doMapActions = createDiscountCodesMapActions(
+    mapActionGroup,
+    syncActionConfig
+  );
+  const buildActions = createBuildActions(diffpatcher.diff, doMapActions);
+  return { buildActions };
+};
