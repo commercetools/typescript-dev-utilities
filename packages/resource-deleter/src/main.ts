@@ -66,6 +66,7 @@ export default class ResourceDeleter {
         libraryVersion: version,
       })
       .withQueueMiddleware({ concurrency: 20 })
+      .withConcurrentModificationMiddleware()
       .build();
 
     this.resource = options.resource;
