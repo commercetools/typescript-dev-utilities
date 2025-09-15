@@ -1,6 +1,6 @@
 {
   "name": "@commercetools/sync-actions",
-  "version": "7.2.0",
+  "version": "7.2.0-alpha.2",
   "publishConfig": {
     "access": "public"
   },

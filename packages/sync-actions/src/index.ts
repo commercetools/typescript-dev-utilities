@@ -23,3 +23,4 @@ export { default as createSyncAttributeGroups } from './attribute-groups/attribu
 export { default as createSyncApiExtensions } from './api-extensions/api-extensions';
 export { default as createSyncBusinessUnits } from './business-units/business-units';
 export { default as createSyncSubscriptions } from './subscriptions/subscriptions';
+export * from './utils/types';

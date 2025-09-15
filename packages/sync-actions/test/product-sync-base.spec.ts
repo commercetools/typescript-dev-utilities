@@ -8,6 +8,7 @@ import {
 import {
   Product,
   ProductData,
+  ProductDraft,
   ProductUpdateAction,
   SyncAction,
 } from '../src/utils/types';
@@ -106,21 +107,26 @@ describe('Actions', () => {
   });
 
   test('should build `changeName` action', () => {
-    const before: Partial<Product & ProductData> = {
+    const _productsSync: SyncAction<ProductData, ProductUpdateAction> =
+      productsSyncFn([], {});
+    const before: Partial<ProductData> = {
       name: { en: 'Car', de: 'Auto' },
     };
-    const now: Partial<Product & ProductData> = { name: { en: 'Sport car' } };
-    const actions = productsSync.buildActions(now, before);
+    const now: Partial<ProductData> = { name: { en: 'Sport car' } };
+    const actions = _productsSync.buildActions(now, before);
 
     expect(actions).toEqual([{ action: 'changeName', ...now }]);
   });
 
   test('should build action with `staged` flag as false', () => {
-    const before: Partial<Product & Partial<ProductData>> = {
+    const before: Partial<ProductDraft> = {
       name: { en: 'Car', de: 'Auto' },
     };
 
-    const now = { name: { en: 'Sport car' }, publish: true };
+    const now: Partial<ProductDraft> = {
+      name: { en: 'Sport car' },
+      publish: true,
+    };
 
     const actions = productsSync.buildActions(now as Partial<Product>, before);
 
