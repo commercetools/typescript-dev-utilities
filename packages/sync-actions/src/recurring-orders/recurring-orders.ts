@@ -12,7 +12,7 @@ import * as RecurringOrdersActions from './recurring-orders-actions';
 import * as diffpatcher from '../utils/diffpatcher';
 import { Delta, Order } from '../utils/types';
 
-export const actionGroups = ['base', 'custom'];
+export const actionGroups = ['base', 'references', 'custom'];
 
 function createRecurringOrdersMapActions(
   mapActionGroup: (
@@ -43,6 +43,14 @@ function createRecurringOrdersMapActions(
             newObj,
             syncActionConfig
           )
+      )
+    );
+
+    allActions.push(
+      mapActionGroup(
+        'references',
+        (): Array<UpdateAction> =>
+          RecurringOrdersActions.actionsMapReferences(diff, oldObj, newObj)
       )
     );
 

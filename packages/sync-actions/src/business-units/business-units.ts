@@ -41,6 +41,18 @@ const createCustomerMapActions = (
     );
 
     allActions.push(
+      mapActionGroup('billingAddressIds', () =>
+        customerActions.actionsMapRemoveBillingAddresses(diff, oldObj, newObj)
+      )
+    );
+
+    allActions.push(
+      mapActionGroup('shippingAddressIds', () =>
+        customerActions.actionsMapRemoveShippingAddresses(diff, oldObj, newObj)
+      )
+    );
+
+    allActions.push(
       mapActionGroup('addresses', () =>
         customerActions.actionsMapAddresses(diff, oldObj, newObj)
       )
@@ -59,13 +71,13 @@ const createCustomerMapActions = (
 
     allActions.push(
       mapActionGroup('billingAddressIds', () =>
-        customerActions.actionsMapBillingAddresses(diff, oldObj, newObj)
+        customerActions.actionsMapAddBillingAddresses(diff, oldObj, newObj)
       )
     );
 
     allActions.push(
       mapActionGroup('shippingAddressIds', () =>
-        customerActions.actionsMapShippingAddresses(diff, oldObj, newObj)
+        customerActions.actionsMapAddShippingAddresses(diff, oldObj, newObj)
       )
     );
 

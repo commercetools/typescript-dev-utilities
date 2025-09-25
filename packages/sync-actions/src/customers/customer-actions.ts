@@ -67,10 +67,10 @@ export const authenticationModeActionsList: Array<UpdateAction> = [
 /**
  * SYNC FUNCTIONS
  */
-export function actionsMapBase(
+export function actionsMapBase<T extends Customer>(
   diff: Delta,
-  oldObj: Customer,
-  newObj: Customer,
+  oldObj: T,
+  newObj: T,
   config: SyncActionConfig = {}
 ) {
   return buildBaseAttributesActions({
@@ -85,10 +85,10 @@ export function actionsMapBase(
   });
 }
 
-export function actionsMapSetDefaultBase(
+export function actionsMapSetDefaultBase<T extends Customer>(
   diff: Delta,
-  oldObj: Customer,
-  newObj: Customer,
+  oldObj: T,
+  newObj: T,
   config: SyncActionConfig = {}
 ) {
   return buildBaseAttributesActions({
@@ -140,7 +140,7 @@ export function actionsMapAddresses<T extends Customer>(
   return handler(diff, oldObj, newObj);
 }
 
-export function actionsMapBillingAddresses<T extends Customer>(
+export function actionsMapAddBillingAddresses<T extends Customer>(
   diff: Delta,
   oldObj: T,
   newObj: T
@@ -150,6 +150,17 @@ export function actionsMapBillingAddresses<T extends Customer>(
       action: 'addBillingAddressId',
       addressId,
     }),
+  });
+
+  return handler(diff, oldObj, newObj);
+}
+
+export function actionsMapRemoveBillingAddresses<T extends Customer>(
+  diff: Delta,
+  oldObj: T,
+  newObj: T
+) {
+  const handler = createBuildArrayActions('billingAddressIds', {
     [REMOVE_ACTIONS]: (addressId: string) => ({
       action: 'removeBillingAddressId',
       addressId,
@@ -159,7 +170,7 @@ export function actionsMapBillingAddresses<T extends Customer>(
   return handler(diff, oldObj, newObj);
 }
 
-export function actionsMapShippingAddresses<T extends Customer>(
+export function actionsMapAddShippingAddresses<T extends Customer>(
   diff: Delta,
   oldObj: T,
   newObj: T
@@ -169,6 +180,17 @@ export function actionsMapShippingAddresses<T extends Customer>(
       action: 'addShippingAddressId',
       addressId,
     }),
+  });
+
+  return handler(diff, oldObj, newObj);
+}
+
+export function actionsMapRemoveShippingAddresses<T extends Customer>(
+  diff: Delta,
+  oldObj: T,
+  newObj: T
+) {
+  const handler = createBuildArrayActions('shippingAddressIds', {
     [REMOVE_ACTIONS]: (addressId: string) => ({
       action: 'removeShippingAddressId',
       addressId,
