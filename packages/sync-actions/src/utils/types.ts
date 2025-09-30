@@ -1,7 +1,6 @@
 import type { Delta as DiffDelta } from 'jsondiffpatch/dist/jsondiffpatch.cjs';
 
-export type * from '@commercetools/platform-sdk';
-
+export * from '@commercetools/platform-sdk';
 export type Delta = DiffDelta | undefined;
 
 export type SyncActionConfig = {
