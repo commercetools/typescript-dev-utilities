@@ -1,5 +1,11 @@
 # @commercetools/resource-deleter
 
+## 5.0.2
+
+### Patch Changes
+
+- [#11](https://github.com/commercetools/typescript-dev-utilities/pull/11) [`49c0c75`](https://github.com/commercetools/typescript-dev-utilities/commit/49c0c75930d013d643c5b8138720e68a959c4df6) Thanks [@ajimae](https://github.com/ajimae)! - [Feat][DEVX-618] Migrate `@commercetools/sync-actions` to TypeScript
+
 ## 5.0.1
 
 ### Patch Changes
