@@ -12,10 +12,10 @@ const cmJsConfig = esbuild.build(
 );
 
 // commercetools-sync-actions.esm.js [module]
-const moduleConfig = esbuild.build(
+const esmConfig = esbuild.build(
   Object.assign(
     {},
-    { ...opts, format: 'esm', mainFields: ['module', 'main'] },
+    { ...opts, platform: 'neutral', target: 'es2020', packages: 'external', format: 'esm', mainFields: ['module', 'main'] },
     {
       entryPoints: ['src/index.ts'],
       outfile: 'dist/commercetools-sync-actions.esm.js',
@@ -48,6 +48,6 @@ const umdIIFEConfig = esbuild.build(
   )
 );
 
-Promise.all([cmJsConfig, moduleConfig, umdMinConfig, umdIIFEConfig]).catch(
+Promise.all([cmJsConfig, esmConfig, umdMinConfig, umdIIFEConfig]).catch(
   console.error
 );
