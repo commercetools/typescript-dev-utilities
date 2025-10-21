@@ -1,5 +1,11 @@
 # @commercetools/sync-actions
 
+## 8.0.1
+
+### Patch Changes
+
+- [#29](https://github.com/commercetools/typescript-dev-utilities/pull/29) [`5e59d75`](https://github.com/commercetools/typescript-dev-utilities/commit/5e59d75c775aafb32336282619f7aa0505e9e086) Thanks [@ajimae](https://github.com/ajimae)! - Fix issue with esm module and dependencies resolution
+
 ## 8.0.0
 
 ### Major Changes
