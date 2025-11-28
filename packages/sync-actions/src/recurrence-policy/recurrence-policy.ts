@@ -5,7 +5,7 @@ import type {
   UpdateAction,
   RecurrencePolicyUpdateAction,
   RecurrencePolicy,
-  Delta
+  Delta,
 } from '../utils/types';
 import createBuildActions from '../utils/create-build-actions';
 import createMapActionGroup from '../utils/create-map-action-group';
@@ -14,7 +14,7 @@ import * as diffpatcher from '../utils/diffpatcher';
 
 export const actionGroups = ['base'];
 
-function createRecurringOrdersMapActions(
+function createRecurrencePolicyMapActions(
   mapActionGroup: (
     type: string,
     fn: () => Array<UpdateAction>
@@ -55,7 +55,7 @@ export default (
   syncActionConfig: SyncActionConfig = {}
 ): SyncAction<RecurrencePolicy, RecurrencePolicyUpdateAction> => {
   const mapActionGroup = createMapActionGroup(actionGroupList);
-  const doMapActions = createRecurringOrdersMapActions(
+  const doMapActions = createRecurrencePolicyMapActions(
     mapActionGroup,
     syncActionConfig
   );
