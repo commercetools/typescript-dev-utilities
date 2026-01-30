@@ -29,9 +29,14 @@ import {
   UpdateAction,
 } from '../utils/types';
 import clone from '../utils/clone';
-
-const REGEX_NUMBER = new RegExp(/^\d+$/);
-const REGEX_UNDERSCORE_NUMBER = new RegExp(/^_\d+$/);
+import {
+  REGEX_NUMBER,
+  REGEX_UNDERSCORE_NUMBER,
+  getIsAddAction,
+  getIsUpdateAction,
+  getIsRemoveAction,
+  getIsItemMovedAction,
+} from '../utils/array-actions-utils';
 
 export const baseActionsList: Array<UpdateAction> = [
   { action: 'changeName', key: 'name' },
@@ -64,18 +69,6 @@ export const referenceActionsList: Array<UpdateAction> = [
 /**
  * HELPER FUNCTIONS
  */
-
-const getIsAddAction = (key: string, resource: unknown) =>
-  REGEX_NUMBER.test(key) && Array.isArray(resource) && resource.length;
-
-const getIsUpdateAction = (key: string, resource: unknown) =>
-  REGEX_NUMBER.test(key) && Object.keys(resource).length;
-
-const getIsRemoveAction = (key: string, resource: unknown) =>
-  REGEX_UNDERSCORE_NUMBER.test(key) && Number(resource[2]) === 0;
-
-const getIsItemMovedAction = (key: string, resource: unknown) =>
-  REGEX_UNDERSCORE_NUMBER.test(key) && Number(resource[2]) === 3;
 
 function _buildSkuActions(
   variantDiff: ProductVariant,
