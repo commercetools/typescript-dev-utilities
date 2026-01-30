@@ -1,8 +1,8 @@
 export default function extractMatchingPairs<T extends object>(
   hashMap: object,
   key: string,
-  before: T,
-  now: T
+  before: ArrayLike<T>,
+  now: ArrayLike<T>
 ) {
   let oldObjPos: string | number;
   let newObjPos: string | number;

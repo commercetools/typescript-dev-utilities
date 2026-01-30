@@ -600,7 +600,7 @@ function _buildVariantAssetsActions(
       key,
       oldVariant.assets,
       newVariant.assets
-    ) as unknown as { oldObj: Asset; newObj: Asset };
+    );
 
     if (getIsAddAction(key, asset)) {
       assetActions.push({
@@ -818,7 +818,7 @@ export function actionsMapAssets<T extends object = ProductData>(
         key,
         (oldObj as ProductData).variants,
         (newObj as ProductData).variants
-      ) as unknown as { oldObj: ProductVariant; newObj: ProductVariant };
+      );
       if (
         variant.assets &&
         (REGEX_UNDERSCORE_NUMBER.test(key) || REGEX_NUMBER.test(key))
@@ -865,7 +865,7 @@ export function actionsMapAttributes(
         key,
         oldObj.variants,
         newObj.variants
-      );
+      ) satisfies { oldObj: ProductVariant; newObj: ProductVariant };
       if (REGEX_NUMBER.test(key) && !Array.isArray(variant)) {
         const skuAction = _buildSkuActions(variant, oldVariant);
         const keyAction = _buildKeyActions(variant, oldVariant);
@@ -903,7 +903,7 @@ export function actionsMapImages(diff, oldObj, newObj, variantHashMap) {
         key,
         oldObj.variants,
         newObj.variants
-      );
+      ) satisfies { oldObj: ProductVariant; newObj: ProductVariant };
       if (REGEX_UNDERSCORE_NUMBER.test(key) || REGEX_NUMBER.test(key)) {
         const vActions = _buildVariantImagesAction(
           variant.images,
@@ -937,7 +937,7 @@ export function actionsMapPrices(
         key,
         oldObj.variants,
         newObj.variants
-      );
+      ) satisfies { oldObj: ProductVariant; newObj: ProductVariant };
       if (REGEX_UNDERSCORE_NUMBER.test(key) || REGEX_NUMBER.test(key)) {
         const [addPriceAction, changePriceAction, removePriceAction] =
           _buildVariantPricesAction(
@@ -969,7 +969,7 @@ export function actionsMapPricesCustom(diff, oldObj, newObj, variantHashMap) {
         key,
         oldObj.variants,
         newObj.variants
-      );
+      ) satisfies { oldObj: ProductVariant; newObj: ProductVariant };
 
       if (
         variant &&

@@ -153,8 +153,8 @@ function actionsMapEnums<S extends CustomFieldEnumType>(
 
 export function actionsMapFieldDefinitions(
   fieldDefinitionsDiff: Delta,
-  previous: FieldDefinition,
-  next: FieldDefinition | Array<FieldDefinition>,
+  previous: Array<FieldDefinition>,
+  next: Array<FieldDefinition>,
   diffPaths: Delta
 ) {
   const actions = [];
@@ -165,7 +165,7 @@ export function actionsMapFieldDefinitions(
         diffPaths,
         diffKey,
         previous,
-        next as FieldDefinition
+        next
       );
 
       if (getIsChangedOperation(diffKey)) {

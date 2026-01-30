@@ -11,7 +11,6 @@ import {
   Delivery,
   Delta,
   Order,
-  Parcel,
   SyncActionConfig,
   UpdateAction,
 } from '../utils/types';
@@ -92,7 +91,7 @@ function _buildDeliveryParcelsAction<T extends Delivery>(
       key,
       oldDelivery.parcels,
       newDelivery.parcels
-    ) as unknown as { oldObj: Parcel };
+    );
 
     if (isAddAction(key, parcel)) {
       addParcelActions.push({
@@ -156,7 +155,7 @@ export function actionsMapParcels<T extends Order>(
         key,
         oldObj.shippingInfo.deliveries,
         newObj.shippingInfo.deliveries
-      ) as unknown as { oldObj: Delivery; newObj: Delivery };
+      );
 
       if (REGEX_UNDERSCORE_NUMBER.test(key) || REGEX_NUMBER.test(key)) {
         const [addParcelAction, removeParcelAction] =
@@ -194,7 +193,7 @@ export function actionsMapDeliveryItems<T extends Order>(
       key,
       oldObj.shippingInfo.deliveries,
       newObj.shippingInfo.deliveries
-    ) as unknown as { oldObj: Delivery; newObj: Delivery };
+    );
 
     if (REGEX_UNDERSCORE_NUMBER.test(key) || REGEX_NUMBER.test(key)) {
       const [setDeliveryItemsAction] = _buildDeliveryItemsAction(
