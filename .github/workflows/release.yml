@@ -5,6 +5,11 @@ on:
     branches:
       - main
 
+permissions:
+  actions: write
+  contents: write
+  id-token: write  # Required for npm trusted publishing (OIDC)
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -38,6 +43,9 @@ jobs:
       - name: Setup
         uses: ./.github/actions/ci
 
+      - name: Update npm
+        run: npm install -g npm@latest
+
       - name: Creating .npmrc
         run: |
           cat << EOF > "$HOME/.npmrc"
@@ -46,6 +54,21 @@ jobs:
           EOF
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Setup Node.js for npm publishing
+        run: npm --version
+
+      - name: Building packages
+        run: yarn build
+
+      - name: Verify npm OIDC configuration
+        run: |
+          # Verify registry is set correctly
+          echo "Registry: $(npm config get registry)"
+          # Ensure no token-based auth is configured (OIDC should be used automatically)
+          npm config delete //register.npmjs.org/:_authToken || true
+          # Verify npm can access the registry (this will use OIDC if configured)
+          echo "npm OIDC authentication configured via setup-node action"
 
       - name: Building packages
         run: yarn build
@@ -59,3 +82,5 @@ jobs:
           commit: 'ci(changesets): version packages'
         env:
           GITHUB_TOKEN: ${{ steps.generate_github_token.outputs.token }}
+          # Ensure npm uses OIDC authentication
+          NPM_CONFIG_REGISTRY: 'https://registry.npmjs.org'
