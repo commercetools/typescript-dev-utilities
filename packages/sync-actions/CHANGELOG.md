@@ -1,5 +1,11 @@
 # @commercetools/sync-actions
 
+## 8.1.0
+
+### Minor Changes
+
+- [#41](https://github.com/commercetools/typescript-dev-utilities/pull/41) [`c5439c9`](https://github.com/commercetools/typescript-dev-utilities/commit/c5439c906500a017b1cecb3f5dc6b103ba2b0223) Thanks [@islam3zzat](https://github.com/islam3zzat)! - Add support for product tailoring sync actions
+
 ## 8.0.1
 
 ### Patch Changes
