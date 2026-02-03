@@ -29,9 +29,14 @@ import {
   UpdateAction,
 } from '../utils/types';
 import clone from '../utils/clone';
-
-const REGEX_NUMBER = new RegExp(/^\d+$/);
-const REGEX_UNDERSCORE_NUMBER = new RegExp(/^_\d+$/);
+import {
+  REGEX_NUMBER,
+  REGEX_UNDERSCORE_NUMBER,
+  getIsAddAction,
+  getIsUpdateAction,
+  getIsRemoveAction,
+  getIsItemMovedAction,
+} from '../utils/array-actions-utils';
 
 export const baseActionsList: Array<UpdateAction> = [
   { action: 'changeName', key: 'name' },
@@ -64,18 +69,6 @@ export const referenceActionsList: Array<UpdateAction> = [
 /**
  * HELPER FUNCTIONS
  */
-
-const getIsAddAction = (key: string, resource: unknown) =>
-  REGEX_NUMBER.test(key) && Array.isArray(resource) && resource.length;
-
-const getIsUpdateAction = (key: string, resource: unknown) =>
-  REGEX_NUMBER.test(key) && Object.keys(resource).length;
-
-const getIsRemoveAction = (key: string, resource: unknown) =>
-  REGEX_UNDERSCORE_NUMBER.test(key) && Number(resource[2]) === 0;
-
-const getIsItemMovedAction = (key: string, resource: unknown) =>
-  REGEX_UNDERSCORE_NUMBER.test(key) && Number(resource[2]) === 3;
 
 function _buildSkuActions(
   variantDiff: ProductVariant,
@@ -600,7 +593,7 @@ function _buildVariantAssetsActions(
       key,
       oldVariant.assets,
       newVariant.assets
-    ) as unknown as { oldObj: Asset; newObj: Asset };
+    );
 
     if (getIsAddAction(key, asset)) {
       assetActions.push({
@@ -818,7 +811,7 @@ export function actionsMapAssets<T extends object = ProductData>(
         key,
         (oldObj as ProductData).variants,
         (newObj as ProductData).variants
-      ) as unknown as { oldObj: ProductVariant; newObj: ProductVariant };
+      );
       if (
         variant.assets &&
         (REGEX_UNDERSCORE_NUMBER.test(key) || REGEX_NUMBER.test(key))
@@ -865,7 +858,7 @@ export function actionsMapAttributes(
         key,
         oldObj.variants,
         newObj.variants
-      );
+      ) satisfies { oldObj: ProductVariant; newObj: ProductVariant };
       if (REGEX_NUMBER.test(key) && !Array.isArray(variant)) {
         const skuAction = _buildSkuActions(variant, oldVariant);
         const keyAction = _buildKeyActions(variant, oldVariant);
@@ -903,7 +896,7 @@ export function actionsMapImages(diff, oldObj, newObj, variantHashMap) {
         key,
         oldObj.variants,
         newObj.variants
-      );
+      ) satisfies { oldObj: ProductVariant; newObj: ProductVariant };
       if (REGEX_UNDERSCORE_NUMBER.test(key) || REGEX_NUMBER.test(key)) {
         const vActions = _buildVariantImagesAction(
           variant.images,
@@ -937,7 +930,7 @@ export function actionsMapPrices(
         key,
         oldObj.variants,
         newObj.variants
-      );
+      ) satisfies { oldObj: ProductVariant; newObj: ProductVariant };
       if (REGEX_UNDERSCORE_NUMBER.test(key) || REGEX_NUMBER.test(key)) {
         const [addPriceAction, changePriceAction, removePriceAction] =
           _buildVariantPricesAction(
@@ -969,7 +962,7 @@ export function actionsMapPricesCustom(diff, oldObj, newObj, variantHashMap) {
         key,
         oldObj.variants,
         newObj.variants
-      );
+      ) satisfies { oldObj: ProductVariant; newObj: ProductVariant };
 
       if (
         variant &&

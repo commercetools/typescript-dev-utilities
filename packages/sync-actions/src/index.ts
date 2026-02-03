@@ -18,6 +18,7 @@ export { default as createSyncTypes } from './types/types';
 export { default as createSyncProjects } from './projects/projects';
 export { default as createSyncStores } from './stores/stores';
 export { default as createSyncProductSelections } from './product-selections/product-selections';
+export { default as createSyncProductTailoring } from './product-tailoring/product-tailoring';
 export { default as createSyncStandalonePrices } from './prices/prices';
 export { default as createSyncAttributeGroups } from './attribute-groups/attribute-groups';
 export { default as createSyncApiExtensions } from './api-extensions/api-extensions';
