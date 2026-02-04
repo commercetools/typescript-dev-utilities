@@ -136,5 +136,7 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+.idea
+
 # custom entries
 bin
