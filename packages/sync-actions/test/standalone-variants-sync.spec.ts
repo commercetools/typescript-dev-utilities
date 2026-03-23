@@ -452,6 +452,89 @@ describe('Actions', () => {
       expect(setAttributesAction?.attributes).toHaveLength(2);
     });
 
+    test('should only include changed attribute when one attribute changes and another stays the same', () => {
+      const before: StandaloneVariant = {
+        id: '123',
+        variants: [
+          {
+            id: 1,
+            key: 'key-1',
+            sku: 'sku-1',
+            attributes: [
+              { name: 'color', value: 'red' },
+              { name: 'size', value: 'M' },
+            ],
+          },
+        ],
+      };
+      const now: StandaloneVariant = {
+        id: '123',
+        variants: [
+          {
+            id: 1,
+            key: 'key-1',
+            sku: 'sku-1',
+            attributes: [
+              { name: 'color', value: 'blue' },
+              { name: 'size', value: 'M' }, // unchanged
+            ],
+          },
+        ],
+      };
+
+      const actual = standaloneVariantSync.buildActions(now, before);
+
+      const setAttributesAction = actual.find(
+        (action) => action.action === 'setAttributes'
+      );
+      expect(setAttributesAction).toBeDefined();
+      // Should only include the changed attribute, not the unchanged one
+      expect(setAttributesAction?.attributes).toHaveLength(1);
+      expect(setAttributesAction?.attributes).toEqual([
+        { name: 'color', value: JSON.stringify('blue') },
+      ]);
+    });
+
+    test('should add new attribute while preserving existing unchanged attributes', () => {
+      const before: StandaloneVariant = {
+        id: '123',
+        variants: [
+          {
+            id: 1,
+            key: 'key-1',
+            sku: 'sku-1',
+            attributes: [{ name: 'color', value: 'red' }],
+          },
+        ],
+      };
+      const now: StandaloneVariant = {
+        id: '123',
+        variants: [
+          {
+            id: 1,
+            key: 'key-1',
+            sku: 'sku-1',
+            attributes: [
+              { name: 'color', value: 'red' }, // unchanged
+              { name: 'size', value: 'M' }, // new attribute
+            ],
+          },
+        ],
+      };
+
+      const actual = standaloneVariantSync.buildActions(now, before);
+
+      const setAttributesAction = actual.find(
+        (action) => action.action === 'setAttributes'
+      );
+      expect(setAttributesAction).toBeDefined();
+      // Should only include the new attribute, not the unchanged one
+      expect(setAttributesAction?.attributes).toHaveLength(1);
+      expect(setAttributesAction?.attributes).toEqual([
+        { name: 'size', value: JSON.stringify('M') },
+      ]);
+    });
+
     test('should handle complex attribute values (objects)', () => {
       const before: StandaloneVariant = {
         id: '123',
