@@ -89,113 +89,165 @@ export function convertAttributeToUpdateActionShape(attribute: Attribute): {
   };
 }
 
-function _buildAttributesActions(
+type ModifiedAttribute = { name: string; value: unknown };
+
+/**
+ * Processes a numeric key from the diff, indicating an added or modified attribute.
+ * Returns the modified attribute or null if not applicable.
+ */
+function _processAddedOrModifiedAttribute(
+  diffValue: Attribute | Array<unknown>,
+  key: string,
+  newAttributes: Attribute[]
+): ModifiedAttribute | null {
+  if (Array.isArray(diffValue)) {
+    const attr = diffpatcher.getDeltaValue(diffValue) as Attribute;
+    if (attr && attr.name) {
+      return { name: attr.name, value: attr.value };
+    }
+  } else if (diffValue && typeof diffValue === 'object') {
+    const attr = newAttributes[parseInt(key, 10)];
+    if (attr && attr.name) {
+      return { name: attr.name, value: attr.value };
+    }
+  }
+  return null;
+}
+
+/**
+ * Processes an underscore-prefixed key from the diff, indicating a removed attribute.
+ * Returns the removed attribute (with null value) or null if not applicable.
+ */
+function _processRemovedAttribute(
+  diffValue: Array<unknown>,
+  newAttributes: Attribute[]
+): ModifiedAttribute | null {
+  if (!Array.isArray(diffValue)) return null;
+
+  // Skip array moves (value[2] === 3)
+  if (diffValue.length === 3 && (diffValue[2] as number) === 3) return null;
+
+  const removedAttr = diffValue[0] as Attribute;
+  if (removedAttr && removedAttr.name) {
+    const existsInNew = newAttributes.some(
+      (a) => a && a.name === removedAttr.name
+    );
+    if (!existsInNew) {
+      return { name: removedAttr.name, value: null };
+    }
+  }
+  return null;
+}
+
+/**
+ * Collects all modified attributes from the diff by iterating through
+ * numeric keys (added/modified) and underscore-prefixed keys (removed).
+ */
+function _collectModifiedAttributes(
   attributesDiff: Delta,
-  oldVariant: ProductVariant,
-  newVariant: ProductVariant,
-  config: SyncActionConfig = {}
-): Array<StandaloneVariantAction> {
-  const actions: Array<StandaloneVariantAction> = [];
-
-  if (!attributesDiff) return actions;
-
-  const oldAttributes = oldVariant.attributes || [];
-  const newAttributes = newVariant.attributes || [];
-
-  const oldAttributesMap: Record<string, unknown> = {};
-  const newAttributesMap: Record<string, unknown> = {};
-
-  oldAttributes.forEach((attr) => {
-    if (attr && attr.name) {
-      oldAttributesMap[attr.name] = attr.value;
-    }
-  });
-
-  newAttributes.forEach((attr) => {
-    if (attr && attr.name) {
-      newAttributesMap[attr.name] = attr.value;
-    }
-  });
-
-  const modifiedAttributes: Array<{ name: string; value: unknown }> = [];
+  newAttributes: Attribute[]
+): ModifiedAttribute[] {
+  const modifiedAttributes: ModifiedAttribute[] = [];
 
   forEach(
     attributesDiff,
     (value: Attribute | Array<unknown>, key: string) => {
       if (REGEX_NUMBER.test(key)) {
-        if (Array.isArray(value)) {
-          const attr = diffpatcher.getDeltaValue(value) as Attribute;
-          if (attr && attr.name) {
-            modifiedAttributes.push({ name: attr.name, value: attr.value });
-          }
-        } else if (value && typeof value === 'object') {
-          const attr = newAttributes[parseInt(key, 10)];
-          if (attr && attr.name) {
-            modifiedAttributes.push({ name: attr.name, value: attr.value });
-          }
+        const modified = _processAddedOrModifiedAttribute(value, key, newAttributes);
+        if (modified) {
+          modifiedAttributes.push(modified);
         }
       } else if (REGEX_UNDERSCORE_NUMBER.test(key)) {
-        if (Array.isArray(value)) {
-          if (value.length === 3 && (value[2] as number) === 3) return;
-
-          const removedAttr = value[0] as Attribute;
-          if (removedAttr && removedAttr.name) {
-            const existsInNew = newAttributes.some(
-              (a) => a && a.name === removedAttr.name
-            );
-            if (!existsInNew) {
-              modifiedAttributes.push({
-                name: removedAttr.name,
-                value: null,
-              });
-            }
-          }
+        const removed = _processRemovedAttribute(value as Array<unknown>, newAttributes);
+        if (removed) {
+          modifiedAttributes.push(removed);
         }
       }
     }
   );
 
-  // Only generate setAttributes action if there are modified attributes
-  if (modifiedAttributes.length > 0) {
-    // Filter out null values for attributes that should be set
-    const attributesToSet = modifiedAttributes
-      .filter((attr) => attr.value !== null)
-      .map((attr) =>
-        convertAttributeToUpdateActionShape(attr as Attribute)
-      );
+  return modifiedAttributes;
+}
 
-    if (attributesToSet.length > 0) {
-      const action: StandaloneVariantAction = {
-        action: 'setAttributes',
-        attributes: attributesToSet,
-      };
+/**
+ * Creates a setAttributes action for attributes that have been added or modified.
+ */
+function _createSetAttributesAction(
+  modifiedAttributes: ModifiedAttribute[],
+  config: SyncActionConfig
+): StandaloneVariantAction | null {
+  const attributesToSet = modifiedAttributes
+    .filter((attr) => attr.value !== null)
+    .map((attr) => convertAttributeToUpdateActionShape(attr as Attribute));
 
-      // Add staged flag if configured
-      if (config.staged !== false) {
-        action.staged = true;
-      }
+  if (attributesToSet.length === 0) return null;
 
-      actions.push(action);
+  const action: StandaloneVariantAction = {
+    action: 'setAttributes',
+    attributes: attributesToSet,
+  };
+
+  if (config.staged !== false) {
+    action.staged = true;
+  }
+
+  return action;
+}
+
+/**
+ * Creates setAttribute actions for attributes that have been removed (value: null).
+ */
+function _createUnsetAttributeActions(
+  modifiedAttributes: ModifiedAttribute[],
+  config: SyncActionConfig
+): StandaloneVariantAction[] {
+  const attributesToUnset = modifiedAttributes.filter(
+    (attr) => attr.value === null
+  );
+
+  return attributesToUnset.map((attr) => {
+    const action: StandaloneVariantAction = {
+      action: 'setAttribute',
+      name: attr.name,
+      value: null,
+    };
+
+    if (config.staged !== false) {
+      action.staged = true;
     }
 
-    // Handle removed attributes separately with setAttribute action (value: null)
-    const attributesToUnset = modifiedAttributes.filter(
-      (attr) => attr.value === null
-    );
-    attributesToUnset.forEach((attr) => {
-      const action: StandaloneVariantAction = {
-        action: 'setAttribute',
-        name: attr.name,
-        value: null,
-      };
+    return action;
+  });
+}
 
-      if (config.staged !== false) {
-        action.staged = true;
-      }
+/**
+ * Builds update actions for attribute changes on standalone variants.
+ * Generates setAttributes for added/modified attributes and setAttribute for removed attributes.
+ */
+function _buildAttributesActions(
+  attributesDiff: Delta,
+  _oldVariant: ProductVariant,
+  newVariant: ProductVariant,
+  config: SyncActionConfig = {}
+): Array<StandaloneVariantAction> {
+  if (!attributesDiff) return [];
 
-      actions.push(action);
-    });
+  const newAttributes = newVariant.attributes || [];
+  const modifiedAttributes = _collectModifiedAttributes(attributesDiff, newAttributes);
+
+  if (modifiedAttributes.length === 0) return [];
+
+  const actions: Array<StandaloneVariantAction> = [];
+
+  // Add setAttributes action for modified/added attributes
+  const setAttributesAction = _createSetAttributesAction(modifiedAttributes, config);
+  if (setAttributesAction) {
+    actions.push(setAttributesAction);
   }
+
+  // Add setAttribute actions for removed attributes
+  const unsetActions = _createUnsetAttributeActions(modifiedAttributes, config);
+  actions.push(...unsetActions);
 
   return actions;
 }
