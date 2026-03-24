@@ -4,7 +4,6 @@ import createStandaloneVariantsSync, {
   StandaloneVariantUpdateAction,
 } from '../src/standalone-variants/standalone-variants';
 import {
-  baseActionsList,
   convertAttributeToUpdateActionShape,
 } from '../src/standalone-variants/standalone-variant-actions';
 import { SyncAction } from '../src/utils/types';
@@ -12,20 +11,6 @@ import { SyncAction } from '../src/utils/types';
 describe('Exports', () => {
   test('action group list', () => {
     expect(actionGroups).toEqual(['base', 'attributes']);
-  });
-
-  describe('action list', () => {
-    test('should contain `setKey` action', () => {
-      expect(baseActionsList).toEqual(
-        expect.arrayContaining([{ action: 'setKey', key: 'key' }])
-      );
-    });
-
-    test('should contain `setSku` action', () => {
-      expect(baseActionsList).toEqual(
-        expect.arrayContaining([{ action: 'setSku', key: 'sku' }])
-      );
-    });
   });
 });
 

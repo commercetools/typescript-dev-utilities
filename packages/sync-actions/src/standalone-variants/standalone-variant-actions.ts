@@ -5,7 +5,6 @@ import {
   Delta,
   ProductVariant,
   SyncActionConfig,
-  UpdateAction,
 } from '../utils/types';
 import {
   REGEX_NUMBER,
@@ -22,11 +21,6 @@ export type StandaloneVariantAction = {
   staged?: boolean;
 };
 
-export const baseActionsList: Array<UpdateAction> = [
-  { action: 'setKey', key: 'key' },
-  { action: 'setSku', key: 'sku' },
-];
-
 function _buildKeyAction(
   variantDiff: Delta,
   oldVariant: ProductVariant
@@ -34,9 +28,7 @@ function _buildKeyAction(
   if ({}.hasOwnProperty.call(variantDiff, 'key')) {
     // getDeltaValue is typed as `object` but returns primitives at runtime,
     // requiring the cast through `unknown`
-    const newValue = diffpatcher.getDeltaValue(variantDiff.key) as unknown as
-      | string
-      | undefined;
+    const newValue = diffpatcher.getDeltaValue(variantDiff.key) as unknown as string | undefined;
     if (!newValue && !oldVariant.key) return null;
 
     return {
@@ -55,9 +47,7 @@ function _buildSkuAction(
   if ({}.hasOwnProperty.call(variantDiff, 'sku')) {
     // getDeltaValue is typed as `object` but returns primitives at runtime,
     // requiring the cast through `unknown`
-    const newValue = diffpatcher.getDeltaValue(variantDiff.sku) as unknown as
-      | string
-      | undefined;
+    const newValue = diffpatcher.getDeltaValue(variantDiff.sku) as unknown as string | undefined;
     if (!newValue && !oldVariant.sku) return null;
 
     const action: StandaloneVariantAction = {
