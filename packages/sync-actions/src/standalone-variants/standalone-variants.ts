@@ -4,6 +4,8 @@ import * as diffpatcher from '../utils/diffpatcher';
 import {
   actionsMapBase,
   actionsMapAttributes,
+  actionsMapImages,
+  actionsMapAssets,
   StandaloneVariantAction,
 } from './standalone-variant-actions';
 import {
@@ -23,7 +25,7 @@ export type StandaloneVariant = {
 
 export type StandaloneVariantUpdateAction = StandaloneVariantAction;
 
-export const actionGroups: Array<string> = ['base', 'attributes'];
+export const actionGroups: Array<string> = ['base', 'attributes', 'images', 'assets'];
 
 function createStandaloneVariantsMapActions(
   mapActionGroup: (
@@ -48,6 +50,18 @@ function createStandaloneVariantsMapActions(
     allActions.push(
       ...(mapActionGroup('attributes', () =>
         actionsMapAttributes(diff, oldObj, newObj, syncActionConfig)
+      ) as StandaloneVariantUpdateAction[])
+    );
+
+    allActions.push(
+      ...(mapActionGroup('images', () =>
+        actionsMapImages(diff, oldObj, newObj, syncActionConfig)
+      ) as StandaloneVariantUpdateAction[])
+    );
+
+    allActions.push(
+      ...(mapActionGroup('assets', () =>
+        actionsMapAssets(diff, oldObj, newObj, syncActionConfig)
       ) as StandaloneVariantUpdateAction[])
     );
 
