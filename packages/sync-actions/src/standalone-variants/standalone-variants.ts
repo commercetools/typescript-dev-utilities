@@ -6,26 +6,25 @@ import {
   actionsMapAttributes,
   actionsMapImages,
   actionsMapAssets,
-  StandaloneVariantAction,
+  StandaloneVariant,
+  StandaloneVariantUpdateAction,
 } from './standalone-variant-actions';
 import {
   ActionGroup,
   Delta,
-  ProductVariant,
   SyncAction,
   SyncActionConfig,
   UpdateAction,
 } from '../utils/types';
 
-export type StandaloneVariant = {
-  id?: string;
-  version?: number;
-  variants?: ProductVariant[];
-};
+export type { StandaloneVariant, StandaloneVariantUpdateAction };
 
-export type StandaloneVariantUpdateAction = StandaloneVariantAction;
-
-export const actionGroups: Array<string> = ['base', 'attributes', 'images', 'assets'];
+export const actionGroups: Array<string> = [
+  'base',
+  'attributes',
+  'images',
+  'assets',
+];
 
 function createStandaloneVariantsMapActions(
   mapActionGroup: (
@@ -42,27 +41,27 @@ function createStandaloneVariantsMapActions(
     const allActions: Array<StandaloneVariantUpdateAction> = [];
 
     allActions.push(
-      ...(mapActionGroup('base', () =>
+      ...mapActionGroup('base', () =>
         actionsMapBase(diff, oldObj, newObj, syncActionConfig)
-      ) as StandaloneVariantUpdateAction[])
+      )
     );
 
     allActions.push(
-      ...(mapActionGroup('attributes', () =>
+      ...mapActionGroup('attributes', () =>
         actionsMapAttributes(diff, oldObj, newObj, syncActionConfig)
-      ) as StandaloneVariantUpdateAction[])
+      )
     );
 
     allActions.push(
-      ...(mapActionGroup('images', () =>
+      ...mapActionGroup('images', () =>
         actionsMapImages(diff, oldObj, newObj, syncActionConfig)
-      ) as StandaloneVariantUpdateAction[])
+      )
     );
 
     allActions.push(
-      ...(mapActionGroup('assets', () =>
+      ...mapActionGroup('assets', () =>
         actionsMapAssets(diff, oldObj, newObj, syncActionConfig)
-      ) as StandaloneVariantUpdateAction[])
+      )
     );
 
     return allActions;

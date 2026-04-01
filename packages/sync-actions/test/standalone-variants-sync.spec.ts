@@ -1,10 +1,13 @@
 import createStandaloneVariantsSync, {
   actionGroups,
-  StandaloneVariant,
   StandaloneVariantUpdateAction,
 } from '../src/standalone-variants/standalone-variants';
 import {
   convertAttributeToUpdateActionShape,
+  buildPublishAction,
+  buildUnpublishAction,
+  buildRemoveStagedChangesAction,
+  StandaloneVariant,
 } from '../src/standalone-variants/standalone-variant-actions';
 import { SyncAction } from '../src/utils/types';
 
@@ -92,11 +95,15 @@ describe('Actions', () => {
     test('should build `setKey` action when key changes', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [{ id: 1, key: 'old-key', sku: 'sku-1', attributes: [] }],
+        key: 'old-key',
+        sku: 'sku-1',
+        attributes: [],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [{ id: 1, key: 'new-key', sku: 'sku-1', attributes: [] }],
+        key: 'new-key',
+        sku: 'sku-1',
+        attributes: [],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
@@ -114,11 +121,14 @@ describe('Actions', () => {
     test('should build `setKey` action when key is added', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [{ id: 1, sku: 'sku-1', attributes: [] }],
+        sku: 'sku-1',
+        attributes: [],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [{ id: 1, key: 'new-key', sku: 'sku-1', attributes: [] }],
+        key: 'new-key',
+        sku: 'sku-1',
+        attributes: [],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
@@ -136,11 +146,14 @@ describe('Actions', () => {
     test('should build `setKey` action when key is removed', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [{ id: 1, key: 'old-key', sku: 'sku-1', attributes: [] }],
+        key: 'old-key',
+        sku: 'sku-1',
+        attributes: [],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [{ id: 1, sku: 'sku-1', attributes: [] }],
+        sku: 'sku-1',
+        attributes: [],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
@@ -158,11 +171,15 @@ describe('Actions', () => {
     test('should not build `setKey` action when key is unchanged', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [{ id: 1, key: 'same-key', sku: 'sku-1', attributes: [] }],
+        key: 'same-key',
+        sku: 'sku-1',
+        attributes: [],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [{ id: 1, key: 'same-key', sku: 'sku-1', attributes: [] }],
+        key: 'same-key',
+        sku: 'sku-1',
+        attributes: [],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
@@ -177,11 +194,15 @@ describe('Actions', () => {
     test('should build `setSku` action when sku changes', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [{ id: 1, key: 'key-1', sku: 'old-sku', attributes: [] }],
+        key: 'key-1',
+        sku: 'old-sku',
+        attributes: [],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [{ id: 1, key: 'key-1', sku: 'new-sku', attributes: [] }],
+        key: 'key-1',
+        sku: 'new-sku',
+        attributes: [],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
@@ -200,11 +221,14 @@ describe('Actions', () => {
     test('should build `setSku` action when sku is added', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [{ id: 1, key: 'key-1', attributes: [] }],
+        key: 'key-1',
+        attributes: [],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [{ id: 1, key: 'key-1', sku: 'new-sku', attributes: [] }],
+        key: 'key-1',
+        sku: 'new-sku',
+        attributes: [],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
@@ -223,11 +247,14 @@ describe('Actions', () => {
     test('should build `setSku` action when sku is removed', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [{ id: 1, key: 'key-1', sku: 'old-sku', attributes: [] }],
+        key: 'key-1',
+        sku: 'old-sku',
+        attributes: [],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [{ id: 1, key: 'key-1', attributes: [] }],
+        key: 'key-1',
+        attributes: [],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
@@ -246,11 +273,15 @@ describe('Actions', () => {
     test('should not build `setSku` action when sku is unchanged', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [{ id: 1, key: 'key-1', sku: 'same-sku', attributes: [] }],
+        key: 'key-1',
+        sku: 'same-sku',
+        attributes: [],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [{ id: 1, key: 'key-1', sku: 'same-sku', attributes: [] }],
+        key: 'key-1',
+        sku: 'same-sku',
+        attributes: [],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
@@ -265,551 +296,421 @@ describe('Actions', () => {
     test('should build `setAttributes` action when attribute is added', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [{ id: 1, key: 'key-1', sku: 'sku-1', attributes: [] }],
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [{ name: 'color', value: 'red' }],
-          },
-        ],
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [{ name: 'color', value: 'red' }],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
 
-      expect(actual).toEqual(
-        expect.arrayContaining([
-          {
-            action: 'setAttributes',
-            attributes: [{ name: 'color', value: JSON.stringify('red') }],
-            staged: true,
-          },
-        ])
-      );
+      expect(actual).toEqual([
+        {
+          action: 'setAttributes',
+          attributes: [{ name: 'color', value: JSON.stringify('red') }],
+          staged: true,
+        },
+      ]);
     });
 
     test('should build `setAttributes` action when attribute value changes', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [{ name: 'color', value: 'red' }],
-          },
-        ],
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [{ name: 'color', value: 'red' }],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [{ name: 'color', value: 'blue' }],
-          },
-        ],
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [{ name: 'color', value: 'blue' }],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
 
-      expect(actual).toEqual(
-        expect.arrayContaining([
-          {
-            action: 'setAttributes',
-            attributes: [{ name: 'color', value: JSON.stringify('blue') }],
-            staged: true,
-          },
-        ])
-      );
+      expect(actual).toEqual([
+        {
+          action: 'setAttributes',
+          attributes: [{ name: 'color', value: JSON.stringify('blue') }],
+          staged: true,
+        },
+      ]);
     });
 
-    test('should build `setAttribute` action with null value when attribute is removed', () => {
+    test('should build `setAttributes` action with empty array when all attributes are removed', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [{ name: 'color', value: 'red' }],
-          },
-        ],
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [{ name: 'color', value: 'red' }],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [{ id: 1, key: 'key-1', sku: 'sku-1', attributes: [] }],
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
 
-      expect(actual).toEqual(
-        expect.arrayContaining([
-          {
-            action: 'setAttribute',
-            name: 'color',
-            value: null,
-            staged: true,
-          },
-        ])
-      );
+      expect(actual).toEqual([
+        {
+          action: 'setAttributes',
+          attributes: [],
+          staged: true,
+        },
+      ]);
     });
 
     test('should not build attribute actions when attributes are unchanged', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [{ name: 'color', value: 'red' }],
-          },
-        ],
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [{ name: 'color', value: 'red' }],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [{ name: 'color', value: 'red' }],
-          },
-        ],
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [{ name: 'color', value: 'red' }],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
 
-      expect(actual).not.toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({ action: 'setAttributes' }),
-        ])
-      );
-      expect(actual).not.toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({ action: 'setAttribute' }),
-        ])
-      );
+      expect(actual).toEqual([]);
     });
 
-    test('should handle multiple attribute changes', () => {
+    test('should handle multiple attribute changes with full replacement', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [
-              { name: 'color', value: 'red' },
-              { name: 'size', value: 'M' },
-            ],
-          },
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [
+          { name: 'color', value: 'red' },
+          { name: 'size', value: 'M' },
         ],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [
-              { name: 'color', value: 'blue' },
-              { name: 'size', value: 'L' },
-            ],
-          },
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [
+          { name: 'color', value: 'blue' },
+          { name: 'size', value: 'L' },
         ],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
 
-      const setAttributesAction = actual.find(
-        (action) => action.action === 'setAttributes'
-      );
-      expect(setAttributesAction).toBeDefined();
-      expect(setAttributesAction?.attributes).toHaveLength(2);
-    });
-
-    test('should only include changed attribute when one attribute changes and another stays the same', () => {
-      const before: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [
-              { name: 'color', value: 'red' },
-              { name: 'size', value: 'M' },
-            ],
-          },
-        ],
-      };
-      const now: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [
-              { name: 'color', value: 'blue' },
-              { name: 'size', value: 'M' }, // unchanged
-            ],
-          },
-        ],
-      };
-
-      const actual = standaloneVariantSync.buildActions(now, before);
-
-      const setAttributesAction = actual.find(
-        (action) => action.action === 'setAttributes'
-      );
-      expect(setAttributesAction).toBeDefined();
-      // Should only include the changed attribute, not the unchanged one
-      expect(setAttributesAction?.attributes).toHaveLength(1);
-      expect(setAttributesAction?.attributes).toEqual([
-        { name: 'color', value: JSON.stringify('blue') },
+      expect(actual).toEqual([
+        {
+          action: 'setAttributes',
+          attributes: [
+            { name: 'color', value: JSON.stringify('blue') },
+            { name: 'size', value: JSON.stringify('L') },
+          ],
+          staged: true,
+        },
       ]);
     });
 
-    test('should add new attribute while preserving existing unchanged attributes', () => {
+    test('should include all new attributes in setAttributes action', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [{ name: 'color', value: 'red' }],
-          },
-        ],
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [{ name: 'color', value: 'red' }],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [
-              { name: 'color', value: 'red' }, // unchanged
-              { name: 'size', value: 'M' }, // new attribute
-            ],
-          },
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [
+          { name: 'color', value: 'red' },
+          { name: 'size', value: 'M' },
         ],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
 
-      const setAttributesAction = actual.find(
-        (action) => action.action === 'setAttributes'
-      );
-      expect(setAttributesAction).toBeDefined();
-      // Should only include the new attribute, not the unchanged one
-      expect(setAttributesAction?.attributes).toHaveLength(1);
-      expect(setAttributesAction?.attributes).toEqual([
-        { name: 'size', value: JSON.stringify('M') },
+      expect(actual).toEqual([
+        {
+          action: 'setAttributes',
+          attributes: [
+            { name: 'color', value: JSON.stringify('red') },
+            { name: 'size', value: JSON.stringify('M') },
+          ],
+          staged: true,
+        },
       ]);
     });
 
     test('should handle complex attribute values (objects)', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [
-              { name: 'dimensions', value: { width: 10, height: 20 } },
-            ],
-          },
-        ],
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [{ name: 'dimensions', value: { width: 10, height: 20 } }],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [
-              { name: 'dimensions', value: { width: 15, height: 25 } },
-            ],
-          },
-        ],
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [{ name: 'dimensions', value: { width: 15, height: 25 } }],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
 
-      expect(actual).toEqual(
-        expect.arrayContaining([
-          {
-            action: 'setAttributes',
-            attributes: [
-              {
-                name: 'dimensions',
-                value: JSON.stringify({ width: 15, height: 25 }),
-              },
-            ],
-            staged: true,
-          },
-        ])
-      );
+      expect(actual).toEqual([
+        {
+          action: 'setAttributes',
+          attributes: [
+            {
+              name: 'dimensions',
+              value: JSON.stringify({ width: 15, height: 25 }),
+            },
+          ],
+          staged: true,
+        },
+      ]);
     });
 
     test('should handle complex attribute values (arrays)', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [{ name: 'tags', value: ['tag1', 'tag2'] }],
-          },
-        ],
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [{ name: 'tags', value: ['tag1', 'tag2'] }],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [{ name: 'tags', value: ['tag1', 'tag3'] }],
-          },
-        ],
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [{ name: 'tags', value: ['tag1', 'tag3'] }],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
 
-      expect(actual).toEqual(
-        expect.arrayContaining([
-          {
-            action: 'setAttributes',
-            attributes: [
-              {
-                name: 'tags',
-                value: JSON.stringify(['tag1', 'tag3']),
-              },
-            ],
-            staged: true,
-          },
-        ])
-      );
+      expect(actual).toEqual([
+        {
+          action: 'setAttributes',
+          attributes: [
+            {
+              name: 'tags',
+              value: JSON.stringify(['tag1', 'tag3']),
+            },
+          ],
+          staged: true,
+        },
+      ]);
     });
   });
 
-  describe('image actions', () => {
-    test('should build `addExternalImage` action when image is added', () => {
+  describe('setImages action', () => {
+    test('should build `setImages` action when image is added', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            images: [],
-          },
-        ],
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [],
+        images: [],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [],
+        images: [
           {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            images: [{ url: 'https://example.com/image.jpg', dimensions: { w: 100, h: 100 } }],
+            url: 'https://example.com/image.jpg',
+            dimensions: { w: 100, h: 100 },
           },
         ],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
 
-      expect(actual).toEqual(
-        expect.arrayContaining([
-          {
-            action: 'addExternalImage',
-            image: { url: 'https://example.com/image.jpg', dimensions: { w: 100, h: 100 } },
-            staged: true,
-          },
-        ])
-      );
+      expect(actual).toEqual([
+        {
+          action: 'setImages',
+          images: [
+            {
+              url: 'https://example.com/image.jpg',
+              dimensions: { w: 100, h: 100 },
+            },
+          ],
+          staged: true,
+        },
+      ]);
     });
 
-    test('should build `removeImage` action when image is removed', () => {
+    test('should build `setImages` action with empty array when image is removed', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [],
+        images: [
           {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            images: [{ url: 'https://example.com/image.jpg', dimensions: { w: 100, h: 100 } }],
+            url: 'https://example.com/image.jpg',
+            dimensions: { w: 100, h: 100 },
           },
         ],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            images: [],
-          },
-        ],
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [],
+        images: [],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
 
-      expect(actual).toEqual(
-        expect.arrayContaining([
-          {
-            action: 'removeImage',
-            imageUrl: 'https://example.com/image.jpg',
-            staged: true,
-          },
-        ])
-      );
+      expect(actual).toEqual([
+        {
+          action: 'setImages',
+          images: [],
+          staged: true,
+        },
+      ]);
     });
 
-    test('should build `setImageLabel` action when image label changes', () => {
+    test('should build `setImages` action when image label changes', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [],
+        images: [
           {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            images: [{ url: 'https://example.com/image.jpg', label: 'old-label', dimensions: { w: 100, h: 100 } }],
+            url: 'https://example.com/image.jpg',
+            label: 'old-label',
+            dimensions: { w: 100, h: 100 },
           },
         ],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [],
+        images: [
           {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            images: [{ url: 'https://example.com/image.jpg', label: 'new-label', dimensions: { w: 100, h: 100 } }],
-          },
-        ],
-      };
-
-      const actual = standaloneVariantSync.buildActions(now, before);
-
-      expect(actual).toEqual(
-        expect.arrayContaining([
-          {
-            action: 'setImageLabel',
-            imageUrl: 'https://example.com/image.jpg',
+            url: 'https://example.com/image.jpg',
             label: 'new-label',
-            staged: true,
-          },
-        ])
-      );
-    });
-
-    test('should build `moveImageToPosition` action when image position changes', () => {
-      const before: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            images: [
-              { url: 'https://example.com/image1.jpg', dimensions: { w: 100, h: 100 } },
-              { url: 'https://example.com/image2.jpg', dimensions: { w: 100, h: 100 } },
-            ],
-          },
-        ],
-      };
-      const now: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            images: [
-              { url: 'https://example.com/image2.jpg', dimensions: { w: 100, h: 100 } },
-              { url: 'https://example.com/image1.jpg', dimensions: { w: 100, h: 100 } },
-            ],
+            dimensions: { w: 100, h: 100 },
           },
         ],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
 
-      expect(actual).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            action: 'moveImageToPosition',
-            staged: true,
-          }),
-        ])
-      );
+      expect(actual).toEqual([
+        {
+          action: 'setImages',
+          images: [
+            {
+              url: 'https://example.com/image.jpg',
+              label: 'new-label',
+              dimensions: { w: 100, h: 100 },
+            },
+          ],
+          staged: true,
+        },
+      ]);
+    });
+
+    test('should build `setImages` action when image position changes', () => {
+      const before: StandaloneVariant = {
+        id: '123',
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [],
+        images: [
+          {
+            url: 'https://example.com/image1.jpg',
+            dimensions: { w: 100, h: 100 },
+          },
+          {
+            url: 'https://example.com/image2.jpg',
+            dimensions: { w: 100, h: 100 },
+          },
+        ],
+      };
+      const now: StandaloneVariant = {
+        id: '123',
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [],
+        images: [
+          {
+            url: 'https://example.com/image2.jpg',
+            dimensions: { w: 100, h: 100 },
+          },
+          {
+            url: 'https://example.com/image1.jpg',
+            dimensions: { w: 100, h: 100 },
+          },
+        ],
+      };
+
+      const actual = standaloneVariantSync.buildActions(now, before);
+
+      expect(actual).toEqual([
+        {
+          action: 'setImages',
+          images: [
+            {
+              url: 'https://example.com/image2.jpg',
+              dimensions: { w: 100, h: 100 },
+            },
+            {
+              url: 'https://example.com/image1.jpg',
+              dimensions: { w: 100, h: 100 },
+            },
+          ],
+          staged: true,
+        },
+      ]);
     });
 
     test('should not build image actions when images are unchanged', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [],
+        images: [
           {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            images: [{ url: 'https://example.com/image.jpg', dimensions: { w: 100, h: 100 } }],
+            url: 'https://example.com/image.jpg',
+            dimensions: { w: 100, h: 100 },
           },
         ],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [],
+        images: [
           {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            images: [{ url: 'https://example.com/image.jpg', dimensions: { w: 100, h: 100 } }],
+            url: 'https://example.com/image.jpg',
+            dimensions: { w: 100, h: 100 },
           },
         ],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
 
-      expect(actual).not.toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({ action: 'addExternalImage' }),
-        ])
-      );
-      expect(actual).not.toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({ action: 'removeImage' }),
-        ])
-      );
+      expect(actual).toEqual([]);
     });
 
     test('should allow filtering to only image actions', () => {
@@ -821,298 +722,207 @@ describe('Actions', () => {
 
       const before: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'old-key',
-            sku: 'old-sku',
-            attributes: [{ name: 'color', value: 'red' }],
-            images: [],
-          },
-        ],
+        key: 'old-key',
+        sku: 'old-sku',
+        attributes: [{ name: 'color', value: 'red' }],
+        images: [],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [
+        key: 'new-key',
+        sku: 'new-sku',
+        attributes: [{ name: 'color', value: 'blue' }],
+        images: [
           {
-            id: 1,
-            key: 'new-key',
-            sku: 'new-sku',
-            attributes: [{ name: 'color', value: 'blue' }],
-            images: [{ url: 'https://example.com/image.jpg', dimensions: { w: 100, h: 100 } }],
+            url: 'https://example.com/image.jpg',
+            dimensions: { w: 100, h: 100 },
           },
         ],
       };
 
       const actual = sync.buildActions(now, before);
 
-      // Should only have image action, not key/sku/attribute actions
+      // Should only have setImages action, not key/sku/attribute actions
       expect(actual).toHaveLength(1);
-      expect(actual[0].action).toBe('addExternalImage');
+      expect(actual[0].action).toBe('setImages');
     });
   });
 
-  describe('asset actions', () => {
-    test('should build `addAsset` action when asset is added', () => {
+  describe('setAssets action', () => {
+    test('should build `setAssets` action when asset is added', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [],
-          },
-        ],
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [],
+        assets: [],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [],
+        assets: [
           {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'asset-key-1',
-                name: { en: 'Asset 1' },
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-              },
-            ],
+            id: 'asset-1',
+            key: 'asset-key-1',
+            name: { en: 'Asset 1' },
+            sources: [{ uri: 'https://example.com/asset1.pdf' }],
           },
         ],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
 
-      expect(actual).toEqual(
-        expect.arrayContaining([
-          {
-            action: 'addAsset',
-            asset: {
+      expect(actual).toEqual([
+        {
+          action: 'setAssets',
+          assets: [
+            {
               id: 'asset-1',
               key: 'asset-key-1',
               name: { en: 'Asset 1' },
               sources: [{ uri: 'https://example.com/asset1.pdf' }],
             },
-            position: 0,
-            staged: true,
-          },
-        ])
-      );
+          ],
+          staged: true,
+        },
+      ]);
     });
 
-    test('should build `removeAsset` action when asset is removed', () => {
+    test('should build `setAssets` action with empty array when asset is removed', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [],
+        assets: [
           {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'asset-key-1',
-                name: { en: 'Asset 1' },
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-              },
-            ],
+            id: 'asset-1',
+            key: 'asset-key-1',
+            name: { en: 'Asset 1' },
+            sources: [{ uri: 'https://example.com/asset1.pdf' }],
           },
         ],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [],
+        assets: [],
+      };
+
+      const actual = standaloneVariantSync.buildActions(now, before);
+
+      expect(actual).toEqual([
+        {
+          action: 'setAssets',
+          assets: [],
+          staged: true,
+        },
+      ]);
+    });
+
+    test('should build `setAssets` action when asset order changes', () => {
+      const before: StandaloneVariant = {
+        id: '123',
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [],
+        assets: [
           {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [],
+            id: 'asset-1',
+            key: 'asset-key-1',
+            name: { en: 'Asset 1' },
+            sources: [{ uri: 'https://example.com/asset1.pdf' }],
+          },
+          {
+            id: 'asset-2',
+            key: 'asset-key-2',
+            name: { en: 'Asset 2' },
+            sources: [{ uri: 'https://example.com/asset2.pdf' }],
+          },
+        ],
+      };
+      const now: StandaloneVariant = {
+        id: '123',
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [],
+        assets: [
+          {
+            id: 'asset-2',
+            key: 'asset-key-2',
+            name: { en: 'Asset 2' },
+            sources: [{ uri: 'https://example.com/asset2.pdf' }],
+          },
+          {
+            id: 'asset-1',
+            key: 'asset-key-1',
+            name: { en: 'Asset 1' },
+            sources: [{ uri: 'https://example.com/asset1.pdf' }],
           },
         ],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
 
-      expect(actual).toEqual(
-        expect.arrayContaining([
-          {
-            action: 'removeAsset',
-            assetId: 'asset-1',
-            staged: true,
-          },
-        ])
-      );
-    });
-
-    test('should build `removeAsset` action using assetKey when asset has no id', () => {
-      const before: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: undefined,
-                key: 'asset-key-1',
-                name: { en: 'Asset 1' },
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-              },
-            ],
-          },
-        ],
-      };
-      const now: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [],
-          },
-        ],
-      };
-
-      const actual = standaloneVariantSync.buildActions(now, before);
-
-      expect(actual).toEqual(
-        expect.arrayContaining([
-          {
-            action: 'removeAsset',
-            assetKey: 'asset-key-1',
-            staged: true,
-          },
-        ])
-      );
-    });
-
-    test('should build `changeAssetOrder` action when asset order changes', () => {
-      const before: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'asset-key-1',
-                name: { en: 'Asset 1' },
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-              },
-              {
-                id: 'asset-2',
-                key: 'asset-key-2',
-                name: { en: 'Asset 2' },
-                sources: [{ uri: 'https://example.com/asset2.pdf' }],
-              },
-            ],
-          },
-        ],
-      };
-      const now: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-2',
-                key: 'asset-key-2',
-                name: { en: 'Asset 2' },
-                sources: [{ uri: 'https://example.com/asset2.pdf' }],
-              },
-              {
-                id: 'asset-1',
-                key: 'asset-key-1',
-                name: { en: 'Asset 1' },
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-              },
-            ],
-          },
-        ],
-      };
-
-      const actual = standaloneVariantSync.buildActions(now, before);
-
-      expect(actual).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            action: 'changeAssetOrder',
-            staged: true,
-          }),
-        ])
-      );
+      expect(actual).toEqual([
+        {
+          action: 'setAssets',
+          assets: [
+            {
+              id: 'asset-2',
+              key: 'asset-key-2',
+              name: { en: 'Asset 2' },
+              sources: [{ uri: 'https://example.com/asset2.pdf' }],
+            },
+            {
+              id: 'asset-1',
+              key: 'asset-key-1',
+              name: { en: 'Asset 1' },
+              sources: [{ uri: 'https://example.com/asset1.pdf' }],
+            },
+          ],
+          staged: true,
+        },
+      ]);
     });
 
     test('should not build asset actions when assets are unchanged', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [],
+        assets: [
           {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'asset-key-1',
-                name: { en: 'Asset 1' },
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-              },
-            ],
+            id: 'asset-1',
+            key: 'asset-key-1',
+            name: { en: 'Asset 1' },
+            sources: [{ uri: 'https://example.com/asset1.pdf' }],
           },
         ],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [],
+        assets: [
           {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'asset-key-1',
-                name: { en: 'Asset 1' },
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-              },
-            ],
+            id: 'asset-1',
+            key: 'asset-key-1',
+            name: { en: 'Asset 1' },
+            sources: [{ uri: 'https://example.com/asset1.pdf' }],
           },
         ],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
 
-      expect(actual).not.toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({ action: 'addAsset' }),
-        ])
-      );
-      expect(actual).not.toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({ action: 'removeAsset' }),
-        ])
-      );
+      expect(actual).toEqual([]);
     });
 
     test('should allow filtering to only asset actions', () => {
@@ -1125,622 +935,86 @@ describe('Actions', () => {
 
       const before: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'old-key',
-            sku: 'old-sku',
-            attributes: [{ name: 'color', value: 'red' }],
-            images: [],
-            assets: [],
-          },
-        ],
+        key: 'old-key',
+        sku: 'old-sku',
+        attributes: [{ name: 'color', value: 'red' }],
+        images: [],
+        assets: [],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [
+        key: 'new-key',
+        sku: 'new-sku',
+        attributes: [{ name: 'color', value: 'blue' }],
+        images: [
           {
-            id: 1,
-            key: 'new-key',
-            sku: 'new-sku',
-            attributes: [{ name: 'color', value: 'blue' }],
-            images: [{ url: 'https://example.com/image.jpg', dimensions: { w: 100, h: 100 } }],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'asset-key-1',
-                name: { en: 'Asset 1' },
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-              },
-            ],
+            url: 'https://example.com/image.jpg',
+            dimensions: { w: 100, h: 100 },
+          },
+        ],
+        assets: [
+          {
+            id: 'asset-1',
+            key: 'asset-key-1',
+            name: { en: 'Asset 1' },
+            sources: [{ uri: 'https://example.com/asset1.pdf' }],
           },
         ],
       };
 
       const actual = sync.buildActions(now, before);
 
-      // Should only have asset action, not key/sku/attribute/image actions
+      // Should only have setAssets action, not key/sku/attribute/image actions
       expect(actual).toHaveLength(1);
-      expect(actual[0].action).toBe('addAsset');
+      expect(actual[0].action).toBe('setAssets');
     });
 
-    test('should build `setAssetKey` action when asset key changes', () => {
+    test('should build `setAssets` action when asset properties change', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [],
+        assets: [
           {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'old-asset-key',
-                name: { en: 'Asset 1' },
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-              },
-            ],
+            id: 'asset-1',
+            key: 'old-asset-key',
+            name: { en: 'Old Asset Name' },
+            sources: [{ uri: 'https://example.com/asset1.pdf' }],
           },
         ],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [],
+        assets: [
           {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'new-asset-key',
-                name: { en: 'Asset 1' },
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-              },
-            ],
-          },
-        ],
-      };
-
-      const actual = standaloneVariantSync.buildActions(now, before);
-
-      expect(actual).toEqual(
-        expect.arrayContaining([
-          {
-            action: 'setAssetKey',
-            assetKey: 'new-asset-key',
-            assetId: 'asset-1',
-            staged: true,
-          },
-        ])
-      );
-    });
-
-    test('should build `changeAssetName` action when asset name changes', () => {
-      const before: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'asset-key-1',
-                name: { en: 'Old Asset Name' },
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-              },
-            ],
-          },
-        ],
-      };
-      const now: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'asset-key-1',
-                name: { en: 'New Asset Name' },
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-              },
-            ],
-          },
-        ],
-      };
-
-      const actual = standaloneVariantSync.buildActions(now, before);
-
-      expect(actual).toEqual(
-        expect.arrayContaining([
-          {
-            action: 'changeAssetName',
+            id: 'asset-1',
+            key: 'new-asset-key',
             name: { en: 'New Asset Name' },
-            assetId: 'asset-1',
-            staged: true,
-          },
-        ])
-      );
-    });
-
-    test('should build `setAssetDescription` action when asset description changes', () => {
-      const before: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'asset-key-1',
-                name: { en: 'Asset 1' },
-                description: { en: 'Old description' },
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-              },
-            ],
-          },
-        ],
-      };
-      const now: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'asset-key-1',
-                name: { en: 'Asset 1' },
-                description: { en: 'New description' },
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-              },
-            ],
+            sources: [{ uri: 'https://example.com/asset1.pdf' }],
           },
         ],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
 
-      expect(actual).toEqual(
-        expect.arrayContaining([
-          {
-            action: 'setAssetDescription',
-            description: { en: 'New description' },
-            assetId: 'asset-1',
-            staged: true,
-          },
-        ])
-      );
-    });
-
-    test('should build `setAssetTags` action when asset tags change', () => {
-      const before: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'asset-key-1',
-                name: { en: 'Asset 1' },
-                tags: ['tag1', 'tag2'],
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-              },
-            ],
-          },
-        ],
-      };
-      const now: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'asset-key-1',
-                name: { en: 'Asset 1' },
-                tags: ['tag1', 'tag3'],
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-              },
-            ],
-          },
-        ],
-      };
-
-      const actual = standaloneVariantSync.buildActions(now, before);
-
-      expect(actual).toEqual(
-        expect.arrayContaining([
-          {
-            action: 'setAssetTags',
-            tags: ['tag1', 'tag3'],
-            assetId: 'asset-1',
-            staged: true,
-          },
-        ])
-      );
-    });
-
-    test('should build `setAssetSources` action when asset sources change', () => {
-      const before: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'asset-key-1',
-                name: { en: 'Asset 1' },
-                sources: [{ uri: 'https://example.com/old-asset.pdf' }],
-              },
-            ],
-          },
-        ],
-      };
-      const now: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'asset-key-1',
-                name: { en: 'Asset 1' },
-                sources: [{ uri: 'https://example.com/new-asset.pdf' }],
-              },
-            ],
-          },
-        ],
-      };
-
-      const actual = standaloneVariantSync.buildActions(now, before);
-
-      expect(actual).toEqual(
-        expect.arrayContaining([
-          {
-            action: 'setAssetSources',
-            sources: [{ uri: 'https://example.com/new-asset.pdf' }],
-            assetId: 'asset-1',
-            staged: true,
-          },
-        ])
-      );
-    });
-
-    test('should build multiple asset property actions when multiple properties change', () => {
-      const before: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'old-asset-key',
-                name: { en: 'Old Asset Name' },
-                description: { en: 'Old description' },
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-              },
-            ],
-          },
-        ],
-      };
-      const now: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'new-asset-key',
-                name: { en: 'New Asset Name' },
-                description: { en: 'New description' },
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-              },
-            ],
-          },
-        ],
-      };
-
-      const actual = standaloneVariantSync.buildActions(now, before);
-
-      expect(actual).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({ action: 'setAssetKey' }),
-          expect.objectContaining({ action: 'changeAssetName' }),
-          expect.objectContaining({ action: 'setAssetDescription' }),
-        ])
-      );
-      expect(actual).toHaveLength(3);
-    });
-
-    test('should build `setAssetCustomType` action when asset custom type is added', () => {
-      const before: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'asset-key-1',
-                name: { en: 'Asset 1' },
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-              },
-            ],
-          },
-        ],
-      };
-      const now: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'asset-key-1',
-                name: { en: 'Asset 1' },
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-                custom: {
-                  type: { typeId: 'type', id: 'custom-type-1' },
-                  fields: { customField1: 'value1' },
-                },
-              },
-            ],
-          },
-        ],
-      };
-
-      const actual = standaloneVariantSync.buildActions(now, before);
-
-      expect(actual).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            action: 'setAssetCustomType',
-            assetId: 'asset-1',
-            staged: true,
-          }),
-        ])
-      );
-    });
-
-    test('should build `setAssetCustomType` action when asset custom type changes', () => {
-      const before: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'asset-key-1',
-                name: { en: 'Asset 1' },
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-                custom: {
-                  type: { typeId: 'type', id: 'old-custom-type' },
-                  fields: { customField1: 'value1' },
-                },
-              },
-            ],
-          },
-        ],
-      };
-      const now: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'asset-key-1',
-                name: { en: 'Asset 1' },
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-                custom: {
-                  type: { typeId: 'type', id: 'new-custom-type' },
-                  fields: { customField1: 'value1' },
-                },
-              },
-            ],
-          },
-        ],
-      };
-
-      const actual = standaloneVariantSync.buildActions(now, before);
-
-      expect(actual).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            action: 'setAssetCustomType',
-            type: { typeId: 'type', id: 'new-custom-type' },
-            assetId: 'asset-1',
-            staged: true,
-          }),
-        ])
-      );
-    });
-
-    test('should build `setAssetCustomField` action when asset custom field changes', () => {
-      const before: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'asset-key-1',
-                name: { en: 'Asset 1' },
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-                custom: {
-                  type: { typeId: 'type', id: 'custom-type-1' },
-                  fields: { customField1: 'oldValue' },
-                },
-              },
-            ],
-          },
-        ],
-      };
-      const now: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'asset-key-1',
-                name: { en: 'Asset 1' },
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-                custom: {
-                  type: { typeId: 'type', id: 'custom-type-1' },
-                  fields: { customField1: 'newValue' },
-                },
-              },
-            ],
-          },
-        ],
-      };
-
-      const actual = standaloneVariantSync.buildActions(now, before);
-
-      expect(actual).toEqual(
-        expect.arrayContaining([
-          {
-            action: 'setAssetCustomField',
-            name: 'customField1',
-            value: 'newValue',
-            assetId: 'asset-1',
-            staged: true,
-          },
-        ])
-      );
-    });
-
-    test('should build multiple `setAssetCustomField` actions when multiple custom fields change', () => {
-      const before: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'asset-key-1',
-                name: { en: 'Asset 1' },
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-                custom: {
-                  type: { typeId: 'type', id: 'custom-type-1' },
-                  fields: { field1: 'value1', field2: 'value2' },
-                },
-              },
-            ],
-          },
-        ],
-      };
-      const now: StandaloneVariant = {
-        id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [],
-            assets: [
-              {
-                id: 'asset-1',
-                key: 'asset-key-1',
-                name: { en: 'Asset 1' },
-                sources: [{ uri: 'https://example.com/asset1.pdf' }],
-                custom: {
-                  type: { typeId: 'type', id: 'custom-type-1' },
-                  fields: { field1: 'newValue1', field2: 'newValue2' },
-                },
-              },
-            ],
-          },
-        ],
-      };
-
-      const actual = standaloneVariantSync.buildActions(now, before);
-
-      expect(actual).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            action: 'setAssetCustomField',
-            name: 'field1',
-            value: 'newValue1',
-            assetId: 'asset-1',
-          }),
-          expect.objectContaining({
-            action: 'setAssetCustomField',
-            name: 'field2',
-            value: 'newValue2',
-            assetId: 'asset-1',
-          }),
-        ])
-      );
-      expect(actual.filter((a) => a.action === 'setAssetCustomField')).toHaveLength(2);
+      expect(actual).toEqual([
+        {
+          action: 'setAssets',
+          assets: [
+            {
+              id: 'asset-1',
+              key: 'new-asset-key',
+              name: { en: 'New Asset Name' },
+              sources: [{ uri: 'https://example.com/asset1.pdf' }],
+            },
+          ],
+          staged: true,
+        },
+      ]);
     });
   });
 
@@ -1748,25 +1022,15 @@ describe('Actions', () => {
     test('should build multiple actions when multiple fields change', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'old-key',
-            sku: 'old-sku',
-            attributes: [{ name: 'color', value: 'red' }],
-          },
-        ],
+        key: 'old-key',
+        sku: 'old-sku',
+        attributes: [{ name: 'color', value: 'red' }],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'new-key',
-            sku: 'new-sku',
-            attributes: [{ name: 'color', value: 'blue' }],
-          },
-        ],
+        key: 'new-key',
+        sku: 'new-sku',
+        attributes: [{ name: 'color', value: 'blue' }],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
@@ -1787,25 +1051,15 @@ describe('Actions', () => {
     test('should return empty array when nothing changes', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [{ name: 'color', value: 'red' }],
-          },
-        ],
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [{ name: 'color', value: 'red' }],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'key-1',
-            sku: 'sku-1',
-            attributes: [{ name: 'color', value: 'red' }],
-          },
-        ],
+        key: 'key-1',
+        sku: 'sku-1',
+        attributes: [{ name: 'color', value: 'red' }],
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
@@ -1815,71 +1069,37 @@ describe('Actions', () => {
   });
 
   describe('edge cases', () => {
-    test('should return empty array when variants is undefined', () => {
-      const before: StandaloneVariant = {
-        id: '123',
-      };
-      const now: StandaloneVariant = {
-        id: '123',
-      };
-
-      const actual = standaloneVariantSync.buildActions(now, before);
-
-      expect(actual).toEqual([]);
-    });
-
-    test('should return empty array when variants is empty', () => {
-      const before: StandaloneVariant = {
-        id: '123',
-        variants: [],
-      };
-      const now: StandaloneVariant = {
-        id: '123',
-        variants: [],
-      };
-
-      const actual = standaloneVariantSync.buildActions(now, before);
-
-      expect(actual).toEqual([]);
-    });
-
     test('should handle variant with no attributes', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [{ id: 1, key: 'key-1', sku: 'old-sku' }],
+        key: 'key-1',
+        sku: 'old-sku',
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [{ id: 1, key: 'key-1', sku: 'new-sku' }],
+        key: 'key-1',
+        sku: 'new-sku',
       };
 
       const actual = standaloneVariantSync.buildActions(now, before);
 
-      expect(actual).toEqual([{ action: 'setSku', sku: 'new-sku', staged: true }]);
+      expect(actual).toEqual([
+        { action: 'setSku', sku: 'new-sku', staged: true },
+      ]);
     });
 
     test('should not mutate original objects', () => {
       const before: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'old-key',
-            sku: 'old-sku',
-            attributes: [{ name: 'color', value: 'red' }],
-          },
-        ],
+        key: 'old-key',
+        sku: 'old-sku',
+        attributes: [{ name: 'color', value: 'red' }],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'new-key',
-            sku: 'new-sku',
-            attributes: [{ name: 'color', value: 'blue' }],
-          },
-        ],
+        key: 'new-key',
+        sku: 'new-sku',
+        attributes: [{ name: 'color', value: 'blue' }],
       };
 
       const beforeCopy = JSON.parse(JSON.stringify(before));
@@ -1901,25 +1121,15 @@ describe('Actions', () => {
 
       const before: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'old-key',
-            sku: 'old-sku',
-            attributes: [{ name: 'color', value: 'red' }],
-          },
-        ],
+        key: 'old-key',
+        sku: 'old-sku',
+        attributes: [{ name: 'color', value: 'red' }],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'new-key',
-            sku: 'new-sku',
-            attributes: [{ name: 'color', value: 'blue' }],
-          },
-        ],
+        key: 'new-key',
+        sku: 'new-sku',
+        attributes: [{ name: 'color', value: 'blue' }],
       };
 
       const actual = sync.buildActions(now, before);
@@ -1938,25 +1148,15 @@ describe('Actions', () => {
 
       const before: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'old-key',
-            sku: 'old-sku',
-            attributes: [{ name: 'color', value: 'red' }],
-          },
-        ],
+        key: 'old-key',
+        sku: 'old-sku',
+        attributes: [{ name: 'color', value: 'red' }],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [
-          {
-            id: 1,
-            key: 'new-key',
-            sku: 'new-sku',
-            attributes: [{ name: 'color', value: 'blue' }],
-          },
-        ],
+        key: 'new-key',
+        sku: 'new-sku',
+        attributes: [{ name: 'color', value: 'blue' }],
       };
 
       const actual = sync.buildActions(now, before);
@@ -1977,11 +1177,15 @@ describe('Actions', () => {
 
       const before: StandaloneVariant = {
         id: '123',
-        variants: [{ id: 1, key: 'key-1', sku: 'old-sku', attributes: [] }],
+        key: 'key-1',
+        sku: 'old-sku',
+        attributes: [],
       };
       const now: StandaloneVariant = {
         id: '123',
-        variants: [{ id: 1, key: 'key-1', sku: 'new-sku', attributes: [] }],
+        key: 'key-1',
+        sku: 'new-sku',
+        attributes: [],
       };
 
       const actual = sync.buildActions(now, before);
@@ -1989,6 +1193,29 @@ describe('Actions', () => {
       // When staged is false, actions should not have staged: true
       const skuAction = actual.find((a) => a.action === 'setSku');
       expect(skuAction?.staged).toBeUndefined();
+    });
+  });
+});
+
+describe('Lifecycle actions', () => {
+  describe('buildPublishAction', () => {
+    test('should build publish action', () => {
+      const action = buildPublishAction();
+      expect(action).toEqual({ action: 'publish' });
+    });
+  });
+
+  describe('buildUnpublishAction', () => {
+    test('should build unpublish action', () => {
+      const action = buildUnpublishAction();
+      expect(action).toEqual({ action: 'unpublish' });
+    });
+  });
+
+  describe('buildRemoveStagedChangesAction', () => {
+    test('should build removeStagedChanges action', () => {
+      const action = buildRemoveStagedChangesAction();
+      expect(action).toEqual({ action: 'removeStagedChanges' });
     });
   });
 });
