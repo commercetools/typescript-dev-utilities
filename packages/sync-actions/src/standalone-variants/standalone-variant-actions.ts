@@ -11,6 +11,7 @@ import {
 export type StandaloneVariant = {
   id?: string | number;
   key?: string;
+  published?: boolean;
   sku?: string;
   attributes?: Attribute[];
   images?: Image[];
@@ -96,8 +97,25 @@ function _buildSkuAction(
   return null;
 }
 
+function _buildPublishAction(
+  oldVariant: StandaloneVariant,
+  newVariant: StandaloneVariant
+): StandaloneVariantUpdateAction | null {
+  // publish: oldObj.published is not true AND newObj.published is true
+  if (oldVariant.published !== true && newVariant.published === true) {
+    return { action: 'publish' };
+  }
+
+  // unpublish: oldObj.published is true AND newObj.published is not true
+  if (oldVariant.published === true && newVariant.published !== true) {
+    return { action: 'unpublish' };
+  }
+
+  return null;
+}
+
 /**
- * Maps base actions (setKey, setSku) for standalone variants.
+ * Maps base actions (setKey, setSku, publish, unpublish) for standalone variants.
  * Analyzes the diff between old and new variant and generates appropriate actions.
  *
  * Accepts flat variant objects directly (not wrapped in a variants array).
@@ -105,7 +123,7 @@ function _buildSkuAction(
 export function actionsMapBase(
   diff: Delta,
   oldVariant: StandaloneVariant,
-  _newVariant: StandaloneVariant,
+  newVariant: StandaloneVariant,
   config: SyncActionConfig = {}
 ): Array<StandaloneVariantUpdateAction> {
   const actions: Array<StandaloneVariantUpdateAction> = [];
@@ -122,6 +140,11 @@ export function actionsMapBase(
   const skuAction = _buildSkuAction(diff, oldVariant, config);
   if (skuAction) {
     actions.push(skuAction);
+  }
+
+  const publishAction = _buildPublishAction(oldVariant, newVariant);
+  if (publishAction) {
+    actions.push(publishAction);
   }
 
   return actions;
@@ -183,23 +206,3 @@ export function actionsMapAssets(
   return [_buildStagedAction('setAssets', { assets }, config)];
 }
 
-/**
- * Builds a publish action for standalone variants.
- */
-export function buildPublishAction(): StandaloneVariantUpdateAction {
-  return { action: 'publish' };
-}
-
-/**
- * Builds an unpublish action for standalone variants.
- */
-export function buildUnpublishAction(): StandaloneVariantUpdateAction {
-  return { action: 'unpublish' };
-}
-
-/**
- * Builds a removeStagedChanges action for standalone variants.
- */
-export function buildRemoveStagedChangesAction(): StandaloneVariantUpdateAction {
-  return { action: 'removeStagedChanges' };
-}

@@ -4,9 +4,6 @@ import createStandaloneVariantsSync, {
 } from '../src/standalone-variants/standalone-variants';
 import {
   convertAttributeToUpdateActionShape,
-  buildPublishAction,
-  buildUnpublishAction,
-  buildRemoveStagedChangesAction,
   StandaloneVariant,
 } from '../src/standalone-variants/standalone-variant-actions';
 import { SyncAction } from '../src/utils/types';
@@ -1197,25 +1194,149 @@ describe('Actions', () => {
   });
 });
 
-describe('Lifecycle actions', () => {
-  describe('buildPublishAction', () => {
-    test('should build publish action', () => {
-      const action = buildPublishAction();
-      expect(action).toEqual({ action: 'publish' });
-    });
+describe('Publish/Unpublish actions', () => {
+  let standaloneVariantSync: SyncAction<
+    StandaloneVariant,
+    StandaloneVariantUpdateAction
+  >;
+
+  beforeEach(() => {
+    standaloneVariantSync = createStandaloneVariantsSync();
   });
 
-  describe('buildUnpublishAction', () => {
-    test('should build unpublish action', () => {
-      const action = buildUnpublishAction();
-      expect(action).toEqual({ action: 'unpublish' });
-    });
+  test('should build `publish` action when published changes from false to true', () => {
+    const before: StandaloneVariant = {
+      id: '123',
+      key: 'key-1',
+      sku: 'sku-1',
+      published: false,
+    };
+    const now: StandaloneVariant = {
+      id: '123',
+      key: 'key-1',
+      sku: 'sku-1',
+      published: true,
+    };
+
+    const actual = standaloneVariantSync.buildActions(now, before);
+
+    expect(actual).toEqual([{ action: 'publish' }]);
   });
 
-  describe('buildRemoveStagedChangesAction', () => {
-    test('should build removeStagedChanges action', () => {
-      const action = buildRemoveStagedChangesAction();
-      expect(action).toEqual({ action: 'removeStagedChanges' });
-    });
+  test('should build `publish` action when published changes from undefined to true', () => {
+    const before: StandaloneVariant = {
+      id: '123',
+      key: 'key-1',
+      sku: 'sku-1',
+    };
+    const now: StandaloneVariant = {
+      id: '123',
+      key: 'key-1',
+      sku: 'sku-1',
+      published: true,
+    };
+
+    const actual = standaloneVariantSync.buildActions(now, before);
+
+    expect(actual).toEqual([{ action: 'publish' }]);
+  });
+
+  test('should build `unpublish` action when published changes from true to false', () => {
+    const before: StandaloneVariant = {
+      id: '123',
+      key: 'key-1',
+      sku: 'sku-1',
+      published: true,
+    };
+    const now: StandaloneVariant = {
+      id: '123',
+      key: 'key-1',
+      sku: 'sku-1',
+      published: false,
+    };
+
+    const actual = standaloneVariantSync.buildActions(now, before);
+
+    expect(actual).toEqual([{ action: 'unpublish' }]);
+  });
+
+  test('should build `unpublish` action when published changes from true to undefined', () => {
+    const before: StandaloneVariant = {
+      id: '123',
+      key: 'key-1',
+      sku: 'sku-1',
+      published: true,
+    };
+    const now: StandaloneVariant = {
+      id: '123',
+      key: 'key-1',
+      sku: 'sku-1',
+    };
+
+    const actual = standaloneVariantSync.buildActions(now, before);
+
+    expect(actual).toEqual([{ action: 'unpublish' }]);
+  });
+
+  test('should not build publish/unpublish action when published is unchanged (both true)', () => {
+    const before: StandaloneVariant = {
+      id: '123',
+      key: 'key-1',
+      sku: 'sku-1',
+      published: true,
+    };
+    const now: StandaloneVariant = {
+      id: '123',
+      key: 'key-1',
+      sku: 'sku-1',
+      published: true,
+    };
+
+    const actual = standaloneVariantSync.buildActions(now, before);
+
+    expect(actual).toEqual([]);
+  });
+
+  test('should not build publish/unpublish action when published is unchanged (both false)', () => {
+    const before: StandaloneVariant = {
+      id: '123',
+      key: 'key-1',
+      sku: 'sku-1',
+      published: false,
+    };
+    const now: StandaloneVariant = {
+      id: '123',
+      key: 'key-1',
+      sku: 'sku-1',
+      published: false,
+    };
+
+    const actual = standaloneVariantSync.buildActions(now, before);
+
+    expect(actual).toEqual([]);
+  });
+
+  test('should build publish action along with other changes', () => {
+    const before: StandaloneVariant = {
+      id: '123',
+      key: 'key-1',
+      sku: 'old-sku',
+      published: false,
+    };
+    const now: StandaloneVariant = {
+      id: '123',
+      key: 'key-1',
+      sku: 'new-sku',
+      published: true,
+    };
+
+    const actual = standaloneVariantSync.buildActions(now, before);
+
+    expect(actual).toEqual(
+      expect.arrayContaining([
+        { action: 'setSku', sku: 'new-sku', staged: true },
+        { action: 'publish' },
+      ])
+    );
   });
 });
