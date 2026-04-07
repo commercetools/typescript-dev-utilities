@@ -1,5 +1,11 @@
 # @commercetools/sync-actions
 
+## 8.2.0
+
+### Minor Changes
+
+- [#46](https://github.com/commercetools/typescript-dev-utilities/pull/46) [`ba9a9a1`](https://github.com/commercetools/typescript-dev-utilities/commit/ba9a9a1f4fb8a63c7eeaeb4c523d2cbe19b7e539) Thanks [@ddouglasz](https://github.com/ddouglasz)! - Add support for standalone variants actions
+
 ## 8.1.0
 
 ### Minor Changes
