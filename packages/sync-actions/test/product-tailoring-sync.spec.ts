@@ -447,6 +447,30 @@ describe('Actions', () => {
       ]);
     });
 
+    test('should build `addAsset` action without position when previous tailoring does not contain assets', () => {
+      const before = {
+        variants: [{ id: 1, images: [] }],
+      };
+      const now = {
+        variants: [
+          {
+            id: 1,
+            images: [],
+            assets: [{ key: 'asset-1', name: { en: 'Asset 1' }, sources: [] }],
+          },
+        ],
+      };
+
+      const actions = productTailoringSync.buildActions(now, before);
+      expect(actions).toEqual([
+        {
+          action: 'addAsset',
+          variantId: 1,
+          asset: { key: 'asset-1', name: { en: 'Asset 1' }, sources: [] },
+        },
+      ]);
+    })
+
     test('should build `removeAsset` action', () => {
       const before = {
         variants: [
