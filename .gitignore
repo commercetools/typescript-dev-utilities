@@ -138,3 +138,6 @@ dist
 
 # custom entries
 bin
+
+# IDEs and editors
+.idea/
