@@ -319,12 +319,17 @@ function _buildVariantAssetsActions(
     );
 
     if (getIsAddAction(key, asset)) {
-      assetActions.push({
+      const action = {
         action: 'addAsset',
         asset: diffpatcher.getDeltaValue(asset),
         ...toVariantIdentifier(newVariant),
+      };
+      const actionWithPosition = {
+        ...action,
         position: Number(key),
-      });
+      };
+      assetActions.push( oldVariant.assets ? actionWithPosition : action );
+
       return;
     }
 
