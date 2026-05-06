@@ -303,6 +303,18 @@ function _buildVariantAssetsActions(
   oldVariant: ProductVariantTailoring,
   newVariant: ProductVariantTailoring
 ) {
+  // When before had no `assets` property, jsondiffpatch produces a "property added"
+  // delta [[asset-1, ..., asset-n]] instead of an array diff { _t: 'a', ... }.
+  // getDeltaValue would misread a 2-element inner array as [oldValue, newValue],
+  // so we detect this format and generate addAsset actions directly.
+  if (Array.isArray(diffAssets) && diffAssets.length === 1 && Array.isArray(diffAssets[0])) {
+    return (diffAssets[0] as Asset[]).map((asset) => ({
+      action: 'addAsset',
+      asset,
+      ...toVariantIdentifier(newVariant),
+    }));
+  }
+
   const assetActions = [];
   const matchingAssetPairs = findMatchingPairs(
     diffAssets,
