@@ -1,5 +1,11 @@
 # @commercetools/sync-actions
 
+## 8.2.1
+
+### Patch Changes
+
+- [#49](https://github.com/commercetools/typescript-dev-utilities/pull/49) [`41a6524`](https://github.com/commercetools/typescript-dev-utilities/commit/41a65244b2affccd304c739216fa8754d37128b2) Thanks [@kafis](https://github.com/kafis)! - fix addAsset action generation for product-tailoring when more than one asset is added to a previously undefined asset array
+
 ## 8.2.0
 
 ### Minor Changes
