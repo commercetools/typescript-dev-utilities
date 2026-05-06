@@ -1,5 +1,13 @@
 # @commercetools/sync-actions
 
+## 8.2.0
+
+### Minor Changes
+
+- [#46](https://github.com/commercetools/typescript-dev-utilities/pull/46) [`ba9a9a1`](https://github.com/commercetools/typescript-dev-utilities/commit/ba9a9a1f4fb8a63c7eeaeb4c523d2cbe19b7e539) Thanks [@ddouglasz](https://github.com/ddouglasz)! - Add support for standalone variants actions
+
+- [#48](https://github.com/commercetools/typescript-dev-utilities/pull/48) [`94a83b1`](https://github.com/commercetools/typescript-dev-utilities/commit/94a83b1783467c7a2c53026744cdf96be22e1b3c) Thanks [@kafis](https://github.com/kafis)! - When an `addAsset` action for product-tailoring's variant is generated, the position property is omitted when the source product-tailoring's variant did not include an asset array.
+
 ## 8.1.0
 
 ### Minor Changes
