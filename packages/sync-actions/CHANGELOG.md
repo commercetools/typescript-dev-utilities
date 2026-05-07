@@ -1,5 +1,11 @@
 # @commercetools/sync-actions
 
+## 8.2.2
+
+### Patch Changes
+
+- [#51](https://github.com/commercetools/typescript-dev-utilities/pull/51) [`5aca03a`](https://github.com/commercetools/typescript-dev-utilities/commit/5aca03a0762f0dc490af510f5632a178d25ac3aa) Thanks [@kafis](https://github.com/kafis)! - When a product-tailorings variant does not define an image array but more than one image should be added, only one addExternalImage action was generated. This fix makes sure, that for each added image an action is generated
+
 ## 8.2.1
 
 ### Patch Changes
