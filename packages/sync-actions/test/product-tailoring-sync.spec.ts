@@ -318,6 +318,38 @@ describe('Actions', () => {
       ]);
     });
 
+    test('should build multiple `addExternalImage` action when image array is undefined before', () => {
+      const before = {
+        variants: [{ id: 1, assets: [] }],
+      };
+      const now = {
+        variants: [
+          {
+            id: 1,
+            images: [
+              { url: '//newimage-1.jpg', dimensions: { w: 400, h: 300 } },
+              { url: '//newimage-2.jpg', dimensions: { w: 400, h: 300 } },
+            ],
+            assets: [],
+          },
+        ],
+      };
+
+      const actions = productTailoringSync.buildActions(now, before);
+      expect(actions).toEqual([
+        {
+          action: 'addExternalImage',
+          variantId: 1,
+          image: { url: '//newimage-1.jpg', dimensions: { w: 400, h: 300 } },
+        },
+        {
+          action: 'addExternalImage',
+          variantId: 1,
+          image: { url: '//newimage-2.jpg', dimensions: { w: 400, h: 300 } },
+        },
+      ]);
+    });
+
     test('should build `removeImage` action', () => {
       const before = {
         variants: [

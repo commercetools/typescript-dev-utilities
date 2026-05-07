@@ -194,6 +194,18 @@ function _buildVariantImagesAction(
   oldVariant = {} as ProductVariantTailoring,
   newVariant = {} as ProductVariantTailoring
 ) {
+  // When before had no `images` property, jsondiffpatch produces a "property added"
+  // delta [[image-1, ..., image-n]] instead of an array diff { _t: 'a', ... }.
+  // getDeltaValue would misread a 2-element inner array as [oldValue, newValue],
+  // so we detect this format and generate addExternalImage actions directly.
+  if (Array.isArray(diffedImages) && diffedImages.length === 1 && Array.isArray(diffedImages[0])) {
+    return (diffedImages[0] as Image[]).map((image) => ({
+      action: 'addExternalImage',
+      variantId: oldVariant.id,
+      image,
+    }));
+  }
+
   const actions = [];
   const matchingImagePairs = findMatchingPairs(
     diffedImages,
