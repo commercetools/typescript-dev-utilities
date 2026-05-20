@@ -194,6 +194,11 @@ function _buildVariantImagesAction(
   oldVariant = {} as ProductVariantTailoring,
   newVariant = {} as ProductVariantTailoring
 ) {
+  // When `images` property is deleted (delta: [oldValue, 0, 0]), generate setImages to unset images.
+  if (Array.isArray(diffedImages) && diffedImages.length === 3 && diffedImages[1] === 0 && diffedImages[2] === 0) {
+    return [{ action: 'setImages', variantId: oldVariant.id }];
+  }
+
   // When before had no `images` property, jsondiffpatch produces a "property added"
   // delta [[image-1, ..., image-n]] instead of an array diff { _t: 'a', ... }.
   // getDeltaValue would misread a 2-element inner array as [oldValue, newValue],

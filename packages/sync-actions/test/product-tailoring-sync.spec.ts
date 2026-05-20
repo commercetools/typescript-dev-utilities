@@ -294,6 +294,47 @@ describe('Actions', () => {
   });
 
   describe('image actions', () => {
+    test('should build `setImage` action with undefined images, if images become undefined', () => {
+      const before = {
+        variants: [
+          {
+            id: 1,
+            images: [],
+            assets: [],
+          },
+          {
+            id: 2,
+            images: [
+              { url: '//newimage-1.jpg', dimensions: { w: 400, h: 300 } },
+            ],
+            assets: [],
+          },
+        ],
+      };
+      const now = {
+        variants: [
+          {
+            id: 1,
+            assets: [],
+          }, {
+          id: 2,
+            assets: []
+          }
+        ],
+      };
+
+      const actions = productTailoringSync.buildActions(now, before);
+      expect(actions).toEqual([
+        {
+          action: 'setImages',
+          variantId: 1,
+        },
+        {
+          action: 'setImages',
+          variantId: 2,
+        },
+      ]);
+    })
     test('should build `addExternalImage` action', () => {
       const before = {
         variants: [{ id: 1, images: [], assets: [] }],

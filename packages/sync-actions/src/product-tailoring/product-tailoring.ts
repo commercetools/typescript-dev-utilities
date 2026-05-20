@@ -154,10 +154,31 @@ function prepareVariantsForDiff(
   before: ProductTailoringData,
   now: ProductTailoringData
 ): Array<ProductTailoringData> {
+  // Capture which variant IDs lack `images` before copyEmptyArrayProps mutates now
+  // (it does a shallow copy of arrays, so the original elements are shared by reference).
+  const variantIdsWithoutImages = new Set(
+    (now.variants || []).filter((v) => !('images' in v)).map((v) => v.id)
+  );
+
   const [beforeCopy, nowCopy] = copyEmptyArrayProps(
     before,
     now
   ) as Array<ProductTailoringData>;
+
+  // copyEmptyArrayProps adds `images: []` when the property was absent from `now`.
+  // Absence signals removal, so restore it so the diff produces a deletion delta
+  // and a `setImages` action gets generated.
+  if (nowCopy.variants && variantIdsWithoutImages.size > 0) {
+    nowCopy.variants = nowCopy.variants.map((variant) => {
+      if (variantIdsWithoutImages.has(variant.id)) {
+        const { images: _removed, ...rest } = variant as typeof variant & {
+          images?: unknown;
+        };
+        return rest;
+      }
+      return variant;
+    });
+  }
 
   const ensureVariants = (obj: ProductTailoringData): ProductTailoringData => ({
     ...obj,
