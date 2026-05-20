@@ -318,7 +318,8 @@ describe('Actions', () => {
             assets: [],
           }, {
           id: 2,
-            assets: []
+            assets: [],
+            images: null
           }
         ],
       };

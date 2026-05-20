@@ -154,10 +154,14 @@ function prepareVariantsForDiff(
   before: ProductTailoringData,
   now: ProductTailoringData
 ): Array<ProductTailoringData> {
-  // Capture which variant IDs lack `images` before copyEmptyArrayProps mutates now
+  // Capture which variant IDs have absent or null `images` before copyEmptyArrayProps mutates now
   // (it does a shallow copy of arrays, so the original elements are shared by reference).
+  // Both cases (missing property and explicit null) mean "remove images", and
+  // copyEmptyArrayProps converts both to [], so we preserve the original intent here.
   const variantIdsWithoutImages = new Set(
-    (now.variants || []).filter((v) => !('images' in v)).map((v) => v.id)
+    (now.variants || [])
+      .filter((v) => !('images' in v) || (v as ProductTailoringData & { images?: unknown }).images === null)
+      .map((v) => v.id)
   );
 
   const [beforeCopy, nowCopy] = copyEmptyArrayProps(

@@ -194,8 +194,12 @@ function _buildVariantImagesAction(
   oldVariant = {} as ProductVariantTailoring,
   newVariant = {} as ProductVariantTailoring
 ) {
-  // When `images` property is deleted (delta: [oldValue, 0, 0]), generate setImages to unset images.
+  // When `images` property is deleted (delta: [oldValue, 0, 0]) or set to null (delta: [oldValue, null]), generate setImages to unset images.
   if (Array.isArray(diffedImages) && diffedImages.length === 3 && diffedImages[1] === 0 && diffedImages[2] === 0) {
+    return [{ action: 'setImages', variantId: oldVariant.id }];
+  }
+
+  if (Array.isArray(diffedImages) && diffedImages.length === 2 && diffedImages[1] === null) {
     return [{ action: 'setImages', variantId: oldVariant.id }];
   }
 
