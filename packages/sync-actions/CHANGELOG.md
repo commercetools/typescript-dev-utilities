@@ -1,5 +1,11 @@
 # @commercetools/sync-actions
 
+## 8.2.4
+
+### Patch Changes
+
+- [#55](https://github.com/commercetools/typescript-dev-utilities/pull/55) [`927d071`](https://github.com/commercetools/typescript-dev-utilities/commit/927d0712a28c60186af17fe35660722156eb8fa3) Thanks [@kafis](https://github.com/kafis)! - product-tailoring: fix setImages for null values
+
 ## 8.2.3
 
 ### Patch Changes
