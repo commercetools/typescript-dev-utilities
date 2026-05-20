@@ -1,5 +1,11 @@
 # @commercetools/sync-actions
 
+## 8.2.3
+
+### Patch Changes
+
+- [#53](https://github.com/commercetools/typescript-dev-utilities/pull/53) [`fda03f9`](https://github.com/commercetools/typescript-dev-utilities/commit/fda03f9432c4338be78903ba77c38a3f86f0a16c) Thanks [@kafis](https://github.com/kafis)! - Enabling unsetting images on product-tailoring variants.
+
 ## 8.2.2
 
 ### Patch Changes
