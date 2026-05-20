@@ -169,7 +169,7 @@ function prepareVariantsForDiff(
   // Absence signals removal, so restore it so the diff produces a deletion delta
   // and a `setImages` action gets generated.
   if (nowCopy.variants && variantIdsWithoutImages.size > 0) {
-    nowCopy.variants = nowCopy.variants.map((variant) => {
+    const patchedVariants = nowCopy.variants.map((variant) => {
       if (variantIdsWithoutImages.has(variant.id)) {
         const { images: _removed, ...rest } = variant as typeof variant & {
           images?: unknown;
@@ -178,6 +178,7 @@ function prepareVariantsForDiff(
       }
       return variant;
     });
+    (nowCopy as { variants: typeof patchedVariants }).variants = patchedVariants;
   }
 
   const ensureVariants = (obj: ProductTailoringData): ProductTailoringData => ({
