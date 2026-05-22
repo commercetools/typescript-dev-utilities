@@ -35,8 +35,10 @@ function createPriceMapActions<T extends object>(
   ): Array<UpdateAction> {
     const baseActions = mapActionGroup(
       'base',
-      (): Array<UpdateAction> =>
-        pricesActions.actionsMapBase(diff, oldObj, newObj, syncActionConfig)
+      (): Array<UpdateAction> => [
+        ...pricesActions.actionsMapBase(diff, oldObj, newObj, syncActionConfig),
+        ...pricesActions.actionsMapStaged(diff, oldObj, newObj, syncActionConfig)
+      ]
     );
 
     const customActions = mapActionGroup(

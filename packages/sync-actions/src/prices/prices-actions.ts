@@ -1,4 +1,9 @@
-import { Delta, SyncActionConfig, UpdateAction } from '../utils/types';
+import {
+  Delta,
+  StandalonePrice,
+  SyncActionConfig,
+  UpdateAction,
+} from '../utils/types';
 import { buildBaseAttributesActions } from '../utils/common-actions';
 
 export const baseActionsList: Array<UpdateAction> = [
@@ -28,4 +33,33 @@ export function actionsMapBase<T>(
     shouldPreventUnsettingRequiredFields:
       config.shouldPreventUnsettingRequiredFields,
   });
+}
+
+export function actionsMapStaged(
+  diff: Delta,
+  oldObj: Partial<StandalonePrice>,
+  newObj: Partial<StandalonePrice>,
+  config: SyncActionConfig = {}
+) {
+  if (!diff || !diff.staged) return [];
+
+  const hasNewStaged = newObj && newObj.staged != null;
+  const hadOldStaged = oldObj && oldObj.staged != null;
+
+  if (!hasNewStaged && hadOldStaged) {
+    if (config.shouldUnsetOmittedProperties)
+      return [{ action: 'removeStagedChanges' }];
+    return [];
+  }
+
+  if (hasNewStaged && newObj.staged.value)
+    return [
+      {
+        action: 'changeValue',
+        value: newObj.staged.value,
+        staged: true,
+      },
+    ];
+
+  return [];
 }

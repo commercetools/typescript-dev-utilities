@@ -904,6 +904,347 @@ describe('price actions', () => {
     });
   });
 
+  describe('staged', () => {
+    test('should build `changeValue` with `staged: true` when staged value changes', () => {
+      const before: Partial<StandalonePrice> = {
+        id: '9fe6610f',
+        value: {
+          type: 'centPrecision',
+          currencyCode: 'EUR',
+          centAmount: 1900,
+          fractionDigits: 2,
+        },
+        staged: {
+          value: {
+            type: 'centPrecision',
+            currencyCode: 'EUR',
+            centAmount: 2000,
+            fractionDigits: 2,
+          },
+        },
+      };
+
+      const now: Partial<StandalonePrice> = {
+        id: '9fe6610f',
+        value: {
+          type: 'centPrecision',
+          currencyCode: 'EUR',
+          centAmount: 1900,
+          fractionDigits: 2,
+        },
+        staged: {
+          value: {
+            type: 'centPrecision',
+            currencyCode: 'EUR',
+            centAmount: 2500,
+            fractionDigits: 2,
+          },
+        },
+      };
+
+      const actions = pricesSync.buildActions(now, before);
+      expect(actions).toEqual([
+        {
+          action: 'changeValue',
+          value: {
+            type: 'centPrecision',
+            currencyCode: 'EUR',
+            centAmount: 2500,
+            fractionDigits: 2,
+          },
+          staged: true,
+        },
+      ]);
+    });
+
+    test('should not build any action when staged value is identical', () => {
+      const stagedValue = {
+        type: 'centPrecision' as const,
+        currencyCode: 'EUR',
+        centAmount: 2000,
+        fractionDigits: 2,
+      };
+      const before: Partial<StandalonePrice> = {
+        id: '9fe6610f',
+        value: {
+          type: 'centPrecision',
+          currencyCode: 'EUR',
+          centAmount: 1900,
+          fractionDigits: 2,
+        },
+        staged: { value: stagedValue },
+      };
+
+      const now: Partial<StandalonePrice> = {
+        id: '9fe6610f',
+        value: {
+          type: 'centPrecision',
+          currencyCode: 'EUR',
+          centAmount: 1900,
+          fractionDigits: 2,
+        },
+        staged: { value: stagedValue },
+      };
+
+      const actions = pricesSync.buildActions(now, before);
+      expect(actions).toEqual([]);
+    });
+
+    test('should build `changeValue` with `staged: true` when staged is newly added', () => {
+      const before: Partial<StandalonePrice> = {
+        id: '9fe6610f',
+        value: {
+          type: 'centPrecision',
+          currencyCode: 'EUR',
+          centAmount: 1900,
+          fractionDigits: 2,
+        },
+      };
+
+      const now: Partial<StandalonePrice> = {
+        id: '9fe6610f',
+        value: {
+          type: 'centPrecision',
+          currencyCode: 'EUR',
+          centAmount: 1900,
+          fractionDigits: 2,
+        },
+        staged: {
+          value: {
+            type: 'centPrecision',
+            currencyCode: 'EUR',
+            centAmount: 2500,
+            fractionDigits: 2,
+          },
+        },
+      };
+
+      const actions = pricesSync.buildActions(now, before);
+      expect(actions).toEqual([
+        {
+          action: 'changeValue',
+          value: {
+            type: 'centPrecision',
+            currencyCode: 'EUR',
+            centAmount: 2500,
+            fractionDigits: 2,
+          },
+          staged: true,
+        },
+      ]);
+    });
+
+    test('should build `removeStagedChanges` when staged is removed and `shouldUnsetOmittedProperties` is true', () => {
+      const priceSyncer = pricesSyncFn([], {
+        shouldUnsetOmittedProperties: true,
+      });
+      const before: Partial<StandalonePrice> = {
+        id: '9fe6610f',
+        value: {
+          type: 'centPrecision',
+          currencyCode: 'EUR',
+          centAmount: 1900,
+          fractionDigits: 2,
+        },
+        staged: {
+          value: {
+            type: 'centPrecision',
+            currencyCode: 'EUR',
+            centAmount: 2000,
+            fractionDigits: 2,
+          },
+        },
+      };
+
+      const now: Partial<StandalonePrice> = {
+        id: '9fe6610f',
+        value: {
+          type: 'centPrecision',
+          currencyCode: 'EUR',
+          centAmount: 1900,
+          fractionDigits: 2,
+        },
+      };
+
+      const actions = priceSyncer.buildActions(now, before);
+      expect(actions).toEqual([{ action: 'removeStagedChanges' }]);
+    });
+
+    test('should not build any staged action when staged is removed and `shouldUnsetOmittedProperties` is false', () => {
+      const before: Partial<StandalonePrice> = {
+        id: '9fe6610f',
+        value: {
+          type: 'centPrecision',
+          currencyCode: 'EUR',
+          centAmount: 1900,
+          fractionDigits: 2,
+        },
+        staged: {
+          value: {
+            type: 'centPrecision',
+            currencyCode: 'EUR',
+            centAmount: 2000,
+            fractionDigits: 2,
+          },
+        },
+      };
+
+      const now: Partial<StandalonePrice> = {
+        id: '9fe6610f',
+        value: {
+          type: 'centPrecision',
+          currencyCode: 'EUR',
+          centAmount: 1900,
+          fractionDigits: 2,
+        },
+      };
+
+      const actions = pricesSync.buildActions(now, before);
+      expect(actions).toEqual([]);
+    });
+
+    test('should not build any staged action when neither side has staged', () => {
+      const before: Partial<StandalonePrice> = {
+        id: '9fe6610f',
+        value: {
+          type: 'centPrecision',
+          currencyCode: 'EUR',
+          centAmount: 1900,
+          fractionDigits: 2,
+        },
+      };
+
+      const now: Partial<StandalonePrice> = {
+        id: '9fe6610f',
+        value: {
+          type: 'centPrecision',
+          currencyCode: 'EUR',
+          centAmount: 1900,
+          fractionDigits: 2,
+        },
+      };
+
+      const actions = pricesSync.buildActions(now, before);
+      expect(actions).toEqual([]);
+    });
+
+    test('should build two `changeValue` actions when both top-level and staged values change', () => {
+      const before: Partial<StandalonePrice> = {
+        id: '9fe6610f',
+        value: {
+          type: 'centPrecision',
+          currencyCode: 'EUR',
+          centAmount: 1900,
+          fractionDigits: 2,
+        },
+        staged: {
+          value: {
+            type: 'centPrecision',
+            currencyCode: 'EUR',
+            centAmount: 2000,
+            fractionDigits: 2,
+          },
+        },
+      };
+
+      const now: Partial<StandalonePrice> = {
+        id: '9fe6610f',
+        value: {
+          type: 'centPrecision',
+          currencyCode: 'EUR',
+          centAmount: 1950,
+          fractionDigits: 2,
+        },
+        staged: {
+          value: {
+            type: 'centPrecision',
+            currencyCode: 'EUR',
+            centAmount: 2500,
+            fractionDigits: 2,
+          },
+        },
+      };
+
+      const actions = pricesSync.buildActions(now, before);
+      expect(actions).toEqual([
+        {
+          action: 'changeValue',
+          value: {
+            type: 'centPrecision',
+            currencyCode: 'EUR',
+            centAmount: 1950,
+            fractionDigits: 2,
+          },
+        },
+        {
+          action: 'changeValue',
+          value: {
+            type: 'centPrecision',
+            currencyCode: 'EUR',
+            centAmount: 2500,
+            fractionDigits: 2,
+          },
+          staged: true,
+        },
+      ]);
+    });
+
+    test('should detect change in staged value `fractionDigits` for high-precision money', () => {
+      const before: Partial<StandalonePrice> = {
+        id: '9fe6610f',
+        value: {
+          type: 'centPrecision',
+          currencyCode: 'EUR',
+          centAmount: 1900,
+          fractionDigits: 2,
+        },
+        staged: {
+          value: {
+            type: 'highPrecision',
+            currencyCode: 'EUR',
+            centAmount: 2000,
+            fractionDigits: 4,
+            preciseAmount: 200012,
+          } as TypedMoney,
+        },
+      };
+
+      const now: Partial<StandalonePrice> = {
+        id: '9fe6610f',
+        value: {
+          type: 'centPrecision',
+          currencyCode: 'EUR',
+          centAmount: 1900,
+          fractionDigits: 2,
+        },
+        staged: {
+          value: {
+            type: 'highPrecision',
+            currencyCode: 'EUR',
+            centAmount: 2000,
+            fractionDigits: 5,
+            preciseAmount: 2000123,
+          } as TypedMoney,
+        },
+      };
+
+      const actions = pricesSync.buildActions(now, before);
+      expect(actions).toEqual([
+        {
+          action: 'changeValue',
+          value: {
+            type: 'highPrecision',
+            currencyCode: 'EUR',
+            centAmount: 2000,
+            fractionDigits: 5,
+            preciseAmount: 2000123,
+          },
+          staged: true,
+        },
+      ]);
+    });
+  });
+
   describe('setCustomField', () => {
     test('should generate `setCustomField` actions', () => {
       const before: Partial<StandalonePrice> = {
