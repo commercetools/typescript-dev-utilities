@@ -1,5 +1,11 @@
 # @commercetools/sync-actions
 
+## 8.3.0
+
+### Minor Changes
+
+- [#57](https://github.com/commercetools/typescript-dev-utilities/pull/57) [`151a822`](https://github.com/commercetools/typescript-dev-utilities/commit/151a822b40bcca5842096e324ce03619a88084cb) Thanks [@islam3zzat](https://github.com/islam3zzat)! - standalone-prices: support staged value via `changeValue` with `staged: true` and `removeStagedChanges`
+
 ## 8.2.4
 
 ### Patch Changes
