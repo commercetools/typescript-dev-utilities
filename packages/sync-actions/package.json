@@ -32,7 +32,7 @@
     "esbuild": "^0.25.4",
     "fast-equals": "^2.0.0",
     "jest": "^29.7.0",
-    "jsondiffpatch": "0.5.0",
+    "jsondiffpatch": "0.7.2",
     "lodash.foreach": "^4.5.0",
     "lodash.intersection": "^4.4.0",
     "lodash.isequal": "^4.5.0",
