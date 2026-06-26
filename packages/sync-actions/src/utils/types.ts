@@ -1,7 +1,10 @@
-import type { Delta as DiffDelta } from 'jsondiffpatch/dist/jsondiffpatch.cjs';
-
 export * from '@commercetools/platform-sdk';
-export type Delta = DiffDelta | undefined;
+
+// The action builders read a delta both by key (`delta.shippingInfo`) and by
+// position (`delta[2]`), so we model it as a loose index-able record rather than
+// jsondiffpatch's strict Delta union (which would require narrowing everywhere).
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Delta = Record<string | number, any> | undefined;
 
 export type SyncActionConfig = {
   shouldOmitEmptyString?: boolean;

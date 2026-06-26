@@ -1,4 +1,4 @@
-import { DiffPatcher } from 'jsondiffpatch/dist/jsondiffpatch.cjs';
+import { DiffPatcher } from 'jsondiffpatch';
 import { Delta } from './types';
 
 type U = { id: string; name: string; url: string };
@@ -22,24 +22,22 @@ const diffpatcher = new DiffPatcher({
     // value of items moved is not included in deltas
     includeValueOnMove: false,
   },
-  textDiff: {
-    /**
-     * jsondiffpatch uses a very fine-grained diffing algorithm for long strings to easily identify
-     * what changed between strings. However, we don't actually care about what changed, just
-     * if the string changed at all. So we set the minimum length to diff to a very large number to avoid
-     * using the very slow algorithm.
-     * See https://github.com/benjamine/jsondiffpatch/blob/master/docs/deltas.md#text-diffs.
-     */
-    minLength: Number.MAX_SAFE_INTEGER,
-  },
+  // No `textDiff` config: as of jsondiffpatch 0.7, fine-grained text diffing is
+  // opt-in and requires passing a `diffMatchPatch` instance (or importing
+  // `jsondiffpatch/with-text-diffs`). We deliberately leave it disabled so a
+  // changed string is reported as a whole-value replacement rather than a slow
+  // character-level diff — we only care whether the string changed at all.
+  // See https://github.com/benjamine/jsondiffpatch/blob/master/docs/deltas.md#text-diffs.
 });
 
 export function diff<T>(oldObj: T, newObj: T): Delta {
   return diffpatcher.diff(oldObj, newObj);
 }
 
-export function patch<T>(obj: T, delta: Delta) {
-  return diffpatcher.patch(obj, delta);
+export function patch<T>(obj: T, delta: Delta): T {
+  // jsondiffpatch 0.7 types `patch` as returning `unknown`; the patched value is
+  // structurally the same shape as the input, so narrow back to `T`.
+  return diffpatcher.patch(obj, delta) as T;
 }
 
 export function getDeltaValue<T extends object = object>(
