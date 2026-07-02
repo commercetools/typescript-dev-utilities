@@ -9,8 +9,6 @@ describe('diffpatcher (jsondiffpatch 0.7)', () => {
         unknown[]
       >;
       const stringDelta = delta.desc;
-      // text-diff deltas are length 3 with a trailing `2`; we require the slow
-      // text-diff path to stay disabled so the change is a [old, new] pair.
       expect(stringDelta).toHaveLength(2);
       expect(stringDelta[0]).toBe(long);
       expect(stringDelta[1]).toBe(`${long}CHANGED`);

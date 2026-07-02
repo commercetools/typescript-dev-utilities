@@ -22,12 +22,6 @@ const diffpatcher = new DiffPatcher({
     // value of items moved is not included in deltas
     includeValueOnMove: false,
   },
-  // No `textDiff` config: as of jsondiffpatch 0.7, fine-grained text diffing is
-  // opt-in and requires passing a `diffMatchPatch` instance (or importing
-  // `jsondiffpatch/with-text-diffs`). We deliberately leave it disabled so a
-  // changed string is reported as a whole-value replacement rather than a slow
-  // character-level diff — we only care whether the string changed at all.
-  // See https://github.com/benjamine/jsondiffpatch/blob/master/docs/deltas.md#text-diffs.
 });
 
 export function diff<T>(oldObj: T, newObj: T): Delta {
@@ -35,8 +29,6 @@ export function diff<T>(oldObj: T, newObj: T): Delta {
 }
 
 export function patch<T>(obj: T, delta: Delta): T {
-  // jsondiffpatch 0.7 types `patch` as returning `unknown`; the patched value is
-  // structurally the same shape as the input, so narrow back to `T`.
   return diffpatcher.patch(obj, delta) as T;
 }
 
