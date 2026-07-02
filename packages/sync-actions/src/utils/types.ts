@@ -1,5 +1,5 @@
 export * from '@commercetools/platform-sdk';
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Delta = Record<string | number, any> | undefined;
 
 export type SyncActionConfig = {
