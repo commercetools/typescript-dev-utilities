@@ -9,6 +9,8 @@ module.exports = {
     '^.+\\.js$': 'babel-jest',
     '^.+\\.ts?$': 'ts-jest',
   },
+  // Transpile the ESM-only jsondiffpatch package (Jest skips node_modules by default).
+  transformIgnorePatterns: ['/node_modules/(?!(jsondiffpatch)/)'],
   testRegex: '\\.(test|spec)\\.[t]s?$',
   moduleFileExtensions: ['ts', 'js', 'json'],
   coverageDirectory: 'coverage',

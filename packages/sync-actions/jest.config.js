@@ -6,9 +6,12 @@ module.exports = {
   testTimeout: 15000,
   testEnvironment: 'node',
   transform: {
-    '^.+\\.js$': 'babel-jest',
+    // rootMode 'upward' finds the repo-root babel.config.js from this package dir
+    '^.+\\.js$': ['babel-jest', { rootMode: 'upward' }],
     '^.+\\.ts?$': 'ts-jest',
   },
+  // transpile ESM-only jsondiffpatch (jest ignores node_modules by default)
+  transformIgnorePatterns: ['/node_modules/(?!(jsondiffpatch)/)'],
   testRegex: '\\.(test|spec)\\.[t]s?$',
   moduleFileExtensions: ['ts', 'js', 'json'],
   coverageDirectory: 'coverage',

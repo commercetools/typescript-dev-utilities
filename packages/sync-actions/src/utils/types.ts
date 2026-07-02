@@ -1,7 +1,6 @@
-import type { Delta as DiffDelta } from 'jsondiffpatch/dist/jsondiffpatch.cjs';
-
 export * from '@commercetools/platform-sdk';
-export type Delta = DiffDelta | undefined;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Delta = Record<string | number, any> | undefined;
 
 export type SyncActionConfig = {
   shouldOmitEmptyString?: boolean;
