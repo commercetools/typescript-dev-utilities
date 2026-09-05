@@ -9,8 +9,8 @@
   "packageManager": "yarn@4.9.1",
   "dependencies": {
     "@babel/core": "7.28.4",
-    "@babel/preset-env": "7.28.3",
-    "@babel/preset-typescript": "7.27.1",
+    "@babel/preset-env": "7.29.7",
+    "@babel/preset-typescript": "7.29.7",
     "@changesets/changelog-github": "^0.5.1",
     "@changesets/cli": "^2.29.4",
     "@commitlint/cli": "19.8.1",
