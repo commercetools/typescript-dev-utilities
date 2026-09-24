@@ -43,8 +43,12 @@ jobs:
       - name: Setup
         uses: ./.github/actions/ci
 
+      # Pinned to the 11.x line rather than `latest`: npm 12 requires
+      # Node ^22.22.2 || ^24.15.0 || >=26, which the version in .nvmrc
+      # (22.14.0) does not satisfy, so `latest` broke the release.
+      # 11.x supports OIDC trusted publishing and runs on Node >=22.9.0.
       - name: Update npm
-        run: npm install -g npm@latest
+        run: npm install -g npm@11
 
       - name: Creating .npmrc
         run: |
