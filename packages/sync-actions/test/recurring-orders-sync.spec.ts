@@ -129,11 +129,11 @@ describe('Actions', () => {
 
   test('should build `setOrderSkipConfiguration` action', () => {
     const before: Partial<RecurringOrder> = {
-      skipConfiguration: { type: 'counter', totalToSkip: 2, skipped: 1 },
+      skipConfiguration: { type: 'Counter', totalToSkip: 2, skipped: 1 },
     };
     const now: Partial<RecurringOrder> = {
       skipConfiguration: {
-        type: 'counter',
+        type: 'Counter',
         totalToSkip: 5,
         skipped: 0,
       },

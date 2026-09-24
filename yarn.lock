@@ -1826,12 +1826,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commercetools/platform-sdk@npm:latest":
-  version: 9.4.0
-  resolution: "@commercetools/platform-sdk@npm:9.4.0"
+"@commercetools/platform-sdk@npm:^9.4.0":
+  version: 9.5.0
+  resolution: "@commercetools/platform-sdk@npm:9.5.0"
   dependencies:
     "@commercetools/ts-client": "npm:^5.0.2"
-  checksum: 10c0/994ee28f20f1c607a56f98136ff71a2b317363ff755518fc398433ae704966e92faaa09752c4c3d6eecb4b10b437fa5e56815e4960c24cf910c32394991cee99
+  checksum: 10c0/738d841844dce697cd90d3cac647f577eb347a61d74dd3d4be8591d3d4766807be26c0b584a7910869ceaff3b25796470d41e906da69ccf843e950c5b10c8333
   languageName: node
   linkType: hard
 
@@ -1864,7 +1864,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@commercetools/sync-actions@workspace:packages/sync-actions"
   dependencies:
-    "@commercetools/platform-sdk": "npm:latest"
+    "@commercetools/platform-sdk": "npm:^9.4.0"
     esbuild: "npm:^0.25.4"
     fast-equals: "npm:^2.0.0"
     jest: "npm:^29.7.0"

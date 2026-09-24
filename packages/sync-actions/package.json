@@ -28,7 +28,7 @@
     "test": "jest --runInBand"
   },
   "dependencies": {
-    "@commercetools/platform-sdk": "latest",
+    "@commercetools/platform-sdk": "^9.4.0",
     "esbuild": "^0.25.4",
     "fast-equals": "^2.0.0",
     "jest": "^29.7.0",
