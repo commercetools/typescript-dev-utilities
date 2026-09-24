@@ -59,16 +59,22 @@ describe('Resource Deleter', () => {
       credentials,
     };
 
+    // clear anything a previous run left behind before seeding, so the
+    // suite recovers on its own from an interrupted teardown
+    await Promise.each(Object.keys(resources), (name: MethodNames) => {
+      return clearData(apiConfig, name);
+    });
+
     // create resources on API
     await Promise.each(Object.keys(resources), (name: MethodNames) => {
       return createData(apiConfig, name, resources[name]);
     });
-  }, 30000);
+  }, 60000);
 
   // clear resources on API
   afterAll(async () => {
     await Promise.each(Object.keys(resources), (name: MethodNames) => {
-      clearData(apiConfig, name);
+      return clearData(apiConfig, name);
     });
   }, 45000);
 
