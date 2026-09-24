@@ -1,5 +1,23 @@
 # @commercetools/sync-actions
 
+## 8.4.0
+
+### Minor Changes
+
+- [#60](https://github.com/commercetools/typescript-dev-utilities/pull/60) [`a4edf89`](https://github.com/commercetools/typescript-dev-utilities/commit/a4edf89bcc79fb156a8c3ce635025d8338dad8b7) Thanks [@marcelogpinheiro](https://github.com/marcelogpinheiro)! - Upgrade the `jsondiffpatch` dependency from `0.5.0` to `^0.7.6`, moving off an unmaintained release onto the current maintained version.
+
+  A customer security report referenced `jsonpath-plus` (which is not, and never was, a dependency of this package). The reported version facts — pinned `0.5.0`, fixed in `0.7.6`, not backwards compatible — instead correspond to `jsondiffpatch`, a direct dependency used by the diff/patch utility behind update-action generation. This change adopts `jsondiffpatch@0.7.6`.
+
+  The public API and observable behavior of `@commercetools/sync-actions` are unchanged. Internally: `jsondiffpatch` 0.7 is ESM-only, so imports were updated to the package root and the dependency is bundled into the published CommonJS, ESM, and UMD artifacts (CommonJS consumers are unaffected). Fine-grained text diffing remains disabled, so a changed string is still reported as a whole-value replacement.
+
+### Patch Changes
+
+- [#62](https://github.com/commercetools/typescript-dev-utilities/pull/62) [`ba27b2a`](https://github.com/commercetools/typescript-dev-utilities/commit/ba27b2af071db480b31eace6d31b6b137a7e4f0c) Thanks [@ajimae](https://github.com/ajimae)! - Replace the `latest` version range for `@commercetools/platform-sdk` with `^9.4.0`.
+
+  The `latest` descriptor re-resolved on every lockfile refresh and crossed major boundaries without review, which is how the 8.x to 9.x upgrade landed unannounced. A caret range matches the other packages in this repository and routes future updates through reviewable dependency PRs, with major upgrades gated behind explicit approval.
+
+  This is a dependency-declaration change only. The public API and observable behavior of `@commercetools/sync-actions` are unchanged.
+
 ## 8.3.0
 
 ### Minor Changes
