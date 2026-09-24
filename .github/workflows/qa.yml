@@ -6,7 +6,19 @@ on:
       - 'main'
       - '!changeset-release/**'
   pull_request:
-      
+
+# Every run shares a single commercetools project, and the integration
+# suites seed and clear fixtures in it. Without this, two overlapping runs
+# clobber each other: one run's cleanup wipes the fixtures another is
+# asserting on, producing failures like "Expected: >= 1, Received: 0".
+# A constant group (no ref) serialises across all branches and PRs, since
+# the project -- not the branch -- is the contended resource.
+# Queue rather than cancel: a run killed mid-suite skips teardown and
+# leaks fixtures into the shared project.
+concurrency:
+  group: qa-integration
+  cancel-in-progress: false
+
 jobs:
   immutable-install:
     if: ${{ !startsWith(github.ref, 'refs/heads/changeset-release/') }}
