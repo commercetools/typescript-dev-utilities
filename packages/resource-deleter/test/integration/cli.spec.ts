@@ -49,6 +49,15 @@ describe('Resource Deleter', () => {
     return client.execute(request);
   }
 
+  // Deleting in declaration order fails, because a resource cannot be removed
+  // while another still references it (a product-type referenced by a product,
+  // for example). Reverse order removes dependents first -- the same order the
+  // per-resource delete tests below rely on.
+  const clearAllResources = () =>
+    Promise.each(Object.keys(resources).reverse(), (name: MethodNames) => {
+      return clearData(apiConfig, name);
+    });
+
   beforeAll(async () => {
     // Get test credentials
     const credentials = await getCredentials();
@@ -61,9 +70,7 @@ describe('Resource Deleter', () => {
 
     // clear anything a previous run left behind before seeding, so the
     // suite recovers on its own from an interrupted teardown
-    await Promise.each(Object.keys(resources), (name: MethodNames) => {
-      return clearData(apiConfig, name);
-    });
+    await clearAllResources();
 
     // create resources on API
     await Promise.each(Object.keys(resources), (name: MethodNames) => {
@@ -73,10 +80,8 @@ describe('Resource Deleter', () => {
 
   // clear resources on API
   afterAll(async () => {
-    await Promise.each(Object.keys(resources), (name: MethodNames) => {
-      return clearData(apiConfig, name);
-    });
-  }, 45000);
+    await clearAllResources();
+  }, 60000);
 
   describe('CLI basic functionality', () => {
     it('should print usage information given the help flag', async () => {
