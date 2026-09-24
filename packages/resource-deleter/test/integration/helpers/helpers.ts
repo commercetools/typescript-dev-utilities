@@ -41,7 +41,7 @@ export function clearData(
           : payload.body.results;
 
       return Promise.all(
-        results.map((result): Promise<ClientResponse<unknown[]>> => {
+        results.map(async (result): Promise<ClientResponse<unknown[]>> => {
           let request: ClientRequest;
 
           if (service instanceof ByProjectKeyCustomObjectsRequestBuilder) {
@@ -53,9 +53,28 @@ export function clearData(
               .delete({ queryArgs: { version: result.version } })
               .clientRequest();
           } else {
-            request = service
-              .withId({ ID: result.id })
-              .delete({ queryArgs: { version: result.version } })
+            const serviceBuilder = service.withId({ ID: result.id });
+            let version = result.version;
+
+            // A published product cannot be deleted, so unpublish it first.
+            // Unpublishing bumps the version, which the delete then needs.
+            // Mirrors how the deleter itself handles this in src/main.ts,
+            // including overriding a built request rather than calling
+            // .post(), whose update-action union is too complex to type.
+            if (result.masterData?.published) {
+              await client.execute({
+                ...serviceBuilder.get().clientRequest(),
+                method: 'POST',
+                body: JSON.stringify({
+                  version,
+                  actions: [{ action: 'unpublish' }],
+                }),
+              });
+              version += 1;
+            }
+
+            request = serviceBuilder
+              .delete({ queryArgs: { version } })
               .clientRequest();
           }
 
