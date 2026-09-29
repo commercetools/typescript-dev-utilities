@@ -57,3 +57,27 @@ excluded from the "missing" lists below.
 `Quote`, `QuoteRequest`, and `StagedQuote` sync logic exists under
 `src/quotes/`, `src/quotes-requests/`, and `src/staged-quotes/` but is not
 exported from the package's public API (`src/index.ts`).
+
+### Resources with no sync support at all
+
+The following updatable commercetools resources have **no** corresponding
+`createSync*` function, `*-actions.ts` file, or `src/` directory in this
+package — not a partial-coverage gap, but no implementation whatsoever:
+
+| Resource | Update actions | Notes |
+| --- | --- | --- |
+| Cart | 78 | Not implemented. Includes line items, custom line items, discount codes, addresses, shipping, and tax handling. |
+| Payment | 28 | Not implemented. Includes transactions, interface interactions, and payment method info. |
+| ShoppingList | 19 | Not implemented (associate/B2B-scoped `MyShoppingList*` actions: line items, text line items, custom fields). |
+| Review | 11 | Not implemented. |
+| PaymentMethod | 9 | Not implemented. |
+| ApprovalRule | 9 | Not implemented (B2B). |
+| AssociateRole | 7 | Not implemented (B2B). |
+| OrderEdit | 6 (plus nested `StagedOrderUpdateAction`s via `addStagedAction`/`setStagedActions`) | Not implemented. |
+| DiscountGroup | 5 | Not implemented. |
+| ApprovalFlow | 4 | Not implemented (B2B: `approve`, `reject`, `setCustomField`, `setCustomType`). |
+| RecurrencePolicy | 4 | Not on `main`. Fully implemented (`setKey`, `setName`, `setDescription`, `setSchedule` — 4/4) on the unmerged branch `feat/add-recurrence-policy`. |
+
+`CustomObject` is intentionally out of scope: it has no update-action model —
+updates are a full create-or-replace `POST`, which doesn't fit this
+package's diff-based pattern.
