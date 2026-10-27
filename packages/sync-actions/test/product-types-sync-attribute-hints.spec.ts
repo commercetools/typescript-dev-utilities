@@ -450,7 +450,7 @@ describe('product type hints', () => {
       });
       describe('with `savedToLineItem` changes', () => {
         const build = (previous, next) => {
-          const base = createAttributeDefinitionDraftItem();
+          const base = createAttributeDefinitionDraftItem({});
           return sync.buildActions(
             {},
             {},
