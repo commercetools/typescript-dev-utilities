@@ -142,6 +142,11 @@ exports[
     "attributeName": "attribute-name",
     "newValue": "None",
   },
+  {
+    "action": "setSavedToLineItem",
+    "attributeName": "attribute-name",
+    "savedToLineItem": true,
+  },
 ]
 `;
 
