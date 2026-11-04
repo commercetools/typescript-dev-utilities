@@ -1,5 +1,11 @@
 # @commercetools/sync-actions
 
+## 8.5.0
+
+### Minor Changes
+
+- [#69](https://github.com/commercetools/typescript-dev-utilities/pull/69) [`e331130`](https://github.com/commercetools/typescript-dev-utilities/commit/e3311304ce592e683d96ce9cb2dc20577bc13bea) Thanks [@markus-azer](https://github.com/markus-azer)! - Add support for the `setSavedToLineItem` update action on product type attribute definitions.
+
 ## 8.4.0
 
 ### Minor Changes
