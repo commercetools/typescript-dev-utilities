@@ -2352,24 +2352,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/core@npm:^0.12.0":
-  version: 0.12.0
-  resolution: "@eslint/core@npm:0.12.0"
-  dependencies:
-    "@types/json-schema": "npm:^7.0.15"
-  checksum: 10c0/d032af81195bb28dd800c2b9617548c6c2a09b9490da3c5537fd2a1201501666d06492278bb92cfccac1f7ac249e58601dd87f813ec0d6a423ef0880434fa0c3
-  languageName: node
-  linkType: hard
-
-"@eslint/core@npm:^0.13.0":
-  version: 0.13.0
-  resolution: "@eslint/core@npm:0.13.0"
-  dependencies:
-    "@types/json-schema": "npm:^7.0.15"
-  checksum: 10c0/ba724a7df7ed9dab387481f11d0d0f708180f40be93acce2c21dacca625c5867de3528760c42f1c457ccefe6a669d525ff87b779017eabc0d33479a36300797b
-  languageName: node
-  linkType: hard
-
 "@eslint/core@npm:^0.14.0":
   version: 0.14.0
   resolution: "@eslint/core@npm:0.14.0"
@@ -2421,15 +2403,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/json@npm:^0.12.0":
-  version: 0.12.0
-  resolution: "@eslint/json@npm:0.12.0"
+"@eslint/json@npm:^0.14.0":
+  version: 0.14.0
+  resolution: "@eslint/json@npm:0.14.0"
   dependencies:
-    "@eslint/core": "npm:^0.12.0"
-    "@eslint/plugin-kit": "npm:^0.2.7"
-    "@humanwhocodes/momoa": "npm:^3.3.4"
+    "@eslint/core": "npm:^0.17.0"
+    "@eslint/plugin-kit": "npm:^0.4.1"
+    "@humanwhocodes/momoa": "npm:^3.3.10"
     natural-compare: "npm:^1.4.0"
-  checksum: 10c0/68fb045a8fde1fd96c6fa05b7102000328fa1786f935aea007b32a0e178445aebdddb6efeb4518b16bcaa9d819e426ef29eb8fc69d0f1fec720c550be22f631a
+  checksum: 10c0/1832b0d07dbf314213e02ba8c391b8f2095e72c8ff091226b0048d8db24900048015e51e2906ae71423174c1524779d94e32140db2d608d4337deb2a208c5fb5
   languageName: node
   linkType: hard
 
@@ -2453,16 +2435,6 @@ __metadata:
   version: 2.1.7
   resolution: "@eslint/object-schema@npm:2.1.7"
   checksum: 10c0/936b6e499853d1335803f556d526c86f5fe2259ed241bc665000e1d6353828edd913feed43120d150adb75570cae162cf000b5b0dfc9596726761c36b82f4e87
-  languageName: node
-  linkType: hard
-
-"@eslint/plugin-kit@npm:^0.2.7":
-  version: 0.2.8
-  resolution: "@eslint/plugin-kit@npm:0.2.8"
-  dependencies:
-    "@eslint/core": "npm:^0.13.0"
-    levn: "npm:^0.4.1"
-  checksum: 10c0/554847c8f2b6bfe0e634f317fc43d0b54771eea0015c4f844f75915fdb9e6170c830c004291bad57db949d61771732e459f36ed059f45cf750af223f77357c5c
   languageName: node
   linkType: hard
 
@@ -2510,10 +2482,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@humanwhocodes/momoa@npm:^3.3.4":
-  version: 3.3.9
-  resolution: "@humanwhocodes/momoa@npm:3.3.9"
-  checksum: 10c0/591e1ef6b6e299a57006a052199a0b5f854dfbd0016c7862eb21fe7441a1426ef2ea75c006863693eb98fc46d4a60a82319546adb0277df2814b543a8dad7a7b
+"@humanwhocodes/momoa@npm:^3.3.10":
+  version: 3.3.13
+  resolution: "@humanwhocodes/momoa@npm:3.3.13"
+  checksum: 10c0/94c063fbd25be062a172c06ae04ed151dbf504c144452cf884c760326977fc1b8ce82fe1c99160b96871351356edf13df888d9b7ab19005b9305ee6b26d371f0
   languageName: node
   linkType: hard
 
@@ -9589,7 +9561,7 @@ __metadata:
     "@commitlint/cli": "npm:19.8.1"
     "@commitlint/config-conventional": "npm:19.8.1"
     "@eslint/js": "npm:^9.27.0"
-    "@eslint/json": "npm:^0.12.0"
+    "@eslint/json": "npm:^0.14.0"
     "@eslint/markdown": "npm:^6.4.0"
     "@jest/globals": "npm:^29.7.0"
     "@types/bluebird": "npm:^3"
