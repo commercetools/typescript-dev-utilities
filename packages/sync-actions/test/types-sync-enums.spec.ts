@@ -122,6 +122,49 @@ describe('Actions', () => {
       });
     });
 
+    describe('with enum value removed', () => {
+      beforeEach(() => {
+        before = createTestType({
+          fieldDefinitions: [
+            {
+              name: 'enum',
+              type: {
+                name: 'Enum',
+                values: [
+                  { key: 'enum_1', label: 'enum-1' },
+                  { key: 'enum_2', label: 'enum-2' },
+                  { key: 'enum_3', label: 'enum-3' },
+                ],
+              },
+            },
+          ],
+        });
+
+        now = createTestType({
+          fieldDefinitions: [
+            {
+              name: 'enum',
+              type: {
+                name: 'Enum',
+                values: [{ key: 'enum_1', label: 'enum-1' }],
+              },
+            },
+          ],
+        });
+        updateActions = typesSync.buildActions(now, before);
+      });
+
+      test('should return `removeEnumValues` updateAction with all removed keys', () => {
+        expect(updateActions).toEqual([
+          {
+            action: 'removeEnumValues',
+            fieldName: 'enum',
+            keys: ['enum_2', 'enum_3'],
+          },
+        ]);
+      });
+    });
+
     describe('with enum reordered', () => {
       beforeEach(() => {
         before = createTestType({
@@ -259,8 +302,13 @@ describe('Actions', () => {
         updateActions = typesSync.buildActions(now, before);
       });
 
-      test('should return `addLocalizedEnumValue` updateAction', () => {
+      test('should return `removeLocalizedEnumValues` and `addLocalizedEnumValue` updateActions', () => {
         expect(updateActions).toEqual([
+          {
+            fieldName: 'lenum',
+            action: 'removeLocalizedEnumValues',
+            keys: ['enum_4'],
+          },
           {
             fieldName: 'lenum',
             action: 'addLocalizedEnumValue',
@@ -268,6 +316,49 @@ describe('Actions', () => {
               key: 'enum_3',
               label: { en: 'enum-3' },
             },
+          },
+        ]);
+      });
+    });
+
+    describe('with lenum value removed', () => {
+      beforeEach(() => {
+        before = createTestType({
+          fieldDefinitions: [
+            {
+              name: 'lenum',
+              type: {
+                name: 'lenum',
+                values: [
+                  { key: 'enum_1', label: { en: 'enum-1' } },
+                  { key: 'enum_2', label: { en: 'enum-2' } },
+                  { key: 'enum_3', label: { en: 'enum-3' } },
+                ],
+              },
+            },
+          ],
+        });
+
+        now = createTestType({
+          fieldDefinitions: [
+            {
+              name: 'lenum',
+              type: {
+                name: 'lenum',
+                values: [{ key: 'enum_1', label: { en: 'enum-1' } }],
+              },
+            },
+          ],
+        });
+        updateActions = typesSync.buildActions(now, before);
+      });
+
+      test('should return `removeLocalizedEnumValues` updateAction with all removed keys', () => {
+        expect(updateActions).toEqual([
+          {
+            action: 'removeLocalizedEnumValues',
+            fieldName: 'lenum',
+            keys: ['enum_2', 'enum_3'],
           },
         ]);
       });

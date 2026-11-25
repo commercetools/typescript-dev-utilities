@@ -5,6 +5,7 @@ import isEqual from 'lodash.isequal';
 import createBuildArrayActions, {
   ADD_ACTIONS,
   CHANGE_ACTIONS,
+  REMOVE_ACTIONS,
 } from '../utils/create-build-array-actions';
 import { buildBaseAttributesActions } from '../utils/common-actions';
 import * as diffPatcher from '../utils/diffpatcher';
@@ -68,11 +69,21 @@ function actionsMapEnums<S extends CustomFieldEnumType>(
       ? 'changeEnumValueOrder'
       : 'changeLocalizedEnumValueOrder';
 
+  const removeEnumActionName =
+    attributeType === 'Enum'
+      ? 'removeEnumValues'
+      : 'removeLocalizedEnumValues';
+
   const buildArrayActions = createBuildArrayActions('values', {
     [ADD_ACTIONS]: (newEnum: CustomFieldEnumType) => ({
       fieldName,
       action: addEnumActionName,
       value: newEnum,
+    }),
+    [REMOVE_ACTIONS]: (oldEnum: CustomFieldEnumValue) => ({
+      fieldName,
+      action: removeEnumActionName,
+      key: oldEnum.key,
     }),
     [CHANGE_ACTIONS]: (
       oldEnum: CustomFieldEnumValue,
@@ -126,18 +137,33 @@ function actionsMapEnums<S extends CustomFieldEnumType>(
 
   const actions = [];
   // following lists are necessary to ensure that when we change the
-  // order of enumValues, we generate one updateAction instead of one at a time.
+  // order of enumValues, or remove enumValues, we generate one updateAction
+  // instead of one at a time.
   let newEnumValuesOrder = [];
+  const removedEnumValueKeys = [];
 
   buildArrayActions(attributeDiff, previous, next)
     .flat()
     .forEach((updateAction) => {
       if (updateAction.action === changeEnumOrderActionName) {
         newEnumValuesOrder = next.values.map((enumValue) => enumValue.key);
+      } else if (updateAction.action === removeEnumActionName) {
+        removedEnumValueKeys.push(updateAction.key);
       } else actions.push(updateAction);
     });
 
   return [
+    // Make sure to execute the removal of enum values before adding/changing
+    // any, in case a removed key is reused by a newly added value.
+    ...(removedEnumValueKeys.length > 0
+      ? [
+          {
+            fieldName,
+            action: removeEnumActionName,
+            keys: removedEnumValueKeys,
+          },
+        ]
+      : []),
     ...actions,
     ...(newEnumValuesOrder.length > 0
       ? [
