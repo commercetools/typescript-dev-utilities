@@ -114,6 +114,64 @@ describe('Actions', () => {
     expect(actual).toEqual(expected);
   });
 
+  describe('stores', () => {
+    const store = (key: string) => ({ typeId: 'store' as const, key });
+
+    test('should build "addStore" actions for new stores', () => {
+      const before: Partial<Category> = { stores: [store('a')] };
+      const now: Partial<Category> = { stores: [store('a'), store('b')] };
+      expect(
+        categorySync.buildActions(now as Category, before as Category)
+      ).toEqual([{ action: 'addStore', store: { typeId: 'store', key: 'b' } }]);
+    });
+
+    test('should build "addStore" when category was global', () => {
+      const before: Partial<Category> = { stores: [] };
+      const now: Partial<Category> = { stores: [store('a')] };
+      expect(
+        categorySync.buildActions(now as Category, before as Category)
+      ).toEqual([{ action: 'addStore', store: { typeId: 'store', key: 'a' } }]);
+    });
+
+    test('should build "removeStore" actions for removed stores', () => {
+      const before: Partial<Category> = { stores: [store('a'), store('b')] };
+      const now: Partial<Category> = { stores: [store('a')] };
+      expect(
+        categorySync.buildActions(now as Category, before as Category)
+      ).toEqual([
+        { action: 'removeStore', store: { typeId: 'store', key: 'b' } },
+      ]);
+    });
+
+    test('should add before remove when replacing stores', () => {
+      const before: Partial<Category> = { stores: [store('a')] };
+      const now: Partial<Category> = { stores: [store('b')] };
+      expect(
+        categorySync.buildActions(now as Category, before as Category)
+      ).toEqual([
+        { action: 'addStore', store: { typeId: 'store', key: 'b' } },
+        { action: 'removeStore', store: { typeId: 'store', key: 'a' } },
+      ]);
+    });
+
+    test('should build no actions when stores are only reordered', () => {
+      const before: Partial<Category> = { stores: [store('a'), store('b')] };
+      const now: Partial<Category> = { stores: [store('b'), store('a')] };
+      expect(
+        categorySync.buildActions(now as Category, before as Category)
+      ).toEqual([]);
+    });
+
+    test('should not build store actions when "references" group is ignored', () => {
+      const sync = categorySyncFn([{ type: 'references', group: 'ignore' }]);
+      const before: Partial<Category> = { stores: [] };
+      const now: Partial<Category> = { stores: [store('a')] };
+      expect(sync.buildActions(now as Category, before as Category)).toEqual(
+        []
+      );
+    });
+  });
+
   describe('assets', () => {
     test('should build "addAsset" action with empty assets', () => {
       const before = {
