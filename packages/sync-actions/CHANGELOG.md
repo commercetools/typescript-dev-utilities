@@ -1,5 +1,11 @@
 # @commercetools/sync-actions
 
+## 8.6.0
+
+### Minor Changes
+
+- [#71](https://github.com/commercetools/typescript-dev-utilities/pull/71) [`b12270f`](https://github.com/commercetools/typescript-dev-utilities/commit/b12270f6f209b33b270d9f046966a0520752249d) Thanks [@kafis](https://github.com/kafis)! - Add support for the Category stores field by generating addStore and removeStore update actions. Stores are compared by key, so reordering does not produce actions.
+
 ## 8.5.0
 
 ### Minor Changes
